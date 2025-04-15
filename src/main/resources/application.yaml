@@ -1,0 +1,29 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: hotel-pms-group
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pms_booking
+    username: booking_user
+    password: secret123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HikariPool-1
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+
+grpc:
+  server:
+    address: 0.0.0.0
+    port: 9090
