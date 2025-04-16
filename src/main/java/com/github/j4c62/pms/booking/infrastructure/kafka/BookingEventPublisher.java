@@ -13,5 +13,7 @@ public class BookingEventPublisher {
 
   public void publishBookingCreated(Object event) {}
 
+  public void publishBookingUpdated(Object event) {}
+
   public void publishBookingCancelled(Object event) {}
 }

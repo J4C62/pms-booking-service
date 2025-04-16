@@ -29,7 +29,7 @@ message CancelBookingRequest {
 
 message UpdateBookingRequest {
   string startDate = 1;
-  string endDate =2;
+  string endDate =3;
 }
 
 /** Response containing booking status */
