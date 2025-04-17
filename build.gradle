@@ -25,6 +25,8 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
 
 
+    runtimeOnly 'com.h2database:h2'
+
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
     implementation 'io.grpc:grpc-protobuf:1.71.0'
     implementation 'io.grpc:grpc-stub:1.71.0'
@@ -32,12 +34,11 @@ dependencies {
 
     implementation 'org.postgresql:postgresql:42.6.0'
 
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
-
-    implementation 'com.google.auto.factory:auto-factory:1.1.0'
-    annotationProcessor 'com.google.auto.factory:auto-factory:1.1.0'
-    implementation("jakarta.inject:jakarta.inject-api:2.0.1")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation("org.assertj:assertj-core:4.0.0-M1")

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package booking;
 
-option java_package = "com.github.j4c62.booking.interfaces.grpc";
+option java_package = "com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint";
 option java_outer_classname = "BookingProto";
 option java_multiple_files = true;
 
@@ -29,7 +29,7 @@ message CancelBookingRequest {
 
 message UpdateBookingRequest {
   string startDate = 1;
-  string endDate =3;
+  string endDate = 3;
 }
 
 /** Response containing booking status */
