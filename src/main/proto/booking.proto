@@ -1,9 +1,7 @@
 syntax = "proto3";
 
-package booking;
 
 option java_package = "com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint";
-option java_outer_classname = "BookingProto";
 option java_multiple_files = true;
 
 /**
@@ -12,6 +10,7 @@ option java_multiple_files = true;
 service BookingService {
   rpc CreateBooking(CreateBookingRequest) returns (BookingResponse);
   rpc CancelBooking(CancelBookingRequest) returns (BookingResponse);
+  rpc UpdateBooking(UpdateBookingRequest) returns (BookingResponse);
 }
 
 /** Request for creating a booking */
@@ -25,11 +24,16 @@ message CreateBookingRequest {
 /** Request for cancelling a booking */
 message CancelBookingRequest {
   string bookingId = 1;
+  string reason = 2;
+  string cancelledBy = 3;
+  string cancelledAt = 4;
 }
 
 message UpdateBookingRequest {
-  string startDate = 1;
-  string endDate = 3;
+  string bookingId = 1;
+  string newStartDate = 2;
+  string newEndDate = 3;
+  string updateReason = 4;
 }
 
 /** Response containing booking status */

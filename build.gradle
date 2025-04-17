@@ -22,15 +22,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+    implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     implementation 'org.springframework.kafka:spring-kafka'
-
-
-    runtimeOnly 'com.h2database:h2'
 
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
     implementation 'io.grpc:grpc-protobuf:1.71.0'
     implementation 'io.grpc:grpc-stub:1.71.0'
 
+    implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
+    implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
 
     implementation 'org.postgresql:postgresql:42.6.0'
 
@@ -41,7 +41,14 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
+    testImplementation("io.grpc:grpc-testing:1.72.0")
+
+    testImplementation 'org.testcontainers:testcontainers:1.20.6'
+    testImplementation 'org.testcontainers:junit-jupiter:1.20.6'
+    testImplementation 'org.testcontainers:postgresql:1.20.6'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 }
@@ -73,4 +80,6 @@ sourceSets {
 }
 tasks.named('test') {
     useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}"
+    jvmArgs("-Xshare:off")
 }

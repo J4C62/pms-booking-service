@@ -7,6 +7,7 @@ import com.github.j4c62.pms.booking.domain.driver.request.CreateBookingRequest;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
 import com.github.j4c62.pms.booking.domain.model.Booking;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class CreateBookingCommandHandler implements BookingCreator {
   private final BookingRepository bookingRepository;
   private final BookingEventPublisher eventPublisher;
 
+  @Transactional
   @Override
   public Booking create(CreateBookingRequest createBookingRequest) {
     var booking = bookingFactory.create(createBookingRequest);
