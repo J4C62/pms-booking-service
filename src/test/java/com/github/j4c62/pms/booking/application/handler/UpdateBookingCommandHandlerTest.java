@@ -32,7 +32,14 @@ class UpdateBookingCommandHandlerTest {
   void shouldUpdateBookingSuccessfully() {
     var request =
         new UpdateBookingCommand("b123", "2025-08-01", "2025-08-10", "Guest change plans");
-    var existing = BookingBuilder.builder().bookingId("b123").build();
+    var existing =
+        BookingBuilder.builder()
+            .bookingId("b123")
+            .propertyId("123")
+            .guestId("guest11")
+            .startDate("2025-05-01")
+            .endDate("2025-06-01")
+            .build();
     var updated = existing.updateDates("2025-08-01", "2025-08-10");
     var event = BookingEventFactory.createBookingFactory().createBookingUpdated(updated, request);
     var updateOutput = new BookingOutput(updated.bookingId(), updated.status());

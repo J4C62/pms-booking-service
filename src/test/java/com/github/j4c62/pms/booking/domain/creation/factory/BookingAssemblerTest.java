@@ -5,8 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.application.creation.factory.BookingFactory;
+import com.github.j4c62.pms.booking.application.creation.factory.BookingAssembler;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,18 +15,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BookingFactoryTest {
+class BookingAssemblerTest {
 
-  private static final BookingFactory bookingFactory = BookingFactory.createBookingFactory();
+  private BookingAssembler bookingAssembler;
 
   @Mock private CreateBookingInput createRequest;
 
+  @BeforeEach
+  void setUp() {
+    bookingAssembler = new BookingAssembler();
+  }
+
   @Test
   @DisplayName("Should create a valid Booking when all fields are valid")
-  void shouldCreateValidBooking() {
+  void shouldToBookingValidBooking() {
     givenValidRequest();
     givenValidDates();
-    var booking = bookingFactory.create(createRequest);
+    var booking = bookingAssembler.toBooking(createRequest);
 
     assertThat(booking).isNotNull();
     assertThat(booking.bookingId()).isNotNull();
@@ -141,13 +147,13 @@ class BookingFactoryTest {
   }
 
   void assertThrowsNullPointer(String expectedMessagePart) {
-    assertThatThrownBy(() -> bookingFactory.create(createRequest))
+    assertThatThrownBy(() -> bookingAssembler.toBooking(createRequest))
         .isExactlyInstanceOf(NullPointerException.class)
         .hasMessageContaining(expectedMessagePart);
   }
 
   void assertThrowsIllegalArgument(String expectedMessagePart) {
-    assertThatThrownBy(() -> bookingFactory.create(createRequest))
+    assertThatThrownBy(() -> bookingAssembler.toBooking(createRequest))
         .isExactlyInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(expectedMessagePart);
   }

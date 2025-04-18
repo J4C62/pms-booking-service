@@ -1,6 +1,8 @@
 package com.github.j4c62.pms.booking.domain.model;
 
 import static com.github.j4c62.pms.booking.domain.model.BookingStatus.*;
+import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.*;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
@@ -11,6 +13,20 @@ public record Booking(
     String startDate,
     String endDate,
     BookingStatus status) {
+
+  public Booking {
+    requireNonNull(propertyId, "Property ID cannot be null");
+    requireNonNull(guestId, "Guest ID cannot be null");
+    requireNonNull(startDate, "Start Date cannot be null");
+    requireNonNull(endDate, "End Date cannot be null");
+
+    requireNotBlank(propertyId, "Property ID");
+    requireNotBlank(guestId, "Guest ID");
+    requireValidDate(startDate, "Start date");
+    requireValidDate(endDate, "End date");
+    requireStartBeforeEnd(startDate, endDate);
+    requireStartNotInPast(startDate);
+  }
 
   public boolean isCancelled() {
     return status.equals(CANCELLED);

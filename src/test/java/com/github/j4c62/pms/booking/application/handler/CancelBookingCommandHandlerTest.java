@@ -32,7 +32,15 @@ class CancelBookingCommandHandlerTest {
   @DisplayName("Should cancel a booking and publish BookingCancelled event")
   void shouldCancelBookingSuccessfully() {
     var request = new CancelBookingCommand("b123", "guest-1", "Changed plans", "2025-06-01");
-    var existingBooking = BookingBuilder.builder().bookingId("b123").build();
+    var existingBooking =
+        BookingBuilder.builder()
+            .bookingId("b123")
+            .propertyId("123")
+            .guestId("guest11")
+            .startDate("2025-05-01")
+            .endDate("2025-06-01")
+            .build();
+
     var cancelledBooking = existingBooking.cancel();
     var fakeOutput = new BookingOutput("b123", BookingStatus.CANCELLED);
     var bookingCancelledEvent =
