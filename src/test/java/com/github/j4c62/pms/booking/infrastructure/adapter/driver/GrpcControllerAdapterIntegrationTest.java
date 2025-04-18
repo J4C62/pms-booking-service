@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.model.BookingStatus.CANCELLED;
 import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import com.github.j4c62.pms.booking.infrastructure.adapter.config.GrpcTestContext;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceGrpc;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
@@ -12,15 +13,20 @@ import java.time.LocalTime;
 import java.util.UUID;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest(
+@ExtendWith(SpringExtension.class)
+@Import({GrpcControllerAdapter.class, GrpcTestContext.class})
+@ComponentScan("com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper")
+@TestPropertySource(
     properties = {
-      "grpc.server.in-process-name=test",
+      "grpc.server.inProcessName=test",
       "grpc.server.port=-1",
       "grpc.client.inProcess.address=in-process:test",
-      "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false",
-      "spring.jpa.hibernate.ddl-auto=none",
     })
 class GrpcControllerAdapterIntegrationTest {
   @GrpcClient("inProcess")

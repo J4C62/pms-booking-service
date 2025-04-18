@@ -2,26 +2,29 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import java.net.URI;
 import java.util.List;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
 @EnableKafka
-@SpringBootTest
 @EmbeddedKafka(
     partitions = 1,
     topics = {"booking.created", "booking.updated", "booking.cancelled"})
+@Import(KafkaAutoConfiguration.class)
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
   @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
@@ -42,22 +45,10 @@ class KafkaIntegrationTest {
 
   @Test
   void sendEvent() {
-    var eventTemplate =
-        io.cloudevents.core.builder.CloudEventBuilder.v1()
-            .withSource(URI.create("service://booking-service"))
-            .withType("booking.created");
 
-    var event =
-        eventTemplate
-            .newBuilder()
-            .withId("id")
-            .withDataContentType("application/json")
-            .withData("{\"message\":\"ping\"}".getBytes())
-            .build();
-
-    kafkaTemplate.send("booking.created", event);
-    kafkaTemplate.send("booking.updated", event);
-    kafkaTemplate.send("booking.cancelled", event);
+    kafkaTemplate.send("booking.created", "ping");
+    kafkaTemplate.send("booking.updated", "ping");
+    kafkaTemplate.send("booking.cancelled", "ping");
 
     var records = KafkaTestUtils.getRecords(consumer);
 

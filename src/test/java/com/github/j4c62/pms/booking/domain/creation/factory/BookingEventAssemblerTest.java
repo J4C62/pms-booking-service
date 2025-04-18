@@ -3,7 +3,7 @@ package com.github.j4c62.pms.booking.domain.creation.factory;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.application.creation.factory.BookingEventFactory;
+import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
@@ -16,9 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BookingEventFactoryTest {
+class BookingEventAssemblerTest {
 
-  private final BookingEventFactory factory = BookingEventFactory.createBookingFactory();
+  private BookingEventAssembler assembler;
 
   @Mock private Booking booking;
   @Mock private CancelBookingInput cancelRequest;
@@ -26,6 +26,7 @@ class BookingEventFactoryTest {
 
   @BeforeEach
   void setUp() {
+    assembler = new BookingEventAssembler();
     when(booking.bookingId()).thenReturn("b123");
     when(booking.startDate()).thenReturn("2025-05-01");
     when(booking.endDate()).thenReturn("2025-05-10");
@@ -36,7 +37,7 @@ class BookingEventFactoryTest {
   void shouldCreateBookingCreatedEvent() {
     when(booking.propertyId()).thenReturn("p456");
     when(booking.guestId()).thenReturn("g789");
-    var event = factory.createBookingCreated(booking);
+    var event = assembler.toBookingCreated(booking);
 
     assertThat(event.bookingId()).isEqualTo("b123");
     assertThat(event.propertyId()).isEqualTo("p456");
@@ -53,7 +54,7 @@ class BookingEventFactoryTest {
     when(cancelRequest.getCancelledBy()).thenReturn("guest");
     when(cancelRequest.getCancelledAt()).thenReturn("2025-04-01T12:00:00Z");
 
-    var event = factory.createBookingCancelled(booking, cancelRequest);
+    var event = assembler.toBookingCancelled(booking, cancelRequest);
 
     assertThat(event.bookingId()).isEqualTo("b123");
     assertThat(event.propertyId()).isEqualTo("p456");
@@ -69,7 +70,7 @@ class BookingEventFactoryTest {
     when(updateRequest.getNewEndDate()).thenReturn("2025-06-05");
     when(updateRequest.getUpdateReason()).thenReturn("Date change by guest");
 
-    BookingUpdated event = factory.createBookingUpdated(booking, updateRequest);
+    BookingUpdated event = assembler.toBookingUpdated(booking, updateRequest);
 
     assertThat(event.bookingId()).isEqualTo("b123");
     assertThat(event.oldStartDate()).isEqualTo("2025-05-01");

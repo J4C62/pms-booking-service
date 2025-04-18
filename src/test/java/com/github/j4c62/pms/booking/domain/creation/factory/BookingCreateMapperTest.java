@@ -5,33 +5,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.application.creation.factory.BookingAssembler;
+import com.github.j4c62.pms.booking.application.creation.assembler.BookingCreateMapper;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class BookingAssemblerTest {
+class BookingCreateMapperTest {
 
-  private BookingAssembler bookingAssembler;
+  @Autowired private BookingCreateMapper bookingCreateMapper;
 
   @Mock private CreateBookingInput createRequest;
-
-  @BeforeEach
-  void setUp() {
-    bookingAssembler = new BookingAssembler();
-  }
 
   @Test
   @DisplayName("Should create a valid Booking when all fields are valid")
   void shouldToBookingValidBooking() {
     givenValidRequest();
     givenValidDates();
-    var booking = bookingAssembler.toBooking(createRequest);
+    var booking = bookingCreateMapper.toBooking(createRequest);
 
     assertThat(booking).isNotNull();
     assertThat(booking.bookingId()).isNotNull();
@@ -147,13 +144,13 @@ class BookingAssemblerTest {
   }
 
   void assertThrowsNullPointer(String expectedMessagePart) {
-    assertThatThrownBy(() -> bookingAssembler.toBooking(createRequest))
+    assertThatThrownBy(() -> bookingCreateMapper.toBooking(createRequest))
         .isExactlyInstanceOf(NullPointerException.class)
         .hasMessageContaining(expectedMessagePart);
   }
 
   void assertThrowsIllegalArgument(String expectedMessagePart) {
-    assertThatThrownBy(() -> bookingAssembler.toBooking(createRequest))
+    assertThatThrownBy(() -> bookingCreateMapper.toBooking(createRequest))
         .isExactlyInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining(expectedMessagePart);
   }

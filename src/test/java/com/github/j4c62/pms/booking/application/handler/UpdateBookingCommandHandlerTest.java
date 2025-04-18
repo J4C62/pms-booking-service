@@ -5,11 +5,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
+import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
-import com.github.j4c62.pms.booking.application.creation.factory.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
+import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class UpdateBookingCommandHandlerTest {
 
   @Mock private BookingRepository bookingRepository;
   @Mock private BookingEventPublisher eventPublisher;
-  @Mock private BookingEventFactory eventFactory;
+  @Mock private BookingEventAssembler eventFactory;
 
   @InjectMocks private UpdateBookingCommandHandler handler;
 
@@ -41,12 +42,12 @@ class UpdateBookingCommandHandlerTest {
             .endDate("2025-06-01")
             .build();
     var updated = existing.updateDates("2025-08-01", "2025-08-10");
-    var event = BookingEventFactory.createBookingFactory().createBookingUpdated(updated, request);
+    var event = new BookingUpdated("b123", "", "", "", "", "", "");
     var updateOutput = new BookingOutput(updated.bookingId(), updated.status());
 
     when(bookingRepository.findById("b123")).thenReturn(Optional.of(existing));
     when(bookingRepository.save(updated)).thenReturn(updated);
-    when(eventFactory.createBookingUpdated(updated, request)).thenReturn(event);
+    when(eventFactory.toBookingUpdated(updated, request)).thenReturn(event);
 
     var result = handler.update(request);
 

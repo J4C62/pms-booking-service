@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.application.creation.factory;
+package com.github.j4c62.pms.booking.application.creation.assembler;
 
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.actualDate;
 
@@ -8,15 +8,12 @@ import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelled;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreated;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
 import com.github.j4c62.pms.booking.domain.model.Booking;
+import org.springframework.stereotype.Component;
 
-public class BookingEventFactory {
+@Component
+public class BookingEventAssembler {
 
-  public static BookingEventFactory createBookingFactory() {
-    return new BookingEventFactory();
-  }
-
-  public BookingCreated createBookingCreated(Booking booking) {
-
+  public BookingCreated toBookingCreated(Booking booking) {
     return new BookingCreated(
         booking.bookingId(),
         booking.propertyId(),
@@ -25,9 +22,8 @@ public class BookingEventFactory {
         booking.endDate());
   }
 
-  public BookingCancelled createBookingCancelled(
+  public BookingCancelled toBookingCancelled(
       Booking booking, CancelBookingInput cancelBookingInput) {
-
     return new BookingCancelled(
         booking.bookingId(),
         booking.propertyId(),
@@ -38,9 +34,7 @@ public class BookingEventFactory {
         cancelBookingInput.getCancelledAt());
   }
 
-  public BookingUpdated createBookingUpdated(
-      Booking booking, UpdateBookingInput updateBookingInput) {
-
+  public BookingUpdated toBookingUpdated(Booking booking, UpdateBookingInput updateBookingInput) {
     return new BookingUpdated(
         booking.bookingId(),
         booking.startDate(),

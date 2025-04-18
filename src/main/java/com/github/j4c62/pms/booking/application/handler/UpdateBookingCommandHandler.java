@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.creation.factory.BookingEventFactory;
+import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
 import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class UpdateBookingCommandHandler implements BookingUpdater {
   private final BookingRepository bookingRepository;
   private final BookingEventPublisher eventPublisher;
-  private final BookingEventFactory eventFactory;
+  private final BookingEventAssembler eventFactory;
 
   @Override
   public BookingOutput update(UpdateBookingInput updateBookingInput) {
@@ -31,8 +31,7 @@ public class UpdateBookingCommandHandler implements BookingUpdater {
             updateBookingInput.getNewStartDate(), updateBookingInput.getNewEndDate());
     var saved = bookingRepository.save(updated);
 
-    eventPublisher.publishBookingUpdated(
-        eventFactory.createBookingUpdated(saved, updateBookingInput));
+    eventPublisher.publishBookingUpdated(eventFactory.toBookingUpdated(saved, updateBookingInput));
 
     return new BookingOutput(saved.bookingId(), saved.status());
   }
