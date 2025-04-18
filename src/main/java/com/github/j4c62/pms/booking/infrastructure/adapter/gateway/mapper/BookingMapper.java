@@ -8,7 +8,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
     componentModel = "spring",
     unmappedTargetPolicy = ReportingPolicy.ERROR,
-    unmappedSourcePolicy = ReportingPolicy.WARN)
+    unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface BookingMapper {
 
   BookingEntity toEntity(Booking booking);
