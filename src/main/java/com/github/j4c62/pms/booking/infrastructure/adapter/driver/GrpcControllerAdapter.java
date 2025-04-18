@@ -12,7 +12,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
 @RequiredArgsConstructor
-public class GrpcController extends BookingServiceGrpc.BookingServiceImplBase {
+public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImplBase {
   private final BookingCreator bookingCreator;
   private final BookingCanceller bookingCanceller;
   private final BookingUpdater bookingUpdater;

@@ -22,7 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false",
       "spring.jpa.hibernate.ddl-auto=none",
     })
-class GrpcControllerIntegrationTest {
+class GrpcControllerAdapterIntegrationTest {
   @GrpcClient("inProcess")
   private BookingServiceGrpc.BookingServiceBlockingStub bookingServiceGrpc;
 

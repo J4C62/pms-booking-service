@@ -18,6 +18,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -43,15 +44,15 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation("org.assertj:assertj-core:4.0.0-M1")
     testImplementation("io.grpc:grpc-testing:1.72.0")
 
     testCompileOnly 'org.projectlombok:lombok:1.18.38'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
 
-    testImplementation 'org.testcontainers:testcontainers:1.20.6'
-    testImplementation 'org.testcontainers:junit-jupiter:1.20.6'
-    testImplementation 'org.testcontainers:postgresql:1.20.6'
+    testImplementation 'io.zonky.test:embedded-postgres:2.1.0'
+    testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 

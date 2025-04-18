@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.creation.builder;
+package com.github.j4c62.pms.booking.application.creation.builder;
 
 import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 

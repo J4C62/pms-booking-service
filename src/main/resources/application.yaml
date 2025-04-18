@@ -4,7 +4,8 @@ spring:
     consumer:
       group-id: hotel-pms-group
     producer:
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.cloudevents.kafka.CloudEventSerializer
   datasource:
     url: jdbc:postgresql://localhost:5432/pms_booking
     username: booking_user

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class BookingDatabase implements BookingRepository {
+public class PostgreSqlAdapter implements BookingRepository {
 
   private final BookingJpaProvider bookingJpaProvider;
   private final BookingMapper bookingMapper;

@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.creation.factory;
+package com.github.j4c62.pms.booking.application.creation.factory;
 
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.actualDate;
 
@@ -31,7 +31,6 @@ public class BookingEventFactory {
     return new BookingCancelled(
         booking.bookingId(),
         booking.propertyId(),
-        booking.guestId(),
         booking.startDate(),
         booking.endDate(),
         cancelBookingInput.getReason(),

@@ -2,12 +2,11 @@ package com.github.j4c62.pms.booking.application.handler;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
-import com.github.j4c62.pms.booking.domain.creation.builder.BookingBuilder;
-import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
+import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
+import com.github.j4c62.pms.booking.application.creation.factory.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;

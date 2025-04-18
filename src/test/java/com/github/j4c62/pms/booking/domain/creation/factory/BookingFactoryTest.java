@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+import com.github.j4c62.pms.booking.application.creation.factory.BookingFactory;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

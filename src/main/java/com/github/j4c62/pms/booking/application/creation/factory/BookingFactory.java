@@ -1,6 +1,6 @@
-package com.github.j4c62.pms.booking.domain.creation.factory;
+package com.github.j4c62.pms.booking.application.creation.factory;
 
-import static com.github.j4c62.pms.booking.domain.creation.builder.BookingBuilder.builder;
+import static com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder.builder;
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.*;
 import static java.util.Objects.requireNonNull;
 

@@ -5,7 +5,10 @@ import com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity.BookingEn
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+@Mapper(
+    componentModel = "spring",
+    unmappedTargetPolicy = ReportingPolicy.ERROR,
+    unmappedSourcePolicy = ReportingPolicy.WARN)
 public interface BookingMapper {
 
   BookingEntity toEntity(Booking booking);
