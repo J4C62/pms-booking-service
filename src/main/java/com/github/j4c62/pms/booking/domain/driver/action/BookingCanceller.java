@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.domain.driver.action;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CancelBookingRequest;
-import com.github.j4c62.pms.booking.domain.model.Booking;
+import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 
 public interface BookingCanceller {
-  Booking cancel(CancelBookingRequest cancelBookingRequest);
+  BookingOutput cancel(CancelBookingInput cancelBookingInput);
 }

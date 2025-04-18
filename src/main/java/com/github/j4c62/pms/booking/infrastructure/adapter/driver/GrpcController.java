@@ -1,12 +1,11 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver;
 
-import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCanceller;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
-import com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint.*;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper.BookingRequestMapper;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper.BookingResponseMapper;
+import com.github.j4c62.pms.booking.infrastructure.provider.grpc.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -17,24 +16,17 @@ public class GrpcController extends BookingServiceGrpc.BookingServiceImplBase {
   private final BookingCreator bookingCreator;
   private final BookingCanceller bookingCanceller;
   private final BookingUpdater bookingUpdater;
+  private final BookingRequestMapper bookingRequestMapper;
+  private final BookingResponseMapper bookingResponseMapper;
 
   @Override
   public void createBooking(
       CreateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-    var createBookingCommand =
-        new CreateBookingCommand(
-            request.getPropertyId(),
-            request.getGuestId(),
-            request.getStartDate(),
-            request.getEndDate());
 
-    var booking = bookingCreator.create(createBookingCommand);
+    var createBookingInput = bookingRequestMapper.toInput(request);
+    var createBookingOutput = bookingCreator.create(createBookingInput);
 
-    var response =
-        BookingResponse.newBuilder()
-            .setBookingId(booking.bookingId())
-            .setStatus(booking.status().name())
-            .build();
+    var response = bookingResponseMapper.toResponse(createBookingOutput);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -43,19 +35,10 @@ public class GrpcController extends BookingServiceGrpc.BookingServiceImplBase {
   public void cancelBooking(
       CancelBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    var cancelBookingCommand =
-        new CancelBookingCommand(
-            request.getBookingId(),
-            request.getReason(),
-            request.getCancelledBy(),
-            request.getCancelledAt());
+    var cancelBookingInput = bookingRequestMapper.toInput(request);
+    var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
 
-    var cancel = bookingCanceller.cancel(cancelBookingCommand);
-    var response =
-        BookingResponse.newBuilder()
-            .setBookingId(cancel.bookingId())
-            .setStatus(cancel.status().name())
-            .build();
+    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -63,19 +46,11 @@ public class GrpcController extends BookingServiceGrpc.BookingServiceImplBase {
   @Override
   public void updateBooking(
       UpdateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-    var updateBookingCommand =
-        new UpdateBookingCommand(
-            request.getBookingId(),
-            request.getNewStartDate(),
-            request.getNewEndDate(),
-            request.getUpdateReason());
 
-    var cancel = bookingUpdater.update(updateBookingCommand);
-    var response =
-        BookingResponse.newBuilder()
-            .setBookingId(cancel.bookingId())
-            .setStatus(cancel.status().name())
-            .build();
+    var updateBookingInput = bookingRequestMapper.toInput(request);
+    var updateBookingOutput = bookingUpdater.update(updateBookingInput);
+
+    var response = bookingResponseMapper.toResponse(updateBookingOutput);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }

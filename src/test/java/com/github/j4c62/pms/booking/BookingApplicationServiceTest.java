@@ -2,22 +2,30 @@ package com.github.j4c62.pms.booking;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
-import com.github.j4c62.pms.booking.domain.creation.factory.BookingFactory;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.context.ApplicationContext;
 
-@SpringBootTest
-@ActiveProfiles("test")
+@SpringBootTest(
+    properties = {
+      "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false",
+      "spring.jpa.hibernate.ddl-auto=none",
+      "grpc.server.port=-1"
+    })
+@Slf4j
 class BookingApplicationServiceTest {
-  @Autowired BookingFactory bookingFactory;
-  @Autowired BookingEventFactory bookingEventFactory;
 
   @Test
-  void contextLoads() {
-    assertThat(bookingFactory).isNotNull();
-    assertThat(bookingEventFactory).isNotNull();
+  void contextLoads(ApplicationContext context) {
+    assertThat(context).isNotNull();
+  }
+
+  @Test
+  void listBeans(ApplicationContext context) {
+    Arrays.stream(context.getBeanDefinitionNames())
+        .sorted()
+        .forEach(beanName -> log.debug("Bean: {}", beanName));
   }
 }

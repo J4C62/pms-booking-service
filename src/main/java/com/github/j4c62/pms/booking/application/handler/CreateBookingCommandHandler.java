@@ -3,10 +3,10 @@ package com.github.j4c62.pms.booking.application.handler;
 import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.creation.factory.BookingFactory;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
-import com.github.j4c62.pms.booking.domain.driver.request.CreateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
-import com.github.j4c62.pms.booking.domain.model.Booking;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class CreateBookingCommandHandler implements BookingCreator {
 
   @Transactional
   @Override
-  public Booking create(CreateBookingRequest createBookingRequest) {
-    var booking = bookingFactory.create(createBookingRequest);
+  public BookingOutput create(CreateBookingInput createBookingInput) {
+    var booking = bookingFactory.create(createBookingInput);
     var saved = bookingRepository.save(booking);
     var bookingCreated = bookingEventFactory.createBookingCreated(saved);
     eventPublisher.publishBookingCreated(bookingCreated);
-    return saved;
+    return new BookingOutput(saved.bookingId(), saved.status());
   }
 }

@@ -1,12 +1,13 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver;
 
+import static com.github.j4c62.pms.booking.domain.model.BookingStatus.CANCELLED;
 import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint.BookingServiceGrpc;
-import com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint.CancelBookingRequest;
-import com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint.CreateBookingRequest;
-import com.github.j4c62.pms.booking.infrastructure.adapter.entrypoint.UpdateBookingRequest;
+import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceGrpc;
+import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
+import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
+import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import java.time.LocalTime;
 import java.util.UUID;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -17,7 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
     properties = {
       "grpc.server.in-process-name=test",
       "grpc.server.port=-1",
-      "grpc.client.inProcess.address=in-process:test"
+      "grpc.client.inProcess.address=in-process:test",
+      "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false",
+      "spring.jpa.hibernate.ddl-auto=none",
     })
 class GrpcControllerIntegrationTest {
   @GrpcClient("inProcess")
@@ -50,7 +53,7 @@ class GrpcControllerIntegrationTest {
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
     assertThat(result.getBookingId()).isNotEmpty().isNotNull();
-    assertThat(result.getStatus()).isEqualTo(PENDING.name());
+    assertThat(result.getStatus()).isEqualTo(CANCELLED.name());
   }
 
   @Test

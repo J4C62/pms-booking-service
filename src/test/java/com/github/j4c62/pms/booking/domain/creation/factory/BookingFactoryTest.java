@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CreateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ class BookingFactoryTest {
 
   private static final BookingFactory bookingFactory = BookingFactory.createBookingFactory();
 
-  @Mock private CreateBookingRequest createRequest;
+  @Mock private CreateBookingInput createRequest;
 
   @Test
   @DisplayName("Should create a valid Booking when all fields are valid")
@@ -39,7 +39,7 @@ class BookingFactoryTest {
   @Test
   @DisplayName("Should throw NullPointerException when propertyId is null")
   void shouldThrowWhenPropertyIdIsNull() {
-    when(createRequest.propertyId()).thenReturn(null);
+    when(createRequest.getPropertyId()).thenReturn(null);
     assertThrowsNullPointer("Property ID");
   }
 
@@ -48,7 +48,7 @@ class BookingFactoryTest {
   void shouldThrowWhenPropertyIdIsBlank() {
     givenValidRequest();
     givenValidDates();
-    when(createRequest.propertyId()).thenReturn("  ");
+    when(createRequest.getPropertyId()).thenReturn("  ");
     assertThrowsIllegalArgument("Property ID");
   }
 
@@ -57,7 +57,7 @@ class BookingFactoryTest {
   @DisplayName("Should throw NullPointerException when guestId is null")
   void shouldThrowWhenGuestIdIsNull() {
     givenValidRequest();
-    when(createRequest.guestId()).thenReturn(null);
+    when(createRequest.getGuestId()).thenReturn(null);
     assertThrowsNullPointer("Guest ID");
   }
 
@@ -66,7 +66,7 @@ class BookingFactoryTest {
   void shouldThrowWhenGuestIdIsBlank() {
     givenValidRequest();
     givenValidDates();
-    when(createRequest.guestId()).thenReturn("");
+    when(createRequest.getGuestId()).thenReturn("");
     assertThrowsIllegalArgument("Guest ID");
   }
 
@@ -75,7 +75,7 @@ class BookingFactoryTest {
   @DisplayName("Should throw NullPointerException when startDate is null")
   void shouldThrowWhenStartDateIsNull() {
     givenValidRequest();
-    when(createRequest.startDate()).thenReturn(null);
+    when(createRequest.getStartDate()).thenReturn(null);
     assertThrowsNullPointer("Start Date");
   }
 
@@ -84,7 +84,7 @@ class BookingFactoryTest {
   void shouldThrowWhenStartDateIsInvalidFormat() {
     givenValidRequest();
     givenValidDates();
-    when(createRequest.startDate()).thenReturn("bad-format");
+    when(createRequest.getStartDate()).thenReturn("bad-format");
     assertThrowsIllegalArgument("Start date");
   }
 
@@ -93,8 +93,8 @@ class BookingFactoryTest {
   @DisplayName("Should throw NullPointerException when endDate is null")
   void shouldThrowWhenEndDateIsNull() {
     givenValidRequest();
-    when(createRequest.startDate()).thenReturn("2025-05-01");
-    when(createRequest.endDate()).thenReturn(null);
+    when(createRequest.getStartDate()).thenReturn("2025-05-01");
+    when(createRequest.getEndDate()).thenReturn(null);
     assertThrowsNullPointer("End Date");
   }
 
@@ -103,7 +103,7 @@ class BookingFactoryTest {
   void shouldThrowWhenEndDateIsInvalidFormat() {
     givenValidRequest();
     givenValidDates();
-    when(createRequest.endDate()).thenReturn("32/13/2030");
+    when(createRequest.getEndDate()).thenReturn("32/13/2030");
     assertThrowsIllegalArgument("End date");
   }
 
@@ -112,8 +112,8 @@ class BookingFactoryTest {
   @DisplayName("Should throw IllegalArgumentException when startDate is after endDate")
   void shouldThrowWhenStartDateIsAfterEndDate() {
     givenValidRequest();
-    when(createRequest.startDate()).thenReturn("2025-06-01");
-    when(createRequest.endDate()).thenReturn("2025-05-01");
+    when(createRequest.getStartDate()).thenReturn("2025-06-01");
+    when(createRequest.getEndDate()).thenReturn("2025-05-01");
     assertThrowsIllegalArgument("must be before end date");
   }
 
@@ -121,8 +121,8 @@ class BookingFactoryTest {
   @DisplayName("Should throw IllegalArgumentException when endDate is in the past")
   void shouldThrowWhenEndDateIsInThePast() {
     givenValidRequest();
-    when(createRequest.startDate()).thenReturn("2019-05-01");
-    when(createRequest.endDate()).thenReturn("2020-01-01");
+    when(createRequest.getStartDate()).thenReturn("2019-05-01");
+    when(createRequest.getEndDate()).thenReturn("2020-01-01");
     assertThrowsIllegalArgument("must not be in the past");
   }
 
@@ -130,13 +130,13 @@ class BookingFactoryTest {
   // Helpers
   // -------------------------
   void givenValidRequest() {
-    when(createRequest.propertyId()).thenReturn("property123");
-    when(createRequest.guestId()).thenReturn("guest456");
+    when(createRequest.getPropertyId()).thenReturn("property123");
+    when(createRequest.getGuestId()).thenReturn("guest456");
   }
 
   private void givenValidDates() {
-    when(createRequest.startDate()).thenReturn("2025-05-01");
-    when(createRequest.endDate()).thenReturn("2025-05-10");
+    when(createRequest.getStartDate()).thenReturn("2025-05-01");
+    when(createRequest.getEndDate()).thenReturn("2025-05-10");
   }
 
   void assertThrowsNullPointer(String expectedMessagePart) {

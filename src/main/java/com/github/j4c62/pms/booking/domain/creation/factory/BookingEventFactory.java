@@ -2,8 +2,8 @@ package com.github.j4c62.pms.booking.domain.creation.factory;
 
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.actualDate;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CancelBookingRequest;
-import com.github.j4c62.pms.booking.domain.driver.request.UpdateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelled;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreated;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
@@ -26,7 +26,7 @@ public class BookingEventFactory {
   }
 
   public BookingCancelled createBookingCancelled(
-      Booking booking, CancelBookingRequest cancelBookingRequest) {
+      Booking booking, CancelBookingInput cancelBookingInput) {
 
     return new BookingCancelled(
         booking.bookingId(),
@@ -34,21 +34,21 @@ public class BookingEventFactory {
         booking.guestId(),
         booking.startDate(),
         booking.endDate(),
-        cancelBookingRequest.reason(),
-        cancelBookingRequest.cancelledBy(),
-        cancelBookingRequest.cancelledAt());
+        cancelBookingInput.getReason(),
+        cancelBookingInput.getCancelledBy(),
+        cancelBookingInput.getCancelledAt());
   }
 
   public BookingUpdated createBookingUpdated(
-      Booking booking, UpdateBookingRequest updateBookingRequest) {
+      Booking booking, UpdateBookingInput updateBookingInput) {
 
     return new BookingUpdated(
         booking.bookingId(),
         booking.startDate(),
         booking.endDate(),
-        updateBookingRequest.newStartDate(),
-        updateBookingRequest.newEndDate(),
+        updateBookingInput.getNewStartDate(),
+        updateBookingInput.getNewEndDate(),
         actualDate(),
-        updateBookingRequest.updateReason());
+        updateBookingInput.getUpdateReason());
   }
 }

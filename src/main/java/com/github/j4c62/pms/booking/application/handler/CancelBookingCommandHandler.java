@@ -2,7 +2,8 @@ package com.github.j4c62.pms.booking.application.handler;
 
 import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCanceller;
-import com.github.j4c62.pms.booking.domain.driver.request.CancelBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
 import com.github.j4c62.pms.booking.domain.model.Booking;
@@ -17,19 +18,19 @@ public class CancelBookingCommandHandler implements BookingCanceller {
   private final BookingEventFactory eventFactory;
 
   @Override
-  public Booking cancel(CancelBookingRequest cancelBookingRequest) {
-    var existing = getBooking(cancelBookingRequest);
+  public BookingOutput cancel(CancelBookingInput cancelBookingInput) {
+    var existing = getBooking(cancelBookingInput);
     existing.validateCancellable();
     var cancelled = existing.cancel();
     var saved = bookingRepository.save(cancelled);
     eventPublisher.publishBookingCancelled(
-        eventFactory.createBookingCancelled(saved, cancelBookingRequest));
-    return saved;
+        eventFactory.createBookingCancelled(saved, cancelBookingInput));
+    return new BookingOutput(saved.bookingId(), saved.status());
   }
 
-  private Booking getBooking(CancelBookingRequest cancelBookingRequest) {
+  private Booking getBooking(CancelBookingInput cancelBookingInput) {
     return bookingRepository
-        .findById(cancelBookingRequest.bookingId())
+        .findById(cancelBookingInput.getBookingId())
         .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
   }
 }

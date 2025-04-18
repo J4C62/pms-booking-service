@@ -1,11 +1,10 @@
 package com.github.j4c62.pms.booking.domain.creation.factory;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CancelBookingRequest;
-import com.github.j4c62.pms.booking.domain.driver.request.UpdateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,8 +20,8 @@ class BookingEventFactoryTest {
   private final BookingEventFactory factory = BookingEventFactory.createBookingFactory();
 
   @Mock private Booking booking;
-  @Mock private CancelBookingRequest cancelRequest;
-  @Mock private UpdateBookingRequest updateRequest;
+  @Mock private CancelBookingInput cancelRequest;
+  @Mock private UpdateBookingInput updateRequest;
 
   @BeforeEach
   void setUp() {
@@ -48,9 +47,9 @@ class BookingEventFactoryTest {
   @DisplayName("Should create BookingCancelled event with booking and cancelRequest data")
   void shouldCreateBookingCancelledEvent() {
     givenValidPropertyIdAndGuestId();
-    when(cancelRequest.reason()).thenReturn("Client changed plans");
-    when(cancelRequest.cancelledBy()).thenReturn("guest");
-    when(cancelRequest.cancelledAt()).thenReturn("2025-04-01T12:00:00Z");
+    when(cancelRequest.getReason()).thenReturn("Client changed plans");
+    when(cancelRequest.getCancelledBy()).thenReturn("guest");
+    when(cancelRequest.getCancelledAt()).thenReturn("2025-04-01T12:00:00Z");
 
     var event = factory.createBookingCancelled(booking, cancelRequest);
 
@@ -65,9 +64,9 @@ class BookingEventFactoryTest {
   @Test
   @DisplayName("Should create BookingUpdated event with booking and updateRequest data")
   void shouldCreateBookingUpdatedEvent() {
-    when(updateRequest.newStartDate()).thenReturn("2025-06-01");
-    when(updateRequest.newEndDate()).thenReturn("2025-06-05");
-    when(updateRequest.updateReason()).thenReturn("Date change by guest");
+    when(updateRequest.getNewStartDate()).thenReturn("2025-06-01");
+    when(updateRequest.getNewEndDate()).thenReturn("2025-06-05");
+    when(updateRequest.getUpdateReason()).thenReturn("Date change by guest");
 
     BookingUpdated event = factory.createBookingUpdated(booking, updateRequest);
 

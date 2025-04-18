@@ -1,9 +1,10 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver;
 
-import com.github.j4c62.pms.booking.domain.creation.builder.BookingBuilder;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCanceller;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
+import com.github.j4c62.pms.booking.domain.model.BookingStatus;
 import java.util.UUID;
 import net.devh.boot.grpc.client.autoconfigure.GrpcClientAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcServerAutoConfiguration;
@@ -25,18 +26,18 @@ public class GrpcIntegrationTestConfig {
   @Bean
   public BookingCreator bookingCreator() {
     return createBookingRequest ->
-        BookingBuilder.builder().bookingId(UUID.randomUUID().toString()).build();
+        new BookingOutput(UUID.randomUUID().toString(), BookingStatus.PENDING);
   }
 
   @Bean
   public BookingCanceller bookingCanceller() {
     return cancelBookingRequest ->
-        BookingBuilder.builder().bookingId(cancelBookingRequest.bookingId()).build();
+        new BookingOutput(UUID.randomUUID().toString(), BookingStatus.CANCELLED);
   }
 
   @Bean
   public BookingUpdater bookingUpdater() {
     return updateBookingRequest ->
-        BookingBuilder.builder().bookingId(updateBookingRequest.bookingId()).build();
+        new BookingOutput(UUID.randomUUID().toString(), BookingStatus.PENDING);
   }
 }

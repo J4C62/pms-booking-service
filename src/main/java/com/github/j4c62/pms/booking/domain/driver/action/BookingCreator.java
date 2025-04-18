@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.domain.driver.action;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CreateBookingRequest;
-import com.github.j4c62.pms.booking.domain.model.Booking;
+import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 
 public interface BookingCreator {
-  Booking create(CreateBookingRequest createBookingRequest);
+  BookingOutput create(CreateBookingInput createBookingInput);
 }

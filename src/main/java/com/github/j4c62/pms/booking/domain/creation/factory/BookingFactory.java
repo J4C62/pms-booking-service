@@ -4,7 +4,7 @@ import static com.github.j4c62.pms.booking.domain.creation.builder.BookingBuilde
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.*;
 import static java.util.Objects.requireNonNull;
 
-import com.github.j4c62.pms.booking.domain.driver.request.CreateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import com.github.j4c62.pms.booking.domain.model.BookingStatus;
 import com.github.j4c62.pms.booking.domain.shared.validator.Validator;
@@ -17,44 +17,44 @@ public class BookingFactory {
     return new BookingFactory();
   }
 
-  public Booking create(CreateBookingRequest createBookingRequest) {
-    validateBookingCommand(createBookingRequest);
-    return buildBooking(createBookingRequest);
+  public Booking create(CreateBookingInput createBookingInput) {
+    validateBookingCommand(createBookingInput);
+    return buildBooking(createBookingInput);
   }
 
-  private void validateBookingCommand(CreateBookingRequest createBookingRequest) {
-    validateNonNullFields(createBookingRequest);
-    validateBookingRules(createBookingRequest);
+  private void validateBookingCommand(CreateBookingInput createBookingInput) {
+    validateNonNullFields(createBookingInput);
+    validateBookingRules(createBookingInput);
   }
 
-  private void validateNonNullFields(CreateBookingRequest createBookingRequest) {
-    requireNonNull(createBookingRequest.propertyId(), "Property ID cannot be null");
-    requireNonNull(createBookingRequest.guestId(), "Guest ID cannot be null");
-    requireNonNull(createBookingRequest.startDate(), "Start Date cannot be null");
-    requireNonNull(createBookingRequest.endDate(), "End Date cannot be null");
+  private void validateNonNullFields(CreateBookingInput createBookingInput) {
+    requireNonNull(createBookingInput.getPropertyId(), "Property ID cannot be null");
+    requireNonNull(createBookingInput.getGuestId(), "Guest ID cannot be null");
+    requireNonNull(createBookingInput.getStartDate(), "Start Date cannot be null");
+    requireNonNull(createBookingInput.getEndDate(), "End Date cannot be null");
   }
 
-  private void validateBookingRules(CreateBookingRequest createBookingRequest) {
+  private void validateBookingRules(CreateBookingInput createBookingInput) {
     List<Validator> validators =
         List.of(
-            () -> requireNotBlank(createBookingRequest.propertyId(), "Property ID"),
-            () -> requireNotBlank(createBookingRequest.guestId(), "Guest ID"),
-            () -> requireValidDate(createBookingRequest.startDate(), "Start date"),
-            () -> requireValidDate(createBookingRequest.endDate(), "End date"),
+            () -> requireNotBlank(createBookingInput.getPropertyId(), "Property ID"),
+            () -> requireNotBlank(createBookingInput.getGuestId(), "Guest ID"),
+            () -> requireValidDate(createBookingInput.getStartDate(), "Start date"),
+            () -> requireValidDate(createBookingInput.getEndDate(), "End date"),
             () ->
                 requireStartBeforeEnd(
-                    createBookingRequest.startDate(), createBookingRequest.endDate()),
-            () -> requireStartNotInPast(createBookingRequest.endDate()));
+                    createBookingInput.getStartDate(), createBookingInput.getEndDate()),
+            () -> requireStartNotInPast(createBookingInput.getEndDate()));
     validators.forEach(Validator::validate);
   }
 
-  private Booking buildBooking(CreateBookingRequest createBookingRequest) {
+  private Booking buildBooking(CreateBookingInput createBookingInput) {
     return builder()
         .bookingId(UUID.randomUUID().toString())
-        .propertyId(createBookingRequest.propertyId())
-        .guestId(createBookingRequest.guestId())
-        .startDate(createBookingRequest.startDate())
-        .endDate(createBookingRequest.endDate())
+        .propertyId(createBookingInput.getPropertyId())
+        .guestId(createBookingInput.getGuestId())
+        .startDate(createBookingInput.getStartDate())
+        .endDate(createBookingInput.getEndDate())
         .status(BookingStatus.PENDING)
         .build();
   }

@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
+import com.github.j4c62.pms.booking.domain.creation.builder.BookingBuilder;
 import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
-import com.github.j4c62.pms.booking.domain.model.Booking;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,23 +33,20 @@ class UpdateBookingCommandHandlerTest {
   void shouldUpdateBookingSuccessfully() {
     var request =
         new UpdateBookingCommand("b123", "2025-08-01", "2025-08-10", "Guest change plans");
-    var existing = mock(Booking.class);
-    var updated = mock(Booking.class);
-    var saved = mock(Booking.class);
-    var event = mock(BookingUpdated.class);
+    var existing = BookingBuilder.builder().bookingId("b123").build();
+    var updated = existing.updateDates("2025-08-01", "2025-08-10");
+    var event = BookingEventFactory.createBookingFactory().createBookingUpdated(updated, request);
+    var updateOutput = new BookingOutput(updated.bookingId(), updated.status());
 
     when(bookingRepository.findById("b123")).thenReturn(Optional.of(existing));
-    when(existing.updateDates("2025-08-01", "2025-08-10")).thenReturn(updated);
-    when(bookingRepository.save(updated)).thenReturn(saved);
-    when(eventFactory.createBookingUpdated(saved, request)).thenReturn(event);
+    when(bookingRepository.save(updated)).thenReturn(updated);
+    when(eventFactory.createBookingUpdated(updated, request)).thenReturn(event);
 
     var result = handler.update(request);
 
-    verify(existing).validateUpdatable("2025-08-01", "2025-08-10");
-    verify(existing).updateDates("2025-08-01", "2025-08-10");
     verify(bookingRepository).save(updated);
     verify(eventPublisher).publishBookingUpdated(event);
-    assertThat(result).isEqualTo(saved);
+    assertThat(result).isEqualTo(updateOutput);
   }
 
   @Test

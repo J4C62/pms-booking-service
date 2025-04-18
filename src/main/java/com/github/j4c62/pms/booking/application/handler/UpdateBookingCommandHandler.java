@@ -2,10 +2,10 @@ package com.github.j4c62.pms.booking.application.handler;
 
 import com.github.j4c62.pms.booking.domain.creation.factory.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
-import com.github.j4c62.pms.booking.domain.driver.request.UpdateBookingRequest;
+import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
-import com.github.j4c62.pms.booking.domain.model.Booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +17,23 @@ public class UpdateBookingCommandHandler implements BookingUpdater {
   private final BookingEventFactory eventFactory;
 
   @Override
-  public Booking update(UpdateBookingRequest updateBookingRequest) {
+  public BookingOutput update(UpdateBookingInput updateBookingInput) {
     var existing =
         bookingRepository
-            .findById(updateBookingRequest.bookingId())
+            .findById(updateBookingInput.getBookingId())
             .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
 
     existing.validateUpdatable(
-        updateBookingRequest.newStartDate(), updateBookingRequest.newEndDate());
+        updateBookingInput.getNewStartDate(), updateBookingInput.getNewEndDate());
 
     var updated =
         existing.updateDates(
-            updateBookingRequest.newStartDate(), updateBookingRequest.newEndDate());
+            updateBookingInput.getNewStartDate(), updateBookingInput.getNewEndDate());
     var saved = bookingRepository.save(updated);
 
     eventPublisher.publishBookingUpdated(
-        eventFactory.createBookingUpdated(saved, updateBookingRequest));
+        eventFactory.createBookingUpdated(saved, updateBookingInput));
 
-    return saved;
+    return new BookingOutput(saved.bookingId(), saved.status());
   }
 }
