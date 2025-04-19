@@ -1,14 +1,13 @@
 package com.github.j4c62.pms.booking.domain.gateway;
 
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelled;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreated;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
+import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdatedEvent;
 
 public interface BookingEventPublisher {
+  void publishBookingCreated(BookingCreatedEvent bookingCreatedEvent);
 
-  void publishBookingCreated(BookingCreated bookingCreated);
+  void publishBookingUpdated(BookingUpdatedEvent bookingUpdatedEvent);
 
-  void publishBookingUpdated(BookingUpdated bookingUpdated);
-
-  void publishBookingCancelled(BookingCancelled bookingCancelled);
+  void publishBookingCancelled(BookingCancelledEvent bookingCancelledEvent);
 }

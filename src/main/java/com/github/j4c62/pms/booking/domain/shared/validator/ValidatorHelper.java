@@ -36,10 +36,6 @@ public class ValidatorHelper {
     }
   }
 
-  public static String actualDate() {
-    return LocalDate.now().format(FORMATTER);
-  }
-
   public static LocalDate parseDate(String dateStr) {
     return LocalDate.parse(dateStr, FORMATTER);
   }

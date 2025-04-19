@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BookingCreateMapper {
 
-  @Mapping(target = "bookingId", expression = "java(java.util.UUID.randomUUID().toString())")
+  @Mapping(target = "bookingId", expression = "java(java.util.UUID.randomUUID())")
   @Mapping(target = "status", constant = "PENDING")
   Booking toBooking(CreateBookingInput createBookingInput);
 }

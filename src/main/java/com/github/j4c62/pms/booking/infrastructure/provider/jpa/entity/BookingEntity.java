@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BookingEntity {
 
-  @Id private String bookingId;
+  @Id private UUID bookingId;
   private String propertyId;
   private String guestId;
   private String startDate;

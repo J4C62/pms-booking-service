@@ -3,13 +3,15 @@ package com.github.j4c62.pms.booking.domain.model;
 import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("Unit tests for Booking domain model")
 class BookingTest {
 
-  private static final String BOOKING_ID = "b123";
-  private static final String PROPERTY_ID = "p456";
+  private static final UUID BOOKING_ID = UUID.randomUUID();
+  private static final UUID PROPERTY_ID = UUID.randomUUID();
   private static final String GUEST_ID = "g789";
   private static final String START_DATE = "2025-05-01";
   private static final String END_DATE = "2025-05-10";
@@ -19,33 +21,15 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should return true if booking is cancelled")
-  void shouldReturnTrueIfCancelled() {
+  @DisplayName("Given cancelled booking when checking if cancelled then should return true")
+  void givenCancelledBookingWhenCheckingIfCancelledThenShouldReturnTrue() {
     var booking = createBooking(BookingStatus.CANCELLED);
     assertThat(booking.isCancelled()).isTrue();
   }
 
   @Test
-  @DisplayName("Should return true if booking is pending")
-  void shouldReturnTrueIfPending() {
-    var booking = createBooking(PENDING);
-    assertThat(booking.isPending()).isTrue();
-  }
-
-  @Test
-  @DisplayName("Should cancel a pending booking")
-  void shouldCancelBooking() {
-    var booking = createBooking(PENDING);
-    var cancelled = booking.cancel();
-
-    assertThat(cancelled.status()).isEqualTo(BookingStatus.CANCELLED);
-    assertThat(cancelled.bookingId()).isEqualTo(BOOKING_ID);
-    assertThat(cancelled.startDate()).isEqualTo(START_DATE);
-  }
-
-  @Test
-  @DisplayName("Should mark a booking as pending")
-  void shouldMarkAsPending() {
+  @DisplayName("Given cancelled booking when marked as pending then should return pending booking")
+  void givenCancelledBookingWhenMarkedAsPendingThenShouldReturnPendingBooking() {
     var booking = createBooking(BookingStatus.CANCELLED);
     var pending = booking.markAsPending();
 
@@ -53,8 +37,8 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should update booking dates")
-  void shouldUpdateDates() {
+  @DisplayName("Given pending booking when updating dates then should return updated booking")
+  void givenPendingBookingWhenUpdatingDatesThenShouldReturnUpdatedBooking() {
     var booking = createBooking(PENDING);
     var updated = booking.updateDates("2025-06-01", "2025-06-10");
 
@@ -64,29 +48,8 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should throw when cancelling already cancelled booking")
-  void shouldThrowWhenCancellingCancelledBooking() {
-    var booking = createBooking(BookingStatus.CANCELLED);
-
-    assertThatThrownBy(booking::validateCancellable)
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("Cannot cancel this booking");
-  }
-
-  @Test
-  @DisplayName("Should pass validateCancellable when booking is pending")
-  void shouldPassValidateCancellable() {
-    var booking = createBooking(PENDING);
-
-    assertThat(booking.isCancelled()).isFalse();
-    assertThat(booking.isPending()).isTrue();
-
-    assertThatCode(booking::validateCancellable).doesNotThrowAnyException();
-  }
-
-  @Test
-  @DisplayName("Should throw when updating a cancelled booking")
-  void shouldThrowWhenUpdatingCancelledBooking() {
+  @DisplayName("Given cancelled booking when updating then should throw IllegalStateException")
+  void givenCancelledBookingWhenUpdatingThenShouldThrowIllegalStateException() {
     var booking = createBooking(BookingStatus.CANCELLED);
 
     assertThatThrownBy(() -> booking.validateUpdatable("2025-06-01", "2025-06-10"))
@@ -95,8 +58,9 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should throw when updating with same start date but different end date")
-  void shouldThrowWhenStartDateSameButEndDateDifferent() {
+  @DisplayName(
+      "Given booking when updating with same start date but different end date then should throw")
+  void givenBookingWhenUpdatingWithSameStartDateButDifferentEndDateThenShouldThrow() {
     var booking = createBooking(PENDING);
 
     assertThatThrownBy(() -> booking.validateUpdatable(START_DATE, "2025-06-10"))
@@ -105,8 +69,9 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should throw when updating with different start date but same end date")
-  void shouldThrowWhenStartDateDifferentButEndDateSame() {
+  @DisplayName(
+      "Given booking when updating with different start date but same end date then should throw")
+  void givenBookingWhenUpdatingWithDifferentStartDateButSameEndDateThenShouldThrow() {
     var booking = createBooking(PENDING);
 
     assertThatThrownBy(() -> booking.validateUpdatable("2025-06-01", END_DATE))
@@ -115,8 +80,9 @@ class BookingTest {
   }
 
   @Test
-  @DisplayName("Should pass validation when updating with different start and end dates")
-  void shouldPassValidationWhenDatesAreDifferent() {
+  @DisplayName(
+      "Given booking when updating with different start and end dates then should pass validation")
+  void givenBookingWhenUpdatingWithDifferentStartAndEndDatesThenShouldPassValidation() {
     var booking = createBooking(PENDING);
 
     assertThatCode(() -> booking.validateUpdatable("2025-06-01", "2025-06-10"))

@@ -4,14 +4,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
-import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
+import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdated;
-import java.util.Optional;
+import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdatedEvent;
+import com.github.j4c62.pms.booking.domain.model.BookingStatus;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,51 +20,60 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName(
+    "Unit tests for UpdateBookingCommandHandler - Verifying update logic and event publishing")
 class UpdateBookingCommandHandlerTest {
 
+  private static final UUID BOOKING_ID = UUID.randomUUID();
+  private static final String NEW_START_DATE = "2025-06-01";
+  private static final String NEW_END_DATE = "2025-06-10";
   @Mock private BookingRepository bookingRepository;
   @Mock private BookingEventPublisher eventPublisher;
   @Mock private BookingEventMapper eventFactory;
-
   @InjectMocks private UpdateBookingCommandHandler handler;
 
   @Test
-  @DisplayName("Should update booking and publish BookingUpdated event")
-  void shouldUpdateBookingSuccessfully() {
-    var request =
-        new UpdateBookingCommand("b123", "2025-08-01", "2025-08-10", "Guest change plans");
-    var existing =
-        BookingBuilder.builder()
-            .bookingId("b123")
-            .propertyId("123")
-            .guestId("guest11")
-            .startDate("2025-05-01")
-            .endDate("2025-06-01")
-            .build();
-    var updated = existing.updateDates("2025-08-01", "2025-08-10");
-    var event = new BookingUpdated("b123", "", "", "", "", "", "");
-    var updateOutput = new BookingOutput(updated.bookingId(), updated.status());
+  @DisplayName("Given valid input when updating booking then should update and publish event")
+  void givenValidInputWhenUpdatingBookingThenShouldUpdateAndPublishEvent() {
+    UpdateBookingInput input = new UpdateBookingInput();
+    input.setBookingId(BOOKING_ID);
+    input.setNewStartDate(NEW_START_DATE);
+    input.setNewEndDate(NEW_END_DATE);
 
-    when(bookingRepository.findById("b123")).thenReturn(Optional.of(existing));
-    when(bookingRepository.save(updated)).thenReturn(updated);
-    when(eventFactory.toBookingUpdated(updated, request)).thenReturn(event);
+    when(bookingRepository.updateBookingDates(BOOKING_ID, NEW_START_DATE, NEW_END_DATE))
+        .thenReturn(1);
 
-    var result = handler.update(request);
+    when(eventFactory.toBookingUpdated(input))
+        .thenReturn(
+            new BookingUpdatedEvent(
+                BOOKING_ID, "oldStart", "oldEnd", NEW_START_DATE, NEW_END_DATE));
 
-    verify(bookingRepository).save(updated);
-    verify(eventPublisher).publishBookingUpdated(event);
-    assertThat(result).isEqualTo(updateOutput);
+    BookingOutput result = handler.update(input);
+
+    assertThat(result).isNotNull();
+    assertThat(result.bookingId()).isEqualTo(BOOKING_ID);
+    assertThat(result.status()).isEqualTo(BookingStatus.PENDING);
+
+    verify(bookingRepository).updateBookingDates(BOOKING_ID, NEW_START_DATE, NEW_END_DATE);
+    verify(eventPublisher).publishBookingUpdated(any(BookingUpdatedEvent.class));
   }
 
   @Test
-  @DisplayName("Should throw if booking is not found")
-  void shouldThrowIfBookingNotFound() {
-    var request =
-        new UpdateBookingCommand("not_found", "2025-09-01", "2025-09-10", "Guest change plans");
-    when(bookingRepository.findById("not_found")).thenReturn(Optional.empty());
+  @DisplayName(
+      "Given non-existing booking when updating then should throw IllegalArgumentException")
+  void givenNonExistingBookingWhenUpdatingThenShouldThrowIllegalStateException() {
+    UpdateBookingInput input = new UpdateBookingInput();
+    input.setBookingId(BOOKING_ID);
+    input.setNewStartDate("2024-05-01");
+    input.setNewEndDate("2024-05-02");
+    input.setUpdateReason("");
+    when(bookingRepository.updateBookingDates(any(), any(), any())).thenReturn(0);
 
-    assertThatThrownBy(() -> handler.update(request))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("Booking not found");
+    assertThatThrownBy(() -> handler.update(input))
+        .isExactlyInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Booking with ID " + BOOKING_ID + " could not be updated.");
+
+    verify(bookingRepository).updateBookingDates(any(), any(), any());
+    verifyNoInteractions(eventPublisher);
   }
 }

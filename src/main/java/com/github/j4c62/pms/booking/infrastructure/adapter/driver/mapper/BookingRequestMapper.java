@@ -14,9 +14,9 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface BookingRequestMapper {
-  CreateBookingInput toInput(CreateBookingRequest request);
+  CreateBookingInput toCreateInput(CreateBookingRequest request);
 
-  CancelBookingInput toInput(CancelBookingRequest request);
+  CancelBookingInput toCancelInput(CancelBookingRequest request);
 
-  UpdateBookingInput toInput(UpdateBookingRequest request);
+  UpdateBookingInput toUpdateInput(UpdateBookingRequest request);
 }

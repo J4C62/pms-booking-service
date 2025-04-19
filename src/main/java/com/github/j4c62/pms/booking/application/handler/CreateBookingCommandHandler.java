@@ -23,9 +23,9 @@ public class CreateBookingCommandHandler implements BookingCreator {
   @Override
   public BookingOutput create(CreateBookingInput createBookingInput) {
     var booking = bookingCreateMapper.toBooking(createBookingInput);
-    var saved = bookingRepository.save(booking);
-    var bookingCreated = bookingEventMapper.toBookingCreated(saved);
+    var bookingSaved = bookingRepository.save(booking);
+    var bookingCreated = bookingEventMapper.toBookingCreated(bookingSaved);
     eventPublisher.publishBookingCreated(bookingCreated);
-    return new BookingOutput(saved.bookingId(), saved.status());
+    return new BookingOutput(bookingSaved.bookingId(), bookingSaved.status());
   }
 }

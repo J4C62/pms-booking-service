@@ -4,10 +4,11 @@ import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import com.github.j4c62.pms.booking.domain.model.BookingStatus;
+import java.util.UUID;
 
 public final class BookingBuilder {
-  private String bookingId;
-  private String propertyId;
+  private UUID bookingId;
+  private UUID propertyId;
   private String guestId;
   private String startDate;
   private String endDate;
@@ -19,12 +20,12 @@ public final class BookingBuilder {
     return new BookingBuilder();
   }
 
-  public BookingBuilder bookingId(String bookingId) {
+  public BookingBuilder bookingId(UUID bookingId) {
     this.bookingId = bookingId;
     return this;
   }
 
-  public BookingBuilder propertyId(String propertyId) {
+  public BookingBuilder propertyId(UUID propertyId) {
     this.propertyId = propertyId;
     return this;
   }

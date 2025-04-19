@@ -1,5 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cloudevents.CloudEvent;
 import java.net.URI;
@@ -16,7 +17,7 @@ public class CloudEventAssembler {
   private final ObjectMapper objectMapper;
 
   @SneakyThrows
-  public CloudEvent toCloudEvent(Object domainEvent, BookingEventType eventType) {
+  public CloudEvent toCloudEvent(Object bookingEvent, BookingEventType eventType) {
     var eventTemplate =
         io.cloudevents.core.builder.CloudEventBuilder.v1()
             .withSource(URI.create("service://booking-service"))
@@ -26,12 +27,15 @@ public class CloudEventAssembler {
         .newBuilder()
         .withId(UUID.randomUUID().toString())
         .withDataContentType("application/json")
-        .withData(toJsonString(domainEvent).getBytes(StandardCharsets.UTF_8))
+        .withData(toJsonString(bookingEvent).getBytes(StandardCharsets.UTF_8))
         .build();
   }
 
-  @SneakyThrows
   private String toJsonString(Object object) {
-    return objectMapper.writeValueAsString(object);
+    try {
+      return objectMapper.writeValueAsString(object);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -5,10 +5,11 @@ import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelp
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public record Booking(
-    String bookingId,
-    String propertyId,
+    UUID bookingId,
+    UUID propertyId,
     String guestId,
     String startDate,
     String endDate,
@@ -20,7 +21,6 @@ public record Booking(
     requireNonNull(startDate, "Start Date cannot be null");
     requireNonNull(endDate, "End Date cannot be null");
 
-    requireNotBlank(propertyId, "Property ID");
     requireNotBlank(guestId, "Guest ID");
     requireValidDate(startDate, "Start date");
     requireValidDate(endDate, "End date");
@@ -30,16 +30,6 @@ public record Booking(
 
   public boolean isCancelled() {
     return status.equals(CANCELLED);
-  }
-
-  public boolean isPending() {
-    return status.equals(PENDING);
-  }
-
-  public void validateCancellable() {
-    if (!this.isPending()) {
-      throw new IllegalStateException("Cannot cancel this booking");
-    }
   }
 
   public void validateUpdatable(String newStart, String newEnd) {
@@ -56,10 +46,6 @@ public record Booking(
 
   public Booking markAsPending() {
     return new Booking(bookingId, propertyId, guestId, startDate, endDate, PENDING);
-  }
-
-  public Booking cancel() {
-    return new Booking(bookingId, propertyId, guestId, startDate, endDate, CANCELLED);
   }
 
   public Booking updateDates(String newStartDate, String newEndDate) {

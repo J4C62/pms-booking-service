@@ -5,11 +5,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.j4c62.pms.booking.domain.model.Booking;
-import com.github.j4c62.pms.booking.domain.model.BookingStatus;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.mapper.BookingMapper;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.BookingJpaProvider;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity.BookingEntity;
-import java.util.Optional;
+import com.github.j4c62.pms.booking.shared.BookingTestFactory;
+import java.util.UUID;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,64 +20,59 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class PostgreSqlAdapterTest {
 
+  private static final UUID bookingId = UUID.randomUUID();
   @Mock private BookingJpaProvider bookingJpaProvider;
-
   @Mock private BookingMapper bookingMapper;
-
   @InjectMocks private PostgreSqlAdapter postgreSqlAdapter;
 
   @Test
-  void save() {
-    // Arrange
-    Booking booking =
-        new Booking(
-            "id123", "property1", "guest1", "2025-04-20", "2025-04-21", BookingStatus.PENDING);
-    BookingEntity entity =
-        new BookingEntity(
-            "id123", "property1", "guest1", "2025-04-20", "2025-04-21", BookingStatus.PENDING);
-    Booking savedBooking =
-        new Booking(
-            "id123", "property1", "guest1", "2025-04-20", "2025-04-21", BookingStatus.PENDING);
+  @DisplayName("Given a booking entity when saved then it should be persisted successfully")
+  void givenBookingEntityWhenSavedThenItShouldBePersistedSuccessfully() {
+    Booking booking = BookingTestFactory.createDefaultBooking(bookingId);
+    BookingEntity entity = BookingTestFactory.createDefaultBookingEntity(bookingId);
+    Booking savedBooking = BookingTestFactory.createDefaultBooking(bookingId);
 
     when(bookingMapper.toEntity(booking)).thenReturn(entity);
     when(bookingJpaProvider.save(entity)).thenReturn(entity);
     when(bookingMapper.toDomain(entity)).thenReturn(savedBooking);
 
-    // Act
     Booking result = postgreSqlAdapter.save(booking);
 
-    // Assert
     assertEquals(savedBooking, result);
     verify(bookingJpaProvider).save(entity);
   }
 
   @Test
-  void findById() {
-    // Arrange
-    BookingEntity entity =
-        new BookingEntity(
-            "id123", "property1", "guest1", "2025-04-20", "2025-04-21", BookingStatus.PENDING);
-    Booking booking =
-        new Booking(
-            "id123", "property1", "guest1", "2025-04-20", "2025-04-21", BookingStatus.PENDING);
+  @DisplayName("Given a booking ID when deleted then it should be removed from database")
+  void givenBookingIdWhenDeletedThenItShouldBeRemovedFromDatabase() {
 
-    when(bookingJpaProvider.findById("id123")).thenReturn(Optional.of(entity));
-    when(bookingMapper.toDomain(entity)).thenReturn(booking);
+    postgreSqlAdapter.deleteById(bookingId);
 
-    // Act
-    Optional<Booking> result = postgreSqlAdapter.findById("id123");
-
-    // Assert
-    assertTrue(result.isPresent());
-    assertEquals(booking, result.get());
+    verify(bookingJpaProvider).deleteById(bookingId);
   }
 
   @Test
-  void deleteById() {
-    // Act
-    postgreSqlAdapter.deleteById("id123");
+  @DisplayName("Given a booking ID when canceled then it should update the status to canceled")
+  void givenBookingIdWhenCanceledThenItShouldUpdateStatusToCanceled() {
+    when(bookingJpaProvider.cancelBooking(bookingId)).thenReturn(1);
 
-    // Assert
-    verify(bookingJpaProvider).deleteById("id123");
+    Integer affectedRows = postgreSqlAdapter.updateCanceledBooking(bookingId);
+
+    assertEquals(1, affectedRows);
+    verify(bookingJpaProvider).cancelBooking(bookingId);
+  }
+
+  @Test
+  @DisplayName(
+      "Given a booking ID and new dates when updated then it should reflect the new dates in the database")
+  void givenBookingIdAndNewDatesWhenUpdatedThenItShouldReflectTheNewDatesInTheDatabase() {
+    String newStartDate = "2025-05-01";
+    String newEndDate = "2025-05-07";
+    when(bookingJpaProvider.updateBookingDates(bookingId, newStartDate, newEndDate)).thenReturn(1);
+
+    int affectedRows = postgreSqlAdapter.updateBookingDates(bookingId, newStartDate, newEndDate);
+
+    assertEquals(1, affectedRows);
+    verify(bookingJpaProvider).updateBookingDates(bookingId, newStartDate, newEndDate);
   }
 }

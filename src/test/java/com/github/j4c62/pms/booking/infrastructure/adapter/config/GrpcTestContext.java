@@ -5,6 +5,7 @@ import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.model.BookingStatus;
+import java.util.UUID;
 import net.devh.boot.grpc.client.autoconfigure.GrpcClientAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcServerAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcServerFactoryAutoConfiguration;
@@ -21,16 +22,16 @@ import org.springframework.context.annotation.Bean;
 public class GrpcTestContext {
   @Bean
   public BookingCreator bookingCreator() {
-    return req -> new BookingOutput("test-id", BookingStatus.PENDING);
+    return req -> new BookingOutput(UUID.randomUUID(), BookingStatus.PENDING);
   }
 
   @Bean
   public BookingCanceller bookingCanceller() {
-    return req -> new BookingOutput("test-id", BookingStatus.CANCELLED);
+    return req -> new BookingOutput(UUID.randomUUID(), BookingStatus.CANCELLED);
   }
 
   @Bean
   public BookingUpdater bookingUpdater() {
-    return req -> new BookingOutput("test-id", BookingStatus.PENDING);
+    return req -> new BookingOutput(UUID.randomUUID(), BookingStatus.PENDING);
   }
 }

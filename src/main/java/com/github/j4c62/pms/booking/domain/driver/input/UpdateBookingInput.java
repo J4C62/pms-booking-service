@@ -1,16 +1,19 @@
 package com.github.j4c62.pms.booking.domain.driver.input;
 
+import java.util.UUID;
+
 public class UpdateBookingInput {
-  private String bookingId;
+  private UUID bookingId;
   private String newStartDate;
   private String newEndDate;
   private String updateReason;
+  private String updateAt;
 
-  public String getBookingId() {
+  public UUID getBookingId() {
     return bookingId;
   }
 
-  public void setBookingId(String bookingId) {
+  public void setBookingId(UUID bookingId) {
     this.bookingId = bookingId;
   }
 
@@ -36,5 +39,13 @@ public class UpdateBookingInput {
 
   public void setUpdateReason(String updateReason) {
     this.updateReason = updateReason;
+  }
+
+  public String getUpdateAt() {
+    return updateAt;
+  }
+
+  public void setUpdateAt(String updateAt) {
+    this.updateAt = updateAt;
   }
 }

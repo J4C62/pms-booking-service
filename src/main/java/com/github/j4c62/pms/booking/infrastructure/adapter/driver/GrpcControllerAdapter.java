@@ -23,7 +23,7 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   public void createBooking(
       CreateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    var createBookingInput = bookingRequestMapper.toInput(request);
+    var createBookingInput = bookingRequestMapper.toCreateInput(request);
     var createBookingOutput = bookingCreator.create(createBookingInput);
 
     var response = bookingResponseMapper.toResponse(createBookingOutput);
@@ -35,7 +35,7 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   public void cancelBooking(
       CancelBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    var cancelBookingInput = bookingRequestMapper.toInput(request);
+    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
     var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
 
     var response = bookingResponseMapper.toResponse(cancelBookingOutput);
@@ -47,7 +47,7 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   public void updateBooking(
       UpdateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    var updateBookingInput = bookingRequestMapper.toInput(request);
+    var updateBookingInput = bookingRequestMapper.toUpdateInput(request);
     var updateBookingOutput = bookingUpdater.update(updateBookingInput);
 
     var response = bookingResponseMapper.toResponse(updateBookingOutput);
