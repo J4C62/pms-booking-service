@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingCreateMapper;
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMapper;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateBookingCommandHandler implements BookingCreator {
   private final BookingCreateMapper bookingCreateMapper;
-  private final BookingEventAssembler bookingEventAssembler;
+  private final BookingEventMapper bookingEventMapper;
   private final BookingRepository bookingRepository;
   private final BookingEventPublisher eventPublisher;
 
@@ -24,7 +24,7 @@ public class CreateBookingCommandHandler implements BookingCreator {
   public BookingOutput create(CreateBookingInput createBookingInput) {
     var booking = bookingCreateMapper.toBooking(createBookingInput);
     var saved = bookingRepository.save(booking);
-    var bookingCreated = bookingEventAssembler.toBookingCreated(saved);
+    var bookingCreated = bookingEventMapper.toBookingCreated(saved);
     eventPublisher.publishBookingCreated(bookingCreated);
     return new BookingOutput(saved.bookingId(), saved.status());
   }

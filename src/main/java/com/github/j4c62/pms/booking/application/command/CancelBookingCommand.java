@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class CancelBookingCommand extends CancelBookingInput {
-  public CancelBookingCommand(
-      String bookingId, String reason, String cancelledBy, String cancelledAt) {
+  public CancelBookingCommand(String bookingId, String reason, String cancelledBy) {
     setBookingId(bookingId);
     setReason(reason);
     setCancelledBy(cancelledBy);
-    setCancelledAt(cancelledAt);
   }
 }

@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.application.creation.assembler;
+package com.github.j4c62.pms.booking.application.creation.mapper;
 
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.model.Booking;

@@ -4,7 +4,6 @@ public class CancelBookingInput {
   private String bookingId;
   private String reason;
   private String cancelledBy;
-  private String cancelledAt;
 
   public String getBookingId() {
     return bookingId;
@@ -28,13 +27,5 @@ public class CancelBookingInput {
 
   public void setCancelledBy(String cancelledBy) {
     this.cancelledBy = cancelledBy;
-  }
-
-  public String getCancelledAt() {
-    return cancelledAt;
-  }
-
-  public void setCancelledAt(String cancelledAt) {
-    this.cancelledAt = cancelledAt;
   }
 }

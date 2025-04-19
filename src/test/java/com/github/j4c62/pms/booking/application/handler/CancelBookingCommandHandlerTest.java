@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
@@ -25,14 +25,14 @@ class CancelBookingCommandHandlerTest {
 
   @Mock private BookingRepository bookingRepository;
   @Mock private BookingEventPublisher eventPublisher;
-  @Mock private BookingEventAssembler bookingEventAssembler;
+  @Mock private BookingEventMapper bookingEventMapper;
 
   @InjectMocks private CancelBookingCommandHandler handler;
 
   @Test
   @DisplayName("Should cancel a booking and publish BookingCancelled event")
   void shouldCancelBookingSuccessfully() {
-    var request = new CancelBookingCommand("b123", "guest-1", "Changed plans", "2025-06-01");
+    var request = new CancelBookingCommand("b123", "guest-1", "Changed plans");
     var existingBooking =
         BookingBuilder.builder()
             .bookingId("b123")
@@ -48,7 +48,7 @@ class CancelBookingCommandHandlerTest {
 
     when(bookingRepository.findById("b123")).thenReturn(Optional.of(existingBooking));
     when(bookingRepository.save(cancelledBooking)).thenReturn(cancelledBooking);
-    when(bookingEventAssembler.toBookingCancelled(cancelledBooking, request))
+    when(bookingEventMapper.toBookingCancelled(cancelledBooking, request))
         .thenReturn(bookingCancelledEvent);
 
     var result = handler.cancel(request);
@@ -62,7 +62,7 @@ class CancelBookingCommandHandlerTest {
   @Test
   @DisplayName("Should throw exception when booking is not found")
   void shouldThrowIfBookingNotFound() {
-    var request = new CancelBookingCommand("not-found-id", "guest", "reason", "2025-05-01");
+    var request = new CancelBookingCommand("not-found-id", "guest", "reason");
 
     when(bookingRepository.findById("not-found-id")).thenReturn(Optional.empty());
 
@@ -70,6 +70,6 @@ class CancelBookingCommandHandlerTest {
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Booking not found");
 
-    verifyNoInteractions(eventPublisher, bookingEventAssembler);
+    verifyNoInteractions(eventPublisher, bookingEventMapper);
   }
 }

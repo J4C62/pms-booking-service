@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.UpdateBookingCommand;
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
@@ -24,7 +24,7 @@ class UpdateBookingCommandHandlerTest {
 
   @Mock private BookingRepository bookingRepository;
   @Mock private BookingEventPublisher eventPublisher;
-  @Mock private BookingEventAssembler eventFactory;
+  @Mock private BookingEventMapper eventFactory;
 
   @InjectMocks private UpdateBookingCommandHandler handler;
 

@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCanceller;
 import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class CancelBookingCommandHandler implements BookingCanceller {
   private final BookingRepository bookingRepository;
   private final BookingEventPublisher eventPublisher;
-  private final BookingEventAssembler assembler;
+  private final BookingEventMapper assembler;
 
   @Override
   public BookingOutput cancel(CancelBookingInput cancelBookingInput) {

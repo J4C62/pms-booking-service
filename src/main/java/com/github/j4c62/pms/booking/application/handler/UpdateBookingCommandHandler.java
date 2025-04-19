@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
 import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class UpdateBookingCommandHandler implements BookingUpdater {
   private final BookingRepository bookingRepository;
   private final BookingEventPublisher eventPublisher;
-  private final BookingEventAssembler eventFactory;
+  private final BookingEventMapper eventFactory;
 
   @Override
   public BookingOutput update(UpdateBookingInput updateBookingInput) {

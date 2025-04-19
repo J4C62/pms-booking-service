@@ -4,9 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingCreateMapper;
-import com.github.j4c62.pms.booking.application.creation.assembler.BookingEventAssembler;
 import com.github.j4c62.pms.booking.application.creation.builder.BookingBuilder;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMapper;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
@@ -23,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CreateBookingCommandHandlerTest {
 
   @Mock private BookingCreateMapper bookingCreateMapper;
-  @Mock private BookingEventAssembler bookingEventAssembler;
+  @Mock private BookingEventMapper bookingEventMapper;
   @Mock private BookingRepository bookingRepository;
   @Mock private BookingEventPublisher eventPublisher;
 
@@ -47,7 +47,7 @@ class CreateBookingCommandHandlerTest {
 
     when(bookingCreateMapper.toBooking(request)).thenReturn(booking);
     when(bookingRepository.save(booking)).thenReturn(booking);
-    when(bookingEventAssembler.toBookingCreated(booking)).thenReturn(bookingCreatedEvent);
+    when(bookingEventMapper.toBookingCreated(booking)).thenReturn(bookingCreatedEvent);
 
     var result = handler.create(request);
 
