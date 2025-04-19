@@ -6,9 +6,11 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2181"
-
+    networks:
+      - pms-network
   kafka:
     image: confluentinc/cp-kafka:7.4.0
+    hostname: localhost
     depends_on:
       - zookeeper
     ports:
@@ -17,8 +19,22 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - pms-network
+  kafka-init:
+    image: monasca/kafka-init:latest
+    links:
+      - kafka
+    environment:
+      KAFKA_HOST: kafka:9092
+      KAFKA_CREATE_TOPICS: >
+        booking.created:1:1,booking.updated:1:1,booking.cancelled:1:1
+
+    networks:
+      - pms-network
 
   postgres:
     image: postgres:15
