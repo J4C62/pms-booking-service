@@ -1,8 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:{version}"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.google.protobuf' version '0.9.5'
+    id 'com.tngtech.jgiven.gradle-plugin' version '2.0.2'
     id 'jacoco'
 }
 
@@ -77,6 +88,8 @@ dependencies {
     testImplementation 'io.zonky.test:embedded-postgres:2.1.0'
     testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
 
+    testImplementation 'com.tngtech.jgiven:jgiven-junit5:2.0.2'
+    testImplementation 'com.tngtech.jgiven:jgiven-html5-report:2.0.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 }
