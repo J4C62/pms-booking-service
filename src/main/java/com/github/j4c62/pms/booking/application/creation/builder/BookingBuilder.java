@@ -9,7 +9,7 @@ import java.util.UUID;
 public final class BookingBuilder {
   private UUID bookingId;
   private UUID propertyId;
-  private String guestId;
+  private UUID guestId;
   private String startDate;
   private String endDate;
   private BookingStatus status = PENDING;
@@ -30,7 +30,7 @@ public final class BookingBuilder {
     return this;
   }
 
-  public BookingBuilder guestId(String guestId) {
+  public BookingBuilder guestId(UUID guestId) {
     this.guestId = guestId;
     return this;
   }

@@ -1,24 +1,26 @@
 package com.github.j4c62.pms.booking.domain.driver.input;
 
+import java.util.UUID;
+
 public class CreateBookingInput {
-  private String propertyId;
-  private String guestId;
+  private UUID propertyId;
+  private UUID guestId;
   private String startDate;
   private String endDate;
 
-  public String getPropertyId() {
+  public UUID getPropertyId() {
     return propertyId;
   }
 
-  public void setPropertyId(String propertyId) {
+  public void setPropertyId(UUID propertyId) {
     this.propertyId = propertyId;
   }
 
-  public String getGuestId() {
+  public UUID getGuestId() {
     return guestId;
   }
 
-  public void setGuestId(String guestId) {
+  public void setGuestId(UUID guestId) {
     this.guestId = guestId;
   }
 

@@ -23,8 +23,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @DisplayName("Unit tests for CreateBookingCommandHandler - Verifying creation and event publishing")
 class CreateBookingCommandHandlerTest {
 
-  private static final String PROPERTY_ID = "property-123";
-  private static final String GUEST_ID = "guest-456";
+  private static final UUID PROPERTY_ID = UUID.randomUUID();
+  private static final UUID GUEST_ID = UUID.randomUUID();
   private static final String START_DATE = "2025-07-01";
   private static final String END_DATE = "2025-07-10";
   private static final UUID BOOKING_ID = UUID.randomUUID();

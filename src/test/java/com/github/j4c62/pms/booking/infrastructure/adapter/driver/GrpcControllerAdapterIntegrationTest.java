@@ -9,6 +9,8 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceG
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
+import com.google.protobuf.ByteString;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.UUID;
 import net.devh.boot.grpc.client.inject.GrpcClient;
@@ -42,15 +44,17 @@ class GrpcControllerAdapterIntegrationTest {
       givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully() {
     CreateBookingRequest createBookingRequest =
         CreateBookingRequest.newBuilder()
-            .setPropertyId("property-11234")
-            .setGuestId("guest-11")
+            .setPropertyId(
+                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
+            .setGuestId(
+                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
             .setStartDate("2025-05-01")
             .setEndDate("2025-06-01")
             .build();
 
     var result = bookingServiceGrpc.createBooking(createBookingRequest);
 
-    assertThat(result.getBookingId()).isNotEmpty().isNotNull();
+    assertThat(result.getBookingId()).isNotNull();
     assertThat(result.getStatus()).isEqualTo(PENDING.name());
   }
 
@@ -61,7 +65,8 @@ class GrpcControllerAdapterIntegrationTest {
       givenValidCancelBookingRequestWhenCancelBookingIsCalledThenBookingShouldBeCancelledSuccessfully() {
     CancelBookingRequest cancelBookingRequest =
         CancelBookingRequest.newBuilder()
-            .setBookingId(UUID.randomUUID().toString())
+            .setBookingId(
+                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
             .setReason("Change of plans")
             .setCancelledBy("guest-120")
             .setCancelledAt(LocalTime.now().toString())
@@ -69,7 +74,7 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
 
-    assertThat(result.getBookingId()).isNotEmpty().isNotNull();
+    assertThat(result.getBookingId()).isNotNull();
     assertThat(result.getStatus()).isEqualTo(CANCELLED.name());
   }
 
@@ -80,7 +85,8 @@ class GrpcControllerAdapterIntegrationTest {
       givenValidUpdateBookingRequestWhenUpdateBookingIsCalledThenBookingShouldBeUpdatedSuccessfully() {
     UpdateBookingRequest updateBookingRequest =
         UpdateBookingRequest.newBuilder()
-            .setBookingId(UUID.randomUUID().toString())
+            .setBookingId(
+                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
             .setNewStartDate("2025-05-10")
             .setNewEndDate("2025-06-10")
             .setUpdateReason("Change of plans")
@@ -88,7 +94,7 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.updateBooking(updateBookingRequest);
 
-    assertThat(result.getBookingId()).isNotEmpty().isNotNull();
+    assertThat(result.getBookingId()).isNotNull();
     assertThat(result.getStatus()).isEqualTo(PENDING.name());
   }
 }

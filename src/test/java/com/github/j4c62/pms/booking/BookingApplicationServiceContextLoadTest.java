@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
       "grpc.server.port=-1"
     })
 @Slf4j
-class BookingApplicationServiceTest {
+class BookingApplicationServiceContextLoadTest {
 
   @Test
   void contextLoads(ApplicationContext context) {

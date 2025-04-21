@@ -10,7 +10,7 @@ import java.util.UUID;
 public record Booking(
     UUID bookingId,
     UUID propertyId,
-    String guestId,
+    UUID guestId,
     String startDate,
     String endDate,
     BookingStatus status) {
@@ -21,7 +21,6 @@ public record Booking(
     requireNonNull(startDate, "Start Date cannot be null");
     requireNonNull(endDate, "End Date cannot be null");
 
-    requireNotBlank(guestId, "Guest ID");
     requireValidDate(startDate, "Start date");
     requireValidDate(endDate, "End date");
     requireStartBeforeEnd(startDate, endDate);
@@ -46,6 +45,10 @@ public record Booking(
 
   public Booking markAsPending() {
     return new Booking(bookingId, propertyId, guestId, startDate, endDate, PENDING);
+  }
+
+  public void cancel() {
+    new Booking(bookingId, propertyId, guestId, startDate, endDate, CANCELLED);
   }
 
   public Booking updateDates(String newStartDate, String newEndDate) {

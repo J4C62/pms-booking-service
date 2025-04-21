@@ -3,6 +3,7 @@ package com.github.j4c62.pms.booking.shared;
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import com.github.j4c62.pms.booking.domain.model.BookingStatus;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity.BookingEntity;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class BookingTestFactory {
@@ -22,10 +23,11 @@ public class BookingTestFactory {
     return new Booking(
         bookingId,
         UUID.randomUUID(),
-        "guest1",
-        "2025-04-20",
-        "2025-04-21",
+        UUID.randomUUID(),
+        String.valueOf(LocalDate.now()),
+        String.valueOf(LocalDate.now().plusDays(2)),
         BookingStatus.valueOf(status));
+
   }
 
   public static BookingEntity createDefaultBookingEntity(UUID bookingId) {

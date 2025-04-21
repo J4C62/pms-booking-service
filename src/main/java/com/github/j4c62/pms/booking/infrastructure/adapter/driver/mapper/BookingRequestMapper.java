@@ -6,6 +6,8 @@ import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
+import com.google.protobuf.ByteString;
+import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -19,4 +21,8 @@ public interface BookingRequestMapper {
   CancelBookingInput toCancelInput(CancelBookingRequest request);
 
   UpdateBookingInput toUpdateInput(UpdateBookingRequest request);
+
+  default UUID map(ByteString value) {
+    return UUID.nameUUIDFromBytes(value.toByteArray());
+  }
 }

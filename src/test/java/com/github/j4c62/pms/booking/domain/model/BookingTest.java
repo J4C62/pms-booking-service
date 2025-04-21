@@ -12,7 +12,7 @@ class BookingTest {
 
   private static final UUID BOOKING_ID = UUID.randomUUID();
   private static final UUID PROPERTY_ID = UUID.randomUUID();
-  private static final String GUEST_ID = "g789";
+  private static final UUID GUEST_ID = UUID.randomUUID();
   private static final String START_DATE = "2025-05-01";
   private static final String END_DATE = "2025-05-10";
 

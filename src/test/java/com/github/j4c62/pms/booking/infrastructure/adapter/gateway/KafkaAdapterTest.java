@@ -33,7 +33,8 @@ class KafkaAdapterTest {
   void shouldPublishBookingCreatedEvent() {
     UUID bookingId = UUID.randomUUID();
     BookingCreatedEvent bookingCreatedEvent =
-        new BookingCreatedEvent(bookingId, "property1", "guest1", "2025-04-20", "2025-04-21");
+        new BookingCreatedEvent(
+            bookingId, UUID.randomUUID(), UUID.randomUUID(), "2025-04-20", "2025-04-21");
 
     kafkaAdapter.publishBookingCreated(bookingCreatedEvent);
 
