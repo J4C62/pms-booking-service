@@ -13,7 +13,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
-public class WhenUserCancelTheBooking extends Stage<WhenUserCancelTheBooking> {
+public class WhenTheUserCancelsTheBooking extends Stage<WhenTheUserCancelsTheBooking> {
 
   @ExpectedScenarioState CreateBookingInput createBookingInput;
 
@@ -27,7 +27,7 @@ public class WhenUserCancelTheBooking extends Stage<WhenUserCancelTheBooking> {
   BookingCreateMapper bookingCreateMapper = new BookingCreateMapperImpl();
   BookingEventMapper bookingEventMapper = new BookingEventMapperImpl();
 
-  public WhenUserCancelTheBooking the_booking_is_cancel() {
+  public WhenTheUserCancelsTheBooking the_booking_is_cancelled() {
     var handler =
         new CreateBookingCommandHandler(
             bookingCreateMapper, bookingEventMapper, fakeRepo, fakeEventPublisher);

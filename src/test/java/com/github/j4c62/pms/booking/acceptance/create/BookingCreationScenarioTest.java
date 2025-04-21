@@ -1,14 +1,16 @@
 package com.github.j4c62.pms.booking.acceptance.create;
 
-import com.github.j4c62.pms.booking.acceptance.create.stage.GivenAUserWantsToBook;
-import com.github.j4c62.pms.booking.acceptance.create.stage.ThenTheSystemRespondsWithSuccess;
-import com.github.j4c62.pms.booking.acceptance.create.stage.WhenTheUserMakesTheBooking;
+import com.github.j4c62.pms.booking.acceptance.create.stage.GivenAUserWantsToMakeABooking;
+import com.github.j4c62.pms.booking.acceptance.create.stage.ThenTheSystemStoresTheBookingAndNotifiesTheUser;
+import com.github.j4c62.pms.booking.acceptance.create.stage.WhenTheUserSubmitsTheBooking;
 import com.tngtech.jgiven.junit5.ScenarioTest;
 import org.junit.jupiter.api.Test;
 
 class BookingCreationScenarioTest
     extends ScenarioTest<
-        GivenAUserWantsToBook, WhenTheUserMakesTheBooking, ThenTheSystemRespondsWithSuccess> {
+        GivenAUserWantsToMakeABooking,
+        WhenTheUserSubmitsTheBooking,
+        ThenTheSystemStoresTheBookingAndNotifiesTheUser> {
 
   @Test
   void user_can_create_a_booking_successfully() {

@@ -6,11 +6,11 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class GivenAUserWantsToBook extends Stage<GivenAUserWantsToBook> {
+public class GivenAUserWantsToMakeABooking extends Stage<GivenAUserWantsToMakeABooking> {
 
   @ProvidedScenarioState CreateBookingInput createBookingInput;
 
-  public GivenAUserWantsToBook the_user_provides_valid_booking_details() {
+  public GivenAUserWantsToMakeABooking the_user_provides_valid_booking_details() {
     createBookingInput = new CreateBookingInput();
     createBookingInput.setPropertyId(UUID.randomUUID());
     createBookingInput.setGuestId(UUID.randomUUID());

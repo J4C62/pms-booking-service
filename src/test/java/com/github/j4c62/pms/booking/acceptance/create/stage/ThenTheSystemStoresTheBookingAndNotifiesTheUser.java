@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.acceptance.cancel.stage;
+package com.github.j4c62.pms.booking.acceptance.create.stage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,7 +8,8 @@ import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.InMemoryBooki
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 
-public class ThenTheSystemRespondsWithSuccess extends Stage<ThenTheSystemRespondsWithSuccess> {
+public class ThenTheSystemStoresTheBookingAndNotifiesTheUser
+    extends Stage<ThenTheSystemStoresTheBookingAndNotifiesTheUser> {
 
   @ExpectedScenarioState BookingOutput bookingOutput;
 
@@ -16,7 +17,8 @@ public class ThenTheSystemRespondsWithSuccess extends Stage<ThenTheSystemRespond
 
   @ExpectedScenarioState FakeBookingEventPublisher fakeEventPublisher;
 
-  public ThenTheSystemRespondsWithSuccess the_booking_is_update_and_user_is_notified() {
+  public ThenTheSystemStoresTheBookingAndNotifiesTheUser
+      the_booking_is_saved_and_user_is_notified() {
     assertThat(bookingOutput).isNotNull();
     assertThat(fakeRepo.getAll()).hasSize(1);
     assertThat(fakeEventPublisher.wasPublished()).isTrue();
