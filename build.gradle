@@ -102,6 +102,9 @@ protobuf {
         grpc {
             artifact = 'io.grpc:protoc-gen-grpc-java:1.71.0'
         }
+        javapgv {
+            artifact = "build.buf.protoc-gen-validate:protoc-gen-validate:1.2.1"
+        }
     }
     generateProtoTasks {
         all()*.plugins {
@@ -126,6 +129,7 @@ test {
     jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}"
 
 }
+test.finalizedBy(jgivenTestReport)
 
 
 tasks.withType(JavaCompile).configureEach {

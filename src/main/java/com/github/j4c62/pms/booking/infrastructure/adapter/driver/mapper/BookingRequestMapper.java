@@ -8,6 +8,7 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRe
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import com.google.protobuf.ByteString;
 import java.util.UUID;
+import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -23,6 +24,19 @@ public interface BookingRequestMapper {
   UpdateBookingInput toUpdateInput(UpdateBookingRequest request);
 
   default UUID map(ByteString value) {
+    if (value == null || value.isEmpty()) {
+      throw new IllegalArgumentException("UUID ByteString cannot be null or empty");
+    }
+
+    if (value.size() != 16) {
+      throw new IllegalArgumentException("Expected 16 bytes for UUID, got " + value.size());
+    }
+
     return UUID.nameUUIDFromBytes(value.toByteArray());
+  }
+
+  @Condition
+  default boolean isNotEmpty(ByteString value) {
+    return value != null && !value.isEmpty();
   }
 }

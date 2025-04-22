@@ -1,7 +1,8 @@
 #!/bin/bash
 
-propertyId=$(uuidgen)
-guestId=$(uuidgen)
+
+propertyId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
+guestId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
 
 startDate=$(date -d "2025-05-01" '+%Y-%m-%d')
 endDate=$(date -d "2025-05-07" '+%Y-%m-%d')
@@ -14,4 +15,3 @@ grpcurl -plaintext \
     \"endDate\": \"$endDate\"
   }" \
   localhost:9090 BookingService/CreateBooking
-
