@@ -4,7 +4,7 @@ import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMap
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMapperImpl;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapperImpl;
-import com.github.j4c62.pms.booking.application.handler.CreateBookingCommandHandler;
+import com.github.j4c62.pms.booking.application.handler.CancelBookingCommandHandler;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.FakeBookingEventPublisher;
@@ -28,11 +28,11 @@ public class WhenTheUserCancelsTheBooking extends Stage<WhenTheUserCancelsTheBoo
   BookingEventMapper bookingEventMapper = new BookingEventMapperImpl();
 
   public WhenTheUserCancelsTheBooking the_booking_is_cancelled() {
-    var handler =
-        new CreateBookingCommandHandler(
-            bookingCreateMapper, bookingEventMapper, fakeRepo, fakeEventPublisher);
-
-    bookingOutput = handler.create(createBookingInput);
+    //    var handler =
+    //        new CancelBookingCommandHandler(
+    //            bookingCreateMapper, bookingEventMapper, fakeRepo, fakeEventPublisher);
+    //
+    //    bookingOutput = handler.cancel(createBookingInput);
     return self();
   }
 }

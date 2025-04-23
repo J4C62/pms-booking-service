@@ -1,5 +1,8 @@
 package com.github.j4c62.pms.booking.application.command;
 
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import java.util.UUID;
 import org.springframework.context.annotation.Scope;
@@ -9,9 +12,8 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class CreateBookingCommand extends CreateBookingInput {
   public CreateBookingCommand(UUID propertyId, UUID guestId, String startDate, String endDate) {
-    setPropertyId(propertyId);
-    setGuestId(guestId);
-    setStartDate(startDate);
-    setEndDate(endDate);
+    setPropertyId(new PropertyId(propertyId));
+    setGuestId(new GuestId(guestId));
+    setBookingDates(new BookingDates(startDate, endDate));
   }
 }

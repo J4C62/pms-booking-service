@@ -1,12 +1,13 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMapper;
-import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingFactory;
+import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
+import com.github.j4c62.pms.booking.domain.aggregate.SnapshotStore;
+import com.github.j4c62.pms.booking.domain.aggregate.policy.SnapshotPolicy;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingCreator;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
-import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,27 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CreateBookingCommandHandler implements BookingCreator {
-  private final BookingCreateMapper bookingCreateMapper;
-  private final BookingEventMapper bookingEventMapper;
-  private final BookingRepository bookingRepository;
-  private final BookingEventPublisher eventPublisher;
+  private final EventStore eventStore;
+  private final SnapshotStore snapshotStore;
+  private final SnapshotPolicy snapshotPolicy;
 
   @Transactional
   @Override
-  public BookingOutput create(CreateBookingInput createBookingInput) {
-    var booking = bookingCreateMapper.toBooking(createBookingInput);
-    var bookingSaved = bookingRepository.save(booking);
-    var bookingCreated = bookingEventMapper.toBookingCreated(bookingSaved);
-    eventPublisher.publishBookingCreated(bookingCreated);
-    return new BookingOutput(bookingSaved.bookingId(), bookingSaved.status());
+  public BookingOutput create(CreateBookingInput input) {
+    BookingAggregate aggregate =
+        BookingFactory.createNew(
+            null, input.getPropertyId(), input.getGuestId(), input.getBookingDates());
+
+    eventStore.appendEvents(aggregate.bookingId(), aggregate.bookingEvents().events());
+
+    maybeSaveSnapshot(aggregate);
+
+    return new BookingOutput(aggregate.bookingId().value(), aggregate.status());
+  }
+
+  private void maybeSaveSnapshot(BookingAggregate aggregate) {
+    if (snapshotPolicy.shouldCreateSnapshot(aggregate)) {
+      snapshotStore.saveSnapshot(aggregate.toSnapshot());
+    }
   }
 }

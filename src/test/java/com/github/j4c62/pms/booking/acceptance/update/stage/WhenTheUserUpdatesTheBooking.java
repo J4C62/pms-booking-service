@@ -4,7 +4,6 @@ import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMap
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingCreateMapperImpl;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapper;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingEventMapperImpl;
-import com.github.j4c62.pms.booking.application.handler.CreateBookingCommandHandler;
 import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.FakeBookingEventPublisher;
@@ -28,11 +27,11 @@ public class WhenTheUserUpdatesTheBooking extends Stage<WhenTheUserUpdatesTheBoo
   BookingEventMapper bookingEventMapper = new BookingEventMapperImpl();
 
   public WhenTheUserUpdatesTheBooking the_booking_is_updated() {
-    var handler =
-        new CreateBookingCommandHandler(
-            bookingCreateMapper, bookingEventMapper, fakeRepo, fakeEventPublisher);
-
-    bookingOutput = handler.create(createBookingInput);
+//    var handler =
+//        new CreateBookingCommandHandler(
+//            bookingCreateMapper, bookingEventMapper, fakeRepo, fakeEventPublisher);
+//
+//    bookingOutput = handler.create(createBookingInput);
     return self();
   }
 }

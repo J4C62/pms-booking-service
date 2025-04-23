@@ -1,42 +1,35 @@
 package com.github.j4c62.pms.booking.domain.driver.input;
 
-import java.util.UUID;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 
 public class CreateBookingInput {
-  private UUID propertyId;
-  private UUID guestId;
-  private String startDate;
-  private String endDate;
+  private PropertyId propertyId;
+  private GuestId guestId;
+  private BookingDates bookingDates;
 
-  public UUID getPropertyId() {
+  public PropertyId getPropertyId() {
     return propertyId;
   }
 
-  public void setPropertyId(UUID propertyId) {
+  public void setPropertyId(PropertyId propertyId) {
     this.propertyId = propertyId;
   }
 
-  public UUID getGuestId() {
+  public GuestId getGuestId() {
     return guestId;
   }
 
-  public void setGuestId(UUID guestId) {
+  public void setGuestId(GuestId guestId) {
     this.guestId = guestId;
   }
 
-  public String getStartDate() {
-    return startDate;
+  public BookingDates getBookingDates() {
+    return bookingDates;
   }
 
-  public void setStartDate(String startDate) {
-    this.startDate = startDate;
-  }
-
-  public String getEndDate() {
-    return endDate;
-  }
-
-  public void setEndDate(String endDate) {
-    this.endDate = endDate;
+  public void setBookingDates(BookingDates bookingDates) {
+    this.bookingDates = bookingDates;
   }
 }

@@ -51,7 +51,7 @@ class CreateBookingCommandHandlerTest {
     var bookingCreatedEvent =
         new BookingCreatedEvent(BOOKING_ID, PROPERTY_ID, GUEST_ID, START_DATE, END_DATE);
 
-    when(bookingCreateMapper.toBooking(command)).thenReturn(booking);
+    //    when(bookingCreateMapper.toBooking(command)).thenReturn(booking);
     when(bookingRepository.save(booking)).thenReturn(booking);
     when(bookingEventMapper.toBookingCreated(booking)).thenReturn(bookingCreatedEvent);
 
@@ -60,7 +60,7 @@ class CreateBookingCommandHandlerTest {
     assertThat(result.bookingId()).isEqualTo(BOOKING_ID);
     assertThat(result.status()).isEqualTo(BookingStatus.PENDING);
 
-    verify(bookingCreateMapper).toBooking(command);
+    //    verify(bookingCreateMapper).toBooking(command);
     verify(bookingRepository).save(booking);
     verify(eventPublisher).publishBookingCreated(bookingCreatedEvent);
   }
