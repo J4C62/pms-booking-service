@@ -1,5 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
@@ -22,6 +23,9 @@ public class FakeBookingEventPublisher implements BookingEventPublisher {
   public void publishBookingCancelled(BookingCancelledEvent bookingCancelledEvent) {
     this.wasPublished = true;
   }
+
+  @Override
+  public void publish(BookingEvent bookingEvent) {}
 
   public boolean wasPublished() {
     return this.wasPublished;

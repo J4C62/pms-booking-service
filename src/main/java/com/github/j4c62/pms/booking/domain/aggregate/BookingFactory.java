@@ -3,22 +3,27 @@ package com.github.j4c62.pms.booking.domain.aggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingSnapshot;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
+import java.time.Instant;
 import java.util.List;
 
 public final class BookingFactory {
 
   private BookingFactory() {}
 
-  public static BookingAggregate createNew(
-      BookingId bookingId, PropertyId propertyId, GuestId guestId, BookingDates bookingDates) {
-    return new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates).applyTo(null);
+  public static BookingAggregate createNew(BookingAggregate bookingAggregate) {
+    return new BookingCreatedEvent(
+            bookingAggregate.bookingId(),
+            bookingAggregate.propertyId(),
+            bookingAggregate.guestId(),
+            bookingAggregate.bookingDates(),
+            Instant.now())
+        .applyTo(null);
   }
 
   public static BookingAggregate restoreFromSnapshotAndEvents(
       BookingSnapshot snapshot, List<BookingEvent> newEvents) {
 
-    BookingAggregate base =
+    var base =
         new BookingAggregate(
             snapshot.bookingId(),
             snapshot.propertyId(),

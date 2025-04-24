@@ -22,7 +22,6 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   @Override
   public void createBooking(
       CreateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-
     var createBookingInput = bookingRequestMapper.toCreateInput(request);
     var createBookingOutput = bookingCreator.create(createBookingInput);
 
@@ -35,11 +34,11 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   public void cancelBooking(
       CancelBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
-    var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
+    //    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
+    //    var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
 
-    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
-    responseObserver.onNext(response);
+    //    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
+    //    responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 

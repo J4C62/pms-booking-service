@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.provider.jpa;
 
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity.BookingEntity;
 import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,6 +30,6 @@ public interface BookingJpaProvider extends JpaRepository<BookingEntity, UUID> {
 """)
   int updateBookingDates(
       @Param("bookingId") UUID bookingId,
-      @Param("newStartDate") String newStartDate,
-      @Param("newEndDate") String newEndDate);
+      @Param("newStartDate") LocalDate newStartDate,
+      @Param("newEndDate") LocalDate newEndDate);
 }

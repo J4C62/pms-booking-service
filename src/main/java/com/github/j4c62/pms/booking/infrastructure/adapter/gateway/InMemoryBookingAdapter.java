@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
 import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
 import com.github.j4c62.pms.booking.domain.model.Booking;
+import java.time.LocalDate;
 import java.util.*;
 
 public class InMemoryBookingAdapter implements BookingRepository {
@@ -24,7 +25,7 @@ public class InMemoryBookingAdapter implements BookingRepository {
   }
 
   @Override
-  public int updateBookingDates(UUID bookingId, String newStartDate, String newEndDate) {
+  public int updateBookingDates(UUID bookingId, LocalDate newStartDate, LocalDate newEndDate) {
     Booking booking = bookings.get(bookingId);
     if (booking != null) {
       booking.validateUpdatable(newStartDate, newEndDate);

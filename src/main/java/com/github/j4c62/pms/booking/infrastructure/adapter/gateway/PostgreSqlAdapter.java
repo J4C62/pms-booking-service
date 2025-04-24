@@ -4,6 +4,7 @@ import com.github.j4c62.pms.booking.domain.gateway.BookingRepository;
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.mapper.BookingMapper;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.BookingJpaProvider;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -28,7 +29,7 @@ public class PostgreSqlAdapter implements BookingRepository {
   }
 
   @Override
-  public int updateBookingDates(UUID bookingId, String newStartDate, String newEndDate) {
+  public int updateBookingDates(UUID bookingId, LocalDate newStartDate, LocalDate newEndDate) {
     return bookingJpaProvider.updateBookingDates(bookingId, newStartDate, newEndDate);
   }
 

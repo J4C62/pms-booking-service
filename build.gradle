@@ -59,6 +59,8 @@ dependencies {
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
     implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.9.4'
+
 
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
     implementation 'io.grpc:grpc-protobuf:1.71.0'

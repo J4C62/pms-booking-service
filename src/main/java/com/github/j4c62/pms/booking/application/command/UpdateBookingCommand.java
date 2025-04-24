@@ -1,7 +1,8 @@
 package com.github.j4c62.pms.booking.application.command;
 
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
-import java.util.UUID;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +10,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class UpdateBookingCommand extends UpdateBookingInput {
   public UpdateBookingCommand(
-      UUID bookingId,
-      String newStartDate,
-      String newEndDate,
-      String updateReason,
-      String updateAt) {
+      BookingId bookingId, BookingDates bookingDates, String updateReason, String updateAt) {
     setBookingId(bookingId);
-    setNewStartDate(newStartDate);
-    setNewEndDate(newEndDate);
+    setBookingDates(bookingDates);
     setUpdateReason(updateReason);
     setUpdateAt(updateAt);
   }

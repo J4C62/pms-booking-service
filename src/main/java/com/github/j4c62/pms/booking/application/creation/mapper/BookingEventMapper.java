@@ -1,10 +1,8 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
 import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
-import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdatedEvent;
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import org.mapstruct.Mapper;
 
@@ -15,5 +13,4 @@ public interface BookingEventMapper {
 
   BookingCancelledEvent toBookingCancelledEvent(CancelBookingInput cancelBookingInput);
 
-  BookingUpdatedEvent toBookingUpdated(UpdateBookingInput updateBookingInput);
 }

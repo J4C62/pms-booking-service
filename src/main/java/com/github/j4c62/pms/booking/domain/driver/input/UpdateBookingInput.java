@@ -1,36 +1,28 @@
 package com.github.j4c62.pms.booking.domain.driver.input;
 
-import java.util.UUID;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 
 public class UpdateBookingInput {
-  private UUID bookingId;
-  private String newStartDate;
-  private String newEndDate;
+  private BookingId bookingId;
+  private BookingDates bookingDates;
   private String updateReason;
   private String updateAt;
 
-  public UUID getBookingId() {
+  public BookingId getBookingId() {
     return bookingId;
   }
 
-  public void setBookingId(UUID bookingId) {
+  public void setBookingId(BookingId bookingId) {
     this.bookingId = bookingId;
   }
 
-  public String getNewStartDate() {
-    return newStartDate;
+  public BookingDates getBookingDates() {
+    return bookingDates;
   }
 
-  public void setNewStartDate(String newStartDate) {
-    this.newStartDate = newStartDate;
-  }
-
-  public String getNewEndDate() {
-    return newEndDate;
-  }
-
-  public void setNewEndDate(String newEndDate) {
-    this.newEndDate = newEndDate;
+  public void setBookingDates(BookingDates bookingDates) {
+    this.bookingDates = bookingDates;
   }
 
   public String getUpdateReason() {

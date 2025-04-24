@@ -4,14 +4,15 @@ import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
 
 import com.github.j4c62.pms.booking.domain.model.Booking;
 import com.github.j4c62.pms.booking.domain.model.BookingStatus;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public final class BookingBuilder {
   private UUID bookingId;
   private UUID propertyId;
   private UUID guestId;
-  private String startDate;
-  private String endDate;
+  private LocalDate startDate;
+  private LocalDate endDate;
   private BookingStatus status = PENDING;
 
   private BookingBuilder() {}
@@ -35,12 +36,12 @@ public final class BookingBuilder {
     return this;
   }
 
-  public BookingBuilder startDate(String startDate) {
+  public BookingBuilder startDate(LocalDate startDate) {
     this.startDate = startDate;
     return this;
   }
 
-  public BookingBuilder endDate(String endDate) {
+  public BookingBuilder endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }

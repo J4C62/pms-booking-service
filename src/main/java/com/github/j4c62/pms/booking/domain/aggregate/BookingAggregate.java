@@ -1,7 +1,5 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
-import static com.github.j4c62.pms.booking.domain.model.BookingStatus.*;
-
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.domain.model.*;
@@ -21,19 +19,20 @@ public record BookingAggregate(
 
   public BookingAggregate markAsPending() {
     return withEvent(
-        new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates),
+        new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates, null),
         BookingStatus.PENDING,
         bookingDates);
   }
 
   public BookingAggregate cancel() {
     if (status.isCancelled()) throw new IllegalStateException("Booking already cancelled");
-    return withEvent(new BookingCancelledEvent(bookingId), BookingStatus.CANCELLED, bookingDates);
+    return withEvent(
+        new BookingCancelledEvent(bookingId, null), BookingStatus.CANCELLED, bookingDates);
   }
 
   public BookingAggregate updateDates(BookingDates newDates) {
     validateUpdatable(newDates);
-    return withEvent(new BookingUpdateEvent(bookingId, newDates), status, newDates);
+    return withEvent(new BookingUpdateEvent(bookingId, newDates, null), status, newDates);
   }
 
   private BookingAggregate withEvent(

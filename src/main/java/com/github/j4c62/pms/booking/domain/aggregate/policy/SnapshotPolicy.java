@@ -4,7 +4,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 
 public class SnapshotPolicy {
 
-  private static final int MAX_EVENTS_BEFORE_SNAPSHOT = 100;
+  private static final int MAX_EVENTS_BEFORE_SNAPSHOT = 1;
 
   public boolean shouldCreateSnapshot(BookingAggregate aggregate) {
 

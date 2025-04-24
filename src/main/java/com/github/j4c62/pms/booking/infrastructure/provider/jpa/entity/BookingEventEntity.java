@@ -1,15 +1,21 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import java.time.Instant;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "booking_events")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookingEventEntity {
 
   @Id
@@ -22,12 +28,11 @@ public class BookingEventEntity {
   @Column(nullable = false)
   private String eventType;
 
-  @Lob
-  @Column(nullable = false)
+  @Type(JsonBinaryType.class)
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "payload", columnDefinition = "jsonb", nullable = false)
   private String payload;
 
   @Column(nullable = false)
   private Instant occurredAt;
-
 }
-

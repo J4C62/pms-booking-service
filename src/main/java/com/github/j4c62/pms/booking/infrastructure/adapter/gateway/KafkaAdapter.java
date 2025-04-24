@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
 import static com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType.*;
 
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
@@ -39,5 +40,13 @@ public class KafkaAdapter implements BookingEventPublisher {
     kafkaTemplate.send(
         new ProducerRecord<>(
             BOOKING_CANCELLED.getEventType(), UUID.randomUUID().toString(), event));
+  }
+
+  @Override
+  public void publish(BookingEvent bookingEvent) {
+    //    var event = cloudEventAssembler.toCloudEvent(bookingEvent, BOOKING_CREATED);
+    //    kafkaTemplate.send(
+    //        new ProducerRecord<>(BOOKING_CREATED.getEventType(), UUID.randomUUID().toString(),
+    // event));
   }
 }

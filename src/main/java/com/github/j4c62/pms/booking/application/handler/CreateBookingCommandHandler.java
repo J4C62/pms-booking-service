@@ -1,7 +1,9 @@
 package com.github.j4c62.pms.booking.application.handler;
 
+import static com.github.j4c62.pms.booking.domain.aggregate.BookingFactory.createNew;
+
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapper;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
-import com.github.j4c62.pms.booking.domain.aggregate.BookingFactory;
 import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
 import com.github.j4c62.pms.booking.domain.aggregate.SnapshotStore;
 import com.github.j4c62.pms.booking.domain.aggregate.policy.SnapshotPolicy;
@@ -17,24 +19,19 @@ import org.springframework.stereotype.Service;
 public class CreateBookingCommandHandler implements BookingCreator {
   private final EventStore eventStore;
   private final SnapshotStore snapshotStore;
-  private final SnapshotPolicy snapshotPolicy;
+  private final BookingAggregateMapper bookingAggregateMapper;
 
   @Transactional
   @Override
   public BookingOutput create(CreateBookingInput input) {
-    BookingAggregate aggregate =
-        BookingFactory.createNew(
-            null, input.getPropertyId(), input.getGuestId(), input.getBookingDates());
-
+    var aggregate = createNew(bookingAggregateMapper.toAggregate(input));
     eventStore.appendEvents(aggregate.bookingId(), aggregate.bookingEvents().events());
-
     maybeSaveSnapshot(aggregate);
-
     return new BookingOutput(aggregate.bookingId().value(), aggregate.status());
   }
 
   private void maybeSaveSnapshot(BookingAggregate aggregate) {
-    if (snapshotPolicy.shouldCreateSnapshot(aggregate)) {
+    if (new SnapshotPolicy().shouldCreateSnapshot(aggregate)) {
       snapshotStore.saveSnapshot(aggregate.toSnapshot());
     }
   }

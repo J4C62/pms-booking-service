@@ -38,7 +38,7 @@ class CreateBookingCommandHandlerTest {
   @DisplayName(
       "Given valid input when creating booking then should persist and publish created event")
   void givenValidInputWhenCreatingBookingThenShouldPersistAndPublishCreatedEvent() {
-    var command = new CreateBookingCommand(PROPERTY_ID, GUEST_ID, START_DATE, END_DATE);
+    var command = new CreateBookingCommand(PROPERTY_ID, GUEST_ID, null, null);
     var booking =
         BookingBuilder.builder()
             .bookingId(BOOKING_ID)

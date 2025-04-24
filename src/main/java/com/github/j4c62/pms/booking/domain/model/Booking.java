@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.model.BookingStatus.*;
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.*;
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,8 +12,8 @@ public record Booking(
     UUID bookingId,
     UUID propertyId,
     UUID guestId,
-    String startDate,
-    String endDate,
+    LocalDate startDate,
+    LocalDate endDate,
     BookingStatus status) {
 
   public Booking {
@@ -21,8 +22,6 @@ public record Booking(
     requireNonNull(startDate, "Start Date cannot be null");
     requireNonNull(endDate, "End Date cannot be null");
 
-    requireValidDate(startDate, "Start date");
-    requireValidDate(endDate, "End date");
     requireStartBeforeEnd(startDate, endDate);
     requireStartNotInPast(startDate);
   }
@@ -31,7 +30,7 @@ public record Booking(
     return status.equals(CANCELLED);
   }
 
-  public void validateUpdatable(String newStart, String newEnd) {
+  public void validateUpdatable(LocalDate newStart, LocalDate newEnd) {
     if (this.isCancelled()) {
       throw new IllegalStateException("Cannot update a cancelled booking");
     }
@@ -51,7 +50,7 @@ public record Booking(
     new Booking(bookingId, propertyId, guestId, startDate, endDate, CANCELLED);
   }
 
-  public Booking updateDates(String newStartDate, String newEndDate) {
+  public Booking updateDates(LocalDate newStartDate, LocalDate newEndDate) {
     return new Booking(bookingId, propertyId, guestId, newStartDate, newEndDate, status);
   }
 }
