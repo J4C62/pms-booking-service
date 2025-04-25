@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.event;
 
-import static com.github.j4c62.pms.booking.domain.model.BookingStatus.PENDING;
+import static com.github.j4c62.pms.booking.domain.aggregate.BookingStatus.PENDING;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingEvents;

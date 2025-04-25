@@ -2,7 +2,6 @@ package com.github.j4c62.pms.booking.domain.aggregate;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.domain.model.*;
 import java.util.List;
 
 public record BookingAggregate(
@@ -15,13 +14,6 @@ public record BookingAggregate(
 
   public BookingAggregate {
     bookingEvents = bookingEvents == null ? new BookingEvents(List.of()) : bookingEvents;
-  }
-
-  public BookingAggregate markAsPending() {
-    return withEvent(
-        new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates, null),
-        BookingStatus.PENDING,
-        bookingDates);
   }
 
   public BookingAggregate cancel() {

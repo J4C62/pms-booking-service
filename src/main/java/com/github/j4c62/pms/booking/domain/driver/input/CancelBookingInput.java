@@ -1,18 +1,18 @@
 package com.github.j4c62.pms.booking.domain.driver.input;
 
-import java.util.UUID;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 
 public class CancelBookingInput {
-  private UUID bookingId;
+  private BookingId bookingId;
   private String reason;
   private String cancelledBy;
   private String cancelledAt;
 
-  public UUID getBookingId() {
+  public BookingId getBookingId() {
     return bookingId;
   }
 
-  public void setBookingId(UUID bookingId) {
+  public void setBookingId(BookingId bookingId) {
     this.bookingId = bookingId;
   }
 

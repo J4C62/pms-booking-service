@@ -4,6 +4,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingFactory;
 import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
 import com.github.j4c62.pms.booking.domain.aggregate.SnapshotStore;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.policy.SnapshotPolicy;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
@@ -16,35 +17,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateBookingCommandHandler
-    implements BookingUpdater {
+public class UpdateBookingCommandHandler implements BookingUpdater {
 
   private final EventStore eventStore;
   private final SnapshotStore snapshotStore;
 
+  private static BookingUpdateEvent getBookingUpdateEvent(UpdateBookingInput input) {
+    return new BookingUpdateEvent(input.getBookingId(), input.getBookingDates(), Instant.now());
+  }
 
   @Override
   public BookingOutput update(UpdateBookingInput input) {
     var events = eventStore.getEventsForBooking(input.getBookingId());
 
-    BookingAggregate aggregate = snapshotStore.getLatestSnapshot(input.getBookingId())
-        .map(snapshot -> BookingFactory.restoreFromSnapshotAndEvents(snapshot, events))
-        .orElseGet(() -> BookingFactory.replay(events));
+    var aggregate = getBookingAggregate(input, events);
 
-    BookingUpdateEvent updateEvent =
-        new BookingUpdateEvent(
-            input.getBookingId(),
-            input.getBookingDates(),
-            Instant.now());
-    BookingAggregate updated = updateEvent.applyTo(aggregate);
+    var updateEvent = getBookingUpdateEvent(input);
+    var updated = updateEvent.applyTo(aggregate);
 
     eventStore.appendEvents(input.getBookingId(), List.of(updateEvent));
 
     maybeSaveSnapshot(updated);
 
-
-
     return new BookingOutput(updated.bookingId().value(), updated.status());
+  }
+
+  private BookingAggregate getBookingAggregate(
+      UpdateBookingInput input, List<BookingEvent> events) {
+    return snapshotStore
+        .getLatestSnapshot(input.getBookingId())
+        .map(snapshot -> BookingFactory.restoreFromSnapshotAndEvents(snapshot, events))
+        .orElseGet(() -> BookingFactory.replay(events));
   }
 
   private void maybeSaveSnapshot(BookingAggregate aggregate) {

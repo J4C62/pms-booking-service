@@ -34,11 +34,11 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   public void cancelBooking(
       CancelBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
 
-    //    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
-    //    var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
+    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
+    var cancelBookingOutput = bookingCanceller.cancel(cancelBookingInput);
 
-    //    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
-    //    responseObserver.onNext(response);
+    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
+    responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 

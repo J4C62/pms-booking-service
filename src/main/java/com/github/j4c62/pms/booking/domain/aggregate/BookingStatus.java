@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.model;
+package com.github.j4c62.pms.booking.domain.aggregate;
 
 public enum BookingStatus {
   PENDING,

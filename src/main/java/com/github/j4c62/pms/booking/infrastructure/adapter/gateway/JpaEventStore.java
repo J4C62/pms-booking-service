@@ -36,14 +36,12 @@ public class JpaEventStore implements EventStore {
 
   @Override
   public List<BookingEvent> getEventsForBooking(BookingId bookingId) {
-    //    return eventRepository.findByBookingIdOrderByOccurredAtAsc(bookingId.value()).stream()
-    //        .map(
-    //            entity ->
-    //                (BookingEvent)
-    //                    jsonConverter.fromJson(entity.getPayload(),
-    // resolveType(entity.getEventType())))
-    //        .toList();
-    return null;
+    return eventRepository.findByBookingIdOrderByOccurredAtAsc(bookingId.value()).stream()
+        .map(
+            entity ->
+                (BookingEvent)
+                    jsonConverter.fromJson(entity.getPayload(), resolveType(entity.getEventType())))
+        .toList();
   }
 
   private Class<? extends BookingEvent> resolveType(String eventType) {

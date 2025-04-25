@@ -1,10 +1,8 @@
 package com.github.j4c62.pms.booking.domain.shared.validator;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class ValidatorHelper {
-  public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   private ValidatorHelper() {}
 
