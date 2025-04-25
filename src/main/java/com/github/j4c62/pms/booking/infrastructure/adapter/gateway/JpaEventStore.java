@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
-import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
+import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.converter.JsonConverter;

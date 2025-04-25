@@ -1,12 +1,12 @@
 package com.github.j4c62.pms.booking.application.handler;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
-import com.github.j4c62.pms.booking.domain.aggregate.BookingFactory;
-import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
-import com.github.j4c62.pms.booking.domain.aggregate.SnapshotStore;
+import com.github.j4c62.pms.booking.application.factory.BookingFactory;
+import com.github.j4c62.pms.booking.domain.gateway.EventStore;
+import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.policy.SnapshotPolicy;
+import com.github.j4c62.pms.booking.domain.aggregate.snapshot.policy.SnapshotPolicy;
 import com.github.j4c62.pms.booking.domain.driver.action.BookingUpdater;
 import com.github.j4c62.pms.booking.domain.driver.input.UpdateBookingInput;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;

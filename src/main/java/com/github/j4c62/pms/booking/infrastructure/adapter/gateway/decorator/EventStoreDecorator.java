@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.decorator;
 
-import com.github.j4c62.pms.booking.domain.aggregate.EventStore;
+import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;

@@ -1,8 +1,10 @@
-package com.github.j4c62.pms.booking.domain.aggregate;
+package com.github.j4c62.pms.booking.application.factory;
 
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingSnapshot;
+import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
 import java.time.Instant;
 import java.util.List;
 

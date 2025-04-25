@@ -1,5 +1,6 @@
-package com.github.j4c62.pms.booking.domain.aggregate;
+package com.github.j4c62.pms.booking.domain.aggregate.vo;
 
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import java.util.List;
 import java.util.stream.Stream;
