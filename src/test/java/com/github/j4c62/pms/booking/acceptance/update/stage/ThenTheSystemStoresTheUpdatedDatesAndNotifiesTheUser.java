@@ -1,0 +1,34 @@
+package com.github.j4c62.pms.booking.acceptance.update.stage;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
+import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.fake.FakeBookingEventPublisher;
+import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.fake.decorator.InMemoryEventStoreDecorator;
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import java.util.UUID;
+
+public class ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser
+    extends Stage<ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser> {
+
+  @ExpectedScenarioState BookingOutput bookingOutput;
+
+  @ExpectedScenarioState InMemoryEventStoreDecorator eventStore;
+  @ExpectedScenarioState UUID bookingId;
+  @ExpectedScenarioState FakeBookingEventPublisher fakeBookingEventPublisher;
+
+  public ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser
+      the_updated_dates_are_saved_and_the_user_is_notified() {
+    assertThat(bookingOutput).isNotNull();
+    assertThat(eventStore.getEventsForBooking(new BookingId(bookingId)))
+        .hasSizeGreaterThan(0)
+        .anyMatch(BookingUpdateEvent.class::isInstance);
+    assertThat(fakeBookingEventPublisher.getPublishedEvents())
+        .isNotEmpty()
+        .anyMatch(BookingUpdateEvent.class::isInstance);
+    return self();
+  }
+}
