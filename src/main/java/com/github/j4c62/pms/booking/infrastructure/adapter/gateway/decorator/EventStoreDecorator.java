@@ -1,10 +1,9 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.decorator;
 
-import com.github.j4c62.pms.booking.domain.gateway.EventStore;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
-import java.util.List;
+import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -17,13 +16,13 @@ public class EventStoreDecorator implements EventStore {
   private final BookingEventPublisher bookingEventPublisher;
 
   @Override
-  public void appendEvents(BookingId bookingId, List<BookingEvent> events) {
+  public void appendEvents(BookingId bookingId, BookingEvents events) {
     delegate.appendEvents(bookingId, events);
-    events.forEach(bookingEventPublisher::publish);
+    events.events().forEach(bookingEventPublisher::publish);
   }
 
   @Override
-  public List<BookingEvent> getEventsForBooking(BookingId bookingId) {
+  public BookingEvents getEventsForBooking(BookingId bookingId) {
     return delegate.getEventsForBooking(bookingId);
   }
 }

@@ -1,6 +1,7 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.converter.JsonConverter;
@@ -19,9 +20,9 @@ public class JpaEventStore implements EventStore {
   private final JsonConverter jsonConverter;
 
   @Override
-  public void appendEvents(BookingId bookingId, List<BookingEvent> events) {
+  public void appendEvents(BookingId bookingId, BookingEvents events) {
     List<BookingEventEntity> entities =
-        events.stream()
+        events.events().stream()
             .map(
                 event ->
                     new BookingEventEntity(
@@ -35,13 +36,19 @@ public class JpaEventStore implements EventStore {
   }
 
   @Override
-  public List<BookingEvent> getEventsForBooking(BookingId bookingId) {
-    return eventRepository.findByBookingIdOrderByOccurredAtAsc(bookingId.value()).stream()
-        .map(
-            entity ->
-                (BookingEvent)
-                    jsonConverter.fromJson(entity.getPayload(), resolveType(entity.getEventType())))
-        .toList();
+  public BookingEvents getEventsForBooking(BookingId bookingId) {
+    var entities = eventRepository.findByBookingIdOrderByOccurredAtAsc(bookingId.value());
+
+    var events =
+        entities.stream()
+            .map(
+                entity ->
+                    (BookingEvent)
+                        jsonConverter.fromJson(
+                            entity.getPayload(), resolveType(entity.getEventType())))
+            .toList();
+
+    return new BookingEvents(events);
   }
 
   private Class<? extends BookingEvent> resolveType(String eventType) {

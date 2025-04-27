@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.fake;
+package com.github.j4c62.pms.booking.shared.fake;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;

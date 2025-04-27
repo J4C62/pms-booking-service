@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.fake;
+package com.github.j4c62.pms.booking.shared.fake;
 
 import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
@@ -6,7 +6,9 @@ import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Component;
 
+@Component
 public class InMemorySnapshotStore implements SnapshotStore {
 
   private final Map<BookingId, BookingSnapshot> store = new ConcurrentHashMap<>();
