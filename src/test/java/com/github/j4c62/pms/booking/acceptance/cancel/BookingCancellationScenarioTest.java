@@ -3,14 +3,33 @@ package com.github.j4c62.pms.booking.acceptance.cancel;
 import com.github.j4c62.pms.booking.acceptance.cancel.stage.GivenAUserWantsToCancelABooking;
 import com.github.j4c62.pms.booking.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
 import com.github.j4c62.pms.booking.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
-import com.tngtech.jgiven.junit5.ScenarioTest;
+import com.github.j4c62.pms.booking.shared.config.Fixture;
+import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@Import(Fixture.class)
 class BookingCancellationScenarioTest
-    extends ScenarioTest<
+    extends SpringScenarioTest<
         GivenAUserWantsToCancelABooking,
         WhenTheUserCancelsTheBooking,
         ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified> {
+
+  @ProvidedScenarioState @Autowired Fixture.SetUpFixture setUpFixture;
+
+  @AfterEach
+  void tearDown() {
+    setUpFixture.inMemoryEventStore().restoreState();
+
+    ((FakeBookingEventPublisher) setUpFixture.bookingEventPublisher()).clear();
+  }
 
   @Test
   void user_can_cancel_a_booking_successfully() {

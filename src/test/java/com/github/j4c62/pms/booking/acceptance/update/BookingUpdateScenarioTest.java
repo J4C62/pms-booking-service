@@ -3,14 +3,32 @@ package com.github.j4c62.pms.booking.acceptance.update;
 import com.github.j4c62.pms.booking.acceptance.update.stage.GivenAUserWantsToModifyBookingDates;
 import com.github.j4c62.pms.booking.acceptance.update.stage.ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.acceptance.update.stage.WhenTheUserUpdatesTheBooking;
-import com.tngtech.jgiven.junit5.ScenarioTest;
+import com.github.j4c62.pms.booking.shared.config.Fixture;
+import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@Import(Fixture.class)
 class BookingUpdateScenarioTest
-    extends ScenarioTest<
+    extends SpringScenarioTest<
         GivenAUserWantsToModifyBookingDates,
         WhenTheUserUpdatesTheBooking,
         ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser> {
+  @ProvidedScenarioState @Autowired Fixture.SetUpFixture setUpFixture;
+
+  @AfterEach
+  void tearDown() {
+    setUpFixture.inMemoryEventStore().restoreState();
+
+    ((FakeBookingEventPublisher) setUpFixture.bookingEventPublisher()).clear();
+  }
 
   @Test
   void user_can_update_a_booking_successfully() {

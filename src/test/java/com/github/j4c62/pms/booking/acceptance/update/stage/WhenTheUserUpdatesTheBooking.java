@@ -1,37 +1,22 @@
 package com.github.j4c62.pms.booking.acceptance.update.stage;
 
-import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapperImpl;
-import com.github.j4c62.pms.booking.application.facade.BookingFacade;
-import com.github.j4c62.pms.booking.application.facade.SnapshotFacade;
-import com.github.j4c62.pms.booking.application.handler.BookingCommandHandler;
-import com.github.j4c62.pms.booking.domain.aggregate.snapshot.policy.SnapshotPolicy;
-import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.Command;
+import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
-import com.github.j4c62.pms.booking.shared.fake.InMemorySnapshotStore;
-import com.github.j4c62.pms.booking.shared.fake.decorator.InMemoryEventStoreDecorator;
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.integration.spring.JGivenStage;
 
-public class WhenTheUserUpdatesTheBooking extends Stage<WhenTheUserUpdatesTheBooking> {
-  @ExpectedScenarioState UpdateBookingDatesCommand updateBookingInput;
-
+@JGivenStage
+public class WhenTheUserUpdatesTheBooking {
+  @ExpectedScenarioState Command bookingCommand;
+  @ExpectedScenarioState BookingHandler bookingCommandHandler;
   @ProvidedScenarioState BookingOutput bookingOutput;
-
-  @ExpectedScenarioState InMemoryEventStoreDecorator eventStore;
-  @ExpectedScenarioState InMemorySnapshotStore snapshotStore;
-  @ExpectedScenarioState SnapshotPolicy snapshotPolicy;
 
   public WhenTheUserUpdatesTheBooking the_booking_is_updated() {
 
-    var handler =
-        new BookingCommandHandler(
-            new BookingFacade(
-                eventStore,
-                new SnapshotFacade(snapshotStore, snapshotPolicy),
-                new BookingAggregateMapperImpl()));
-    bookingOutput = handler.handle(updateBookingInput);
+    bookingOutput = bookingCommandHandler.handle(bookingCommand);
 
-    return self();
+    return this;
   }
 }

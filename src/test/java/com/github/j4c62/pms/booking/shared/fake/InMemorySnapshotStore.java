@@ -6,9 +6,7 @@ import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.stereotype.Component;
 
-@Component
 public class InMemorySnapshotStore implements SnapshotStore {
 
   private final Map<BookingId, BookingSnapshot> store = new ConcurrentHashMap<>();

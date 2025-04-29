@@ -15,19 +15,23 @@ import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
+import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.fake.InMemoryEventStore;
 import com.github.j4c62.pms.booking.shared.fake.InMemorySnapshotStore;
 import com.github.j4c62.pms.booking.shared.fake.decorator.InMemoryEventStoreDecorator;
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
+import com.tngtech.jgiven.integration.spring.JGivenStage;
 import java.time.LocalDate;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 
-@Configuration
+@TestConfiguration
 @Import({
   BookingCommandHandler.class,
   BookingFacade.class,
@@ -39,6 +43,8 @@ import org.springframework.stereotype.Component;
   SnapshotFacade.class,
   FakeBookingEventPublisher.class
 })
+@EnableJGiven
+@ComponentScan(includeFilters = @ComponentScan.Filter(JGivenStage.class))
 public class Fixture {
 
   @Bean
@@ -82,6 +88,11 @@ public class Fixture {
     var cancelReason = "Emergency";
     var cancelledBy = "guest-1234";
     return new CancelBookingCommand(bookingId, cancelReason, cancelledBy);
+  }
+
+  @Bean
+  public SnapshotStore snapshotStore() {
+    return new InMemorySnapshotStore();
   }
 
   @Component
