@@ -4,7 +4,7 @@ import com.github.j4c62.pms.booking.acceptance.create.stage.GivenAUserWantsToMak
 import com.github.j4c62.pms.booking.acceptance.create.stage.ThenTheSystemStoresTheBookingAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.acceptance.create.stage.WhenTheUserSubmitsTheBooking;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
-import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
+import com.github.j4c62.pms.booking.shared.utils.BookingTestUtils;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
 import org.junit.jupiter.api.AfterEach;
@@ -26,10 +26,9 @@ class BookingCreationScenarioTest
 
   @AfterEach
   void tearDown() {
-    setUpFixture.inMemoryEventStore().restoreState();
-
-    ((FakeBookingEventPublisher) setUpFixture.bookingEventPublisher()).clear();
+    BookingTestUtils.reset(setUpFixture);
   }
+
 
   @Test
   void user_can_create_a_booking_successfully() {

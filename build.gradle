@@ -33,8 +33,10 @@ jacocoTestReport {
         classDirectories.setFrom(
                 files(classDirectories.files.collect {
                     fileTree(dir: it, exclude: [
-                            'com/github/j4c62/pms/booking/infrastructure/provider/grpc/**',
-                            '**/BookingApplicationService.class'
+                            '**/grpc/**',
+                            '**/*MapperImpl.class',
+                            '**/io/envoyproxy/pgv/validate/**',
+                            "**/BookingApplicationService.class"
                     ])
                 })
         )

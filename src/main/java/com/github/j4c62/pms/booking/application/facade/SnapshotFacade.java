@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.facade;
 
-import com.github.j4c62.pms.booking.application.creation.factory.BookingFactory;
+import com.github.j4c62.pms.booking.application.creation.restorer.BookingAggregateRestorer;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.snapshot.policy.SnapshotPolicy;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
@@ -14,13 +14,14 @@ import org.springframework.stereotype.Component;
 public class SnapshotFacade {
   private final SnapshotStore snapshotStore;
   private final SnapshotPolicy snapshotPolicy;
+  private final BookingAggregateRestorer bookingAggregateRestorer;
 
   public BookingAggregate restoreBookingAggregate(
       UpdateBookingCommand specificInput, BookingEvents events) {
     return snapshotStore
         .getLatestSnapshot(specificInput.bookingId())
-        .map(snapshot -> BookingFactory.restoreFromSnapshotAndEvents(snapshot, events))
-        .orElseGet(() -> BookingFactory.replay(events));
+        .map(snapshot -> bookingAggregateRestorer.restoreFromSnapshotAndEvents(snapshot, events))
+        .orElseGet(() -> bookingAggregateRestorer.replay(events));
   }
 
   public void maybeSaveSnapshot(BookingAggregate aggregate) {

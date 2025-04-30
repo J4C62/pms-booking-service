@@ -17,7 +17,7 @@ public class GivenAUserWantsToModifyBookingDates {
 
   public GivenAUserWantsToModifyBookingDates
       the_user_provides_valid_new_booking_dates_and_booking_exits() {
-    bookingCommand = setUpFixture.createBookingCommand();
+    bookingCommand = setUpFixture.updateBookingCommand();
     bookingCommandHandler = setUpFixture.bookingCommandHandler();
     return this;
   }

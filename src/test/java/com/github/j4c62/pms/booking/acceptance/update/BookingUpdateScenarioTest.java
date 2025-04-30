@@ -4,7 +4,7 @@ import com.github.j4c62.pms.booking.acceptance.update.stage.GivenAUserWantsToMod
 import com.github.j4c62.pms.booking.acceptance.update.stage.ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.acceptance.update.stage.WhenTheUserUpdatesTheBooking;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
-import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
+import com.github.j4c62.pms.booking.shared.utils.BookingTestUtils;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
 import org.junit.jupiter.api.AfterEach;
@@ -25,10 +25,9 @@ class BookingUpdateScenarioTest
 
   @AfterEach
   void tearDown() {
-    setUpFixture.inMemoryEventStore().restoreState();
-
-    ((FakeBookingEventPublisher) setUpFixture.bookingEventPublisher()).clear();
+    BookingTestUtils.reset(setUpFixture);
   }
+
 
   @Test
   void user_can_update_a_booking_successfully() {

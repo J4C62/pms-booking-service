@@ -4,7 +4,7 @@ import com.github.j4c62.pms.booking.acceptance.cancel.stage.GivenAUserWantsToCan
 import com.github.j4c62.pms.booking.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
 import com.github.j4c62.pms.booking.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
-import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
+import com.github.j4c62.pms.booking.shared.utils.BookingTestUtils;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
 import org.junit.jupiter.api.AfterEach;
@@ -26,9 +26,7 @@ class BookingCancellationScenarioTest
 
   @AfterEach
   void tearDown() {
-    setUpFixture.inMemoryEventStore().restoreState();
-
-    ((FakeBookingEventPublisher) setUpFixture.bookingEventPublisher()).clear();
+    BookingTestUtils.reset(setUpFixture);
   }
 
   @Test

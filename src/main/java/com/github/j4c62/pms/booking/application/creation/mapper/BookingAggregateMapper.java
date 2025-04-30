@@ -1,12 +1,16 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
-import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
+import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
+import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
+import java.util.List;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", imports = UUID.class)
+@Mapper(
+    componentModel = "spring",
+    imports = {UUID.class, List.class})
 public interface BookingAggregateMapper {
 
   @Mapping(target = "bookingId", expression = "java(new BookingId(UUID.randomUUID()))")
@@ -14,4 +18,8 @@ public interface BookingAggregateMapper {
   @Mapping(target = "bookingEvents", ignore = true)
   @Mapping(target = "updateDates", ignore = true)
   BookingAggregate toAggregate(CreateBookingCommand input);
+
+  @Mapping(target = "bookingEvents", expression = "java(new BookingEvents(List.of()))")
+  @Mapping(target = "updateDates", ignore = true)
+  BookingAggregate toAggregate(BookingSnapshot bookingSnapshot);
 }

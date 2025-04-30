@@ -2,19 +2,22 @@ package com.github.j4c62.pms.booking.shared.config;
 
 import com.github.j4c62.pms.booking.application.config.ApplicationConfig;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapperImpl;
-import com.github.j4c62.pms.booking.application.facade.BookingFacade;
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapperImpl;
+import com.github.j4c62.pms.booking.application.creation.restorer.BookingAggregateRestorer;
 import com.github.j4c62.pms.booking.application.facade.SnapshotFacade;
 import com.github.j4c62.pms.booking.application.handler.BookingCommandHandler;
+import com.github.j4c62.pms.booking.application.strategy.BookingCommandExecutor;
+import com.github.j4c62.pms.booking.application.strategy.CreateBookingCommandStrategy;
+import com.github.j4c62.pms.booking.application.strategy.UpdateBookingCommandStrategy;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
-import com.github.j4c62.pms.booking.domain.driver.command.CancelBookingCommand;
+import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
-import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
+import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
+import com.github.j4c62.pms.booking.application.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.fake.InMemoryEventStore;
@@ -34,14 +37,18 @@ import org.springframework.stereotype.Component;
 @TestConfiguration
 @Import({
   BookingCommandHandler.class,
-  BookingFacade.class,
+  BookingAggregateRestorer.class,
   InMemoryEventStoreDecorator.class,
   InMemoryEventStore.class,
   InMemorySnapshotStore.class,
   ApplicationConfig.class,
   BookingAggregateMapperImpl.class,
   SnapshotFacade.class,
-  FakeBookingEventPublisher.class
+  FakeBookingEventPublisher.class,
+  BookingCommandExecutor.class,
+  CreateBookingCommandStrategy.class,
+  UpdateBookingCommandStrategy.class,
+  BookingOutputMapperImpl.class
 })
 @EnableJGiven
 @ComponentScan(includeFilters = @ComponentScan.Filter(JGivenStage.class))
@@ -97,7 +104,7 @@ public class Fixture {
 
   @Component
   public record SetUpFixture(
-      BookingEventPublisher bookingEventPublisher,
+      FakeBookingEventPublisher bookingEventPublisher,
       BookingHandler bookingCommandHandler,
       @Qualifier("givenValidCreateBookingCommand") Command createBookingCommand,
       @Qualifier("givenValidUpdateBookingDatesCommand") Command updateBookingCommand,

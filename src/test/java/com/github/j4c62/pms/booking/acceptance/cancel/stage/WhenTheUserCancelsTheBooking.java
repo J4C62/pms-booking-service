@@ -3,6 +3,7 @@ package com.github.j4c62.pms.booking.acceptance.cancel.stage;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
+import com.github.j4c62.pms.booking.shared.utils.BookingTestUtils;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
@@ -14,7 +15,7 @@ public class WhenTheUserCancelsTheBooking {
   @ProvidedScenarioState BookingOutput bookingOutput;
 
   public WhenTheUserCancelsTheBooking the_booking_is_cancelled() {
-    bookingOutput = bookingCommandHandler.handle(bookingCommand);
+    bookingOutput = BookingTestUtils.when(bookingCommandHandler, bookingCommand);
     return this;
   }
 }

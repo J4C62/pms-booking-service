@@ -6,6 +6,7 @@ import com.google.protobuf.ByteString;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(
@@ -13,6 +14,8 @@ import org.mapstruct.ReportingPolicy;
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface BookingResponseMapper {
+
+  @Mapping(target = "bookingId", expression = "java(map(output.bookingId().value()))")
   BookingResponse toResponse(BookingOutput output);
 
   default ByteString map(UUID value) {

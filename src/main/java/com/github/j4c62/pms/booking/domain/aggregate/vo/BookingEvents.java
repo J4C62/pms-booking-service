@@ -16,8 +16,9 @@ public record BookingEvents(List<BookingEvent> events) {
   }
 
   public BookingAggregate replayOn(BookingAggregate base) {
-    BookingAggregate result = base;
-    for (BookingEvent event : events) {
+    if (events.isEmpty()) throw new IllegalArgumentException("Event stream is empty");
+    var result = base;
+    for (var event : events) {
       result = event.applyTo(result);
     }
     return result;
