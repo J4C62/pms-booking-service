@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.domain.shared.validator;
 
 import java.time.LocalDate;
 
-public class ValidatorHelper {
+public final class ValidatorHelper {
 
   private ValidatorHelper() {}
 

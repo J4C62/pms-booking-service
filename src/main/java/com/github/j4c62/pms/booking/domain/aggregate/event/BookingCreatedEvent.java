@@ -1,5 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.event;
 
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
@@ -19,9 +20,10 @@ public record BookingCreatedEvent(
     BookingDates bookingDates,
     Instant occurredAt)
     implements BookingEvent {
+
   @Override
   public BookingAggregate applyTo(BookingAggregate aggregate) {
-    return new BookingAggregate(
+    return createBookingAggregate(
         bookingId, propertyId, guestId, bookingDates, PENDING, new BookingEvents(List.of(this)));
   }
 
