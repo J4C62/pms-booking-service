@@ -10,4 +10,3 @@ import org.springframework.stereotype.Repository;
 public interface BookingSnapshotJpaRepository extends JpaRepository<BookingSnapshotEntity, Long> {
   Optional<BookingSnapshotEntity> findTopByBookingIdOrderByCreatedAtDesc(UUID bookingId);
 }
-

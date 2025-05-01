@@ -1,11 +1,11 @@
 package com.github.j4c62.pms.booking.application.strategy;
 
+import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapper;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
 import com.github.j4c62.pms.booking.application.facade.SnapshotFacade;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
-import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,9 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingSnapshotFactory.createBookingSnapshot;
+
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
@@ -19,18 +23,17 @@ public record BookingAggregate(
 
   public BookingAggregate cancel() {
     if (status.isCancelled()) throw new IllegalStateException("Booking already cancelled");
-    return withEvent(
-        new BookingCancelledEvent(bookingId, null), BookingStatus.CANCELLED, bookingDates);
+    return withEvent(createBookingEvent(bookingId, null), BookingStatus.CANCELLED, bookingDates);
   }
 
   public BookingAggregate updateDates(BookingDates newDates) {
     validateUpdatable(newDates);
-    return withEvent(new BookingUpdateEvent(bookingId, newDates, null), status, newDates);
+    return withEvent(createBookingEvent(bookingId, newDates), status, newDates);
   }
 
   private BookingAggregate withEvent(
       BookingEvent event, BookingStatus newStatus, BookingDates newDates) {
-    return new BookingAggregate(
+    return createBookingAggregate(
         bookingId, propertyId, guestId, newDates, newStatus, bookingEvents.append(event));
   }
 
@@ -41,6 +44,6 @@ public record BookingAggregate(
   }
 
   public BookingSnapshot toSnapshot() {
-    return new BookingSnapshot(bookingId, propertyId, guestId, bookingDates, status);
+    return createBookingSnapshot(bookingId, propertyId, guestId, bookingDates, status);
   }
 }

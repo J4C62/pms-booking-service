@@ -14,8 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @Import(Fixture.class)
 class BookingAggregateRestorerTest {
-  @Autowired
-  BookingAggregateRestorer bookingAggregateRestorer;
+  @Autowired BookingAggregateRestorer bookingAggregateRestorer;
 
   @Test
   void givenANullEventsThenThrowNullPointerException() {

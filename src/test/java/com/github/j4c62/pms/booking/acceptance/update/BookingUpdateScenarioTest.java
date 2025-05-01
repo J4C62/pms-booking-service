@@ -28,7 +28,6 @@ class BookingUpdateScenarioTest
     BookingTestUtils.reset(setUpFixture);
   }
 
-
   @Test
   void user_can_update_a_booking_successfully() {
     given().the_user_provides_valid_new_booking_dates_and_booking_exits();

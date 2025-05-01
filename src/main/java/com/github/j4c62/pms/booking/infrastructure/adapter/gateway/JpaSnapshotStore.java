@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
-import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.gateway.SnapshotStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.converter.JsonConverter;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.BookingSnapshotJpaRepository;
 import com.github.j4c62.pms.booking.infrastructure.provider.jpa.entity.BookingSnapshotEntity;

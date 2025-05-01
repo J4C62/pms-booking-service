@@ -29,7 +29,6 @@ class BookingCreationScenarioTest
     BookingTestUtils.reset(setUpFixture);
   }
 
-
   @Test
   void user_can_create_a_booking_successfully() {
     given().the_user_provides_valid_booking_details();

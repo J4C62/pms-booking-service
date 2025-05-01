@@ -7,7 +7,6 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
 import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
 
