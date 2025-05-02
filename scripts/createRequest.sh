@@ -4,8 +4,8 @@
 propertyId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
 guestId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
 
-startDate=$(date -d "2025-05-01" '+%Y-%m-%d')
-endDate=$(date -d "2025-05-07" '+%Y-%m-%d')
+startDate=$(date -d "2025-06-01" '+%Y-%m-%d')
+endDate=$(date -d "2025-06-07" '+%Y-%m-%d')
 
 grpcurl -plaintext \
   -d "{

@@ -7,6 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
+import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -104,6 +105,6 @@ class BookingAggregateTest {
     var propertyId = new PropertyId(UUID.randomUUID());
     var guestId = new GuestId(UUID.randomUUID());
     var bookingDates = new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2));
-    return new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates, Instant.now());
+    return new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates, Instant.now(), BookingEventType.BOOKING_CREATED);
   }
 }

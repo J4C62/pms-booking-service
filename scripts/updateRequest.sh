@@ -2,7 +2,7 @@
 
  grpcurl -plaintext \
   -d '{
-    "bookingId": "e283414a-18f5-4cd8-8bd3-759c83493dfe",
+    "bookingId": "29f3f72e-c26a-48c6-80db-f1b6a23bb2aa",
     "newStartDate": "2025-06-10",
     "newEndDate": "2025-06-12",
     "updateReason": "I can not go"

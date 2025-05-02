@@ -18,17 +18,13 @@ public record BookingCreatedEvent(
     PropertyId propertyId,
     GuestId guestId,
     BookingDates bookingDates,
-    Instant occurredAt)
+    Instant occurredAt,
+    BookingEventType eventType)
     implements BookingEvent {
 
   @Override
   public BookingAggregate applyTo(BookingAggregate aggregate) {
     return createBookingAggregate(
         bookingId, propertyId, guestId, bookingDates, PENDING, new BookingEvents(List.of(this)));
-  }
-
-  @Override
-  public BookingEventType eventType() {
-    return BookingEventType.BOOKING_CREATED;
   }
 }

@@ -6,6 +6,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
+import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
 import java.time.Instant;
 
 public record CreateBookingCommand(
@@ -18,7 +19,8 @@ public record CreateBookingCommand(
             aggregate.propertyId(),
             aggregate.guestId(),
             aggregate.bookingDates(),
-            Instant.now())
+            Instant.now(),
+            BookingEventType.BOOKING_CREATED)
         .applyTo(null);
   }
 }

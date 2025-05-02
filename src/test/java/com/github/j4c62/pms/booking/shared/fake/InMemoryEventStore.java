@@ -3,10 +3,10 @@ package com.github.j4c62.pms.booking.shared.fake;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.domain.gateway.EventStore;
+import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class InMemoryEventStore implements EventStore {
 
@@ -31,27 +31,11 @@ public class InMemoryEventStore implements EventStore {
             propertyId,
             guestId,
             new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2)),
-            Instant.now());
+            Instant.now(),
+            BookingEventType.BOOKING_CREATED);
 
     var events = new BookingEvents(List.of(event));
     EVENTS_MAP.put(bookingId, events);
-  }
-
-  @Override
-  public void appendEvents(BookingId bookingId, BookingEvents events) {
-    PREVIOUS_EVENTS_MAP.put(
-        bookingId, EVENTS_MAP.getOrDefault(bookingId, new BookingEvents(List.of())));
-
-    EVENTS_MAP.compute(
-        bookingId,
-        (id, existingEvents) -> {
-          if (existingEvents == null) {
-            return new BookingEvents(List.copyOf(events.events()));
-          } else {
-            return new BookingEvents(
-                Stream.concat(existingEvents.events().stream(), events.events().stream()).toList());
-          }
-        });
   }
 
   @Override

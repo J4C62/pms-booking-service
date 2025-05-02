@@ -33,7 +33,6 @@ public class UpdateBookingCommandStrategy implements BookingCommandStrategy<Upda
   }
 
   private void saveEvent(BookingAggregate aggregate) {
-    eventStore.appendEvents(aggregate.bookingId(), aggregate.bookingEvents());
     snapshotFacade.maybeSaveSnapshot(aggregate);
   }
 }

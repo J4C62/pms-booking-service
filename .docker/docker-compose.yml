@@ -31,7 +31,7 @@ services:
     environment:
       KAFKA_HOST: kafka:9092
       KAFKA_CREATE_TOPICS: >
-        booking.created:1:1,booking.updated:1:1,booking.cancelled:1:1
+        booking.created:1:1,booking.updated:1:1,booking.cancelled:1:1,booking-events:1:1
 
     networks:
       - pms-network

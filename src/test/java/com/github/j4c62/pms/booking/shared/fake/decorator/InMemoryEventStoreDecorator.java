@@ -15,12 +15,6 @@ public class InMemoryEventStoreDecorator implements EventStore {
   private final BookingEventPublisher bookingEventPublisher;
 
   @Override
-  public void appendEvents(BookingId bookingId, BookingEvents events) {
-    delegate.appendEvents(bookingId, events);
-    events.events().forEach(bookingEventPublisher::publish);
-  }
-
-  @Override
   public BookingEvents getEventsForBooking(BookingId bookingId) {
     return delegate.getEventsForBooking(bookingId);
   }
