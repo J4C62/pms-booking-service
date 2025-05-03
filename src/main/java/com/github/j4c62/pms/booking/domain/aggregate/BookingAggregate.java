@@ -2,10 +2,8 @@ package com.github.j4c62.pms.booking.domain.aggregate;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingSnapshotFactory.createBookingSnapshot;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
-import com.github.j4c62.pms.booking.domain.aggregate.snapshot.BookingSnapshot;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import java.util.List;
 
@@ -19,6 +17,29 @@ public record BookingAggregate(
 
   public BookingAggregate {
     bookingEvents = bookingEvents == null ? new BookingEvents(List.of()) : bookingEvents;
+  }
+
+  public static BookingAggregate restoreFrom(BookingEvents events) {
+    if (events.events().isEmpty()) {
+      throw new IllegalArgumentException("Cannot restore aggregate from empty event list");
+    }
+
+    BookingEvent firstEvent = events.events().getFirst();
+    if (!(firstEvent instanceof BookingCreatedEvent created)) {
+      throw new IllegalStateException("First event must be BookingCreatedEvent");
+    }
+
+    BookingAggregate base =
+        createBookingAggregate(
+            created.bookingId(),
+            created.propertyId(),
+            created.guestId(),
+            created.bookingDates(),
+            BookingStatus.PENDING,
+            new BookingEvents(List.of(created)));
+
+    var tailEvents = new BookingEvents(events.events().subList(1, events.events().size()));
+    return tailEvents.replayOn(base);
   }
 
   public BookingAggregate cancel() {
@@ -41,9 +62,5 @@ public record BookingAggregate(
     if (status.isCancelled()) throw new IllegalStateException("Cannot update a cancelled booking");
     if (bookingDates.isSameAs(newDates))
       throw new IllegalStateException("No changes detected in booking dates");
-  }
-
-  public BookingSnapshot toSnapshot() {
-    return createBookingSnapshot(bookingId, propertyId, guestId, bookingDates, status);
   }
 }

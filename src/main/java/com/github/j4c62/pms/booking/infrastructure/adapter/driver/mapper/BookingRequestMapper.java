@@ -66,8 +66,4 @@ public interface BookingRequestMapper {
   default BookingDates mapBookingDates(String startDate, String endDate) {
     return new BookingDates(toLocalDate(startDate), toLocalDate(endDate));
   }
-
-  default BookingDates mapBookingDates(LocalDate startDate, LocalDate endDate) {
-    return new BookingDates(startDate, endDate);
-  }
 }

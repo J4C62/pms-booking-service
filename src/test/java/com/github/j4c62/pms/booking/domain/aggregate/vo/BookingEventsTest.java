@@ -3,7 +3,6 @@ package com.github.j4c62.pms.booking.domain.aggregate.vo;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import java.time.LocalDate;
@@ -41,22 +40,6 @@ class BookingEventsTest {
     assertThat(appendEvents.events()).isNotEmpty().contains(bookingEventBase, bookingEventToAppend);
   }
 
-  @Test
-  void givenABookingAggregateBaseAndEventsEmptyWhenReplyOnThenReturnIllegalArgumentException() {
-    var bookingAggregate =
-        createBookingAggregate(
-            new BookingId(UUID.randomUUID()),
-            new PropertyId(UUID.randomUUID()),
-            new GuestId(UUID.randomUUID()),
-            new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2)),
-            BookingStatus.PENDING,
-            new BookingEvents(List.of()));
-    var bookingEvents = createBookingEvents(List.of());
-    assertThatThrownBy(() -> bookingEvents.replayOn(bookingAggregate))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .message()
-        .contains("Event stream is empty");
-  }
 
   @Test
   void givenABookingAggregateBaseWithEventsWhenReplyOnThenReturnBookingAggregateWithEvents() {

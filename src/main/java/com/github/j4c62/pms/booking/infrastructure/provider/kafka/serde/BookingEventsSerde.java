@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
+package com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

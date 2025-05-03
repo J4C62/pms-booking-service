@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -63,13 +63,6 @@ class BookingAggregateTest {
     assertThat(bookingAggregate.bookingEvents().events()).isEmpty();
   }
 
-  @Test
-  void givenABookingAggregateWhenToSnapshotThenCreateASnapshot() {
-    var bookingSnapshot = getBookingAggregate(BookingStatus.PENDING, new BookingEvents(List.of()));
-    var snapshot = bookingSnapshot.toSnapshot();
-
-    assertThat(snapshot).isNotNull();
-  }
 
   @Test
   void givenANoNullBookingEventsWhenCreateBookingAggregateThenValueOfBookingEventsIsNotEmpty() {

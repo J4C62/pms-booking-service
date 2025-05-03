@@ -3,7 +3,7 @@ package com.github.j4c62.pms.booking.shared.fake;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.domain.gateway.EventStore;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;

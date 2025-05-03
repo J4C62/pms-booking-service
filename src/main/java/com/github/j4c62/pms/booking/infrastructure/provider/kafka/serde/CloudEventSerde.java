@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
+package com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde;
 
 import io.cloudevents.CloudEvent;
 import io.cloudevents.kafka.CloudEventDeserializer;

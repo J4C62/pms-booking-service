@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import io.cloudevents.CloudEvent;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;

@@ -26,11 +26,11 @@ public class CreateBookingCommandStrategy implements BookingCommandStrategy<Crea
   public BookingOutput execute(CreateBookingCommand command) {
     var aggregate = bookingAggregateMapper.toAggregate(command);
     var updated = command.applyTo(aggregate);
-    saveEvent(updated);
+    publishEvent(updated);
     return bookingOutputMapper.toBookingOutput(updated);
   }
 
-  private void saveEvent(BookingAggregate aggregate) {
+  private void publishEvent(BookingAggregate aggregate) {
     aggregate.bookingEvents().events().forEach(bookingEventPublisher::publish);
   }
 }

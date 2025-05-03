@@ -11,6 +11,10 @@ public class GrpcExceptionAdvice {
   public Status handleInvalidArgument(IllegalArgumentException e) {
     return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
   }
+  @GrpcExceptionHandler(IllegalStateException.class)
+  public Status handleInvalidArgument(IllegalStateException e) {
+    return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
+  }
 
   @GrpcExceptionHandler(NullPointerException.class)
   public Status handleNullPointerArgument(NullPointerException e) {
