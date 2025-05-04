@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggr
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
@@ -16,6 +17,40 @@ import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
 class BookingAggregateTest {
+
+  @Test
+  void
+      givenAEmptyBookingEventsWhenRestoreBookingAggregateFromEventsThenThrowIllegalArgumentException() {
+    var bookingEvents = new BookingEvents(List.of());
+    thenMethodThrowsIllegalArgumentException(
+        () -> BookingAggregate.restoreFrom(bookingEvents),
+        "Cannot restore aggregate from empty event list");
+  }
+
+  @Test
+  void
+      givenABookingEventsAndTheFirstOneIsNotABookingCreatedEventWhenRestoreBookingAggregateThenThrowsIllegalStateException() {
+    var cancelledEvent =
+        new BookingCancelledEvent(
+            new BookingId(UUID.randomUUID()), Instant.now(), BookingEventType.BOOKING_CANCELLED);
+    var bookingEvents = new BookingEvents(List.of(cancelledEvent));
+    thenMethodThrows(
+        () -> BookingAggregate.restoreFrom(bookingEvents),
+        "First event must be BookingCreatedEvent");
+  }
+
+  @Test
+  void givenABookingEventValidWhenRestoreBookingAggregateThenReturnBookingAggregate() {
+    var bookingEvent = getBookingEvent();
+    var bookingEvents = new BookingEvents(List.of(bookingEvent));
+
+    var bookingAggregate = BookingAggregate.restoreFrom(bookingEvents);
+
+    assertThat(bookingAggregate.bookingEvents().events())
+        .isNotEmpty()
+        .element(0)
+        .isEqualTo(bookingEvent);
+  }
 
   @Test
   void givenACancelledBookingAggregateWhenCancelThenThrowIllegalStateException() {
@@ -63,7 +98,6 @@ class BookingAggregateTest {
     assertThat(bookingAggregate.bookingEvents().events()).isEmpty();
   }
 
-
   @Test
   void givenANoNullBookingEventsWhenCreateBookingAggregateThenValueOfBookingEventsIsNotEmpty() {
     var bookingEvent = getBookingEvent();
@@ -84,6 +118,14 @@ class BookingAggregateTest {
         .contains(message);
   }
 
+  private void thenMethodThrowsIllegalArgumentException(
+      ThrowableAssert.ThrowingCallable method, String message) {
+    assertThatThrownBy(method)
+        .isInstanceOf(IllegalArgumentException.class)
+        .message()
+        .contains(message);
+  }
+
   private BookingAggregate getBookingAggregate(BookingStatus status, BookingEvents bookingEvents) {
     var bookingId = new BookingId(UUID.randomUUID());
     var propertyId = new PropertyId(UUID.randomUUID());
@@ -98,6 +140,12 @@ class BookingAggregateTest {
     var propertyId = new PropertyId(UUID.randomUUID());
     var guestId = new GuestId(UUID.randomUUID());
     var bookingDates = new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2));
-    return new BookingCreatedEvent(bookingId, propertyId, guestId, bookingDates, Instant.now(), BookingEventType.BOOKING_CREATED);
+    return new BookingCreatedEvent(
+        bookingId,
+        propertyId,
+        guestId,
+        bookingDates,
+        Instant.now(),
+        BookingEventType.BOOKING_CREATED);
   }
 }

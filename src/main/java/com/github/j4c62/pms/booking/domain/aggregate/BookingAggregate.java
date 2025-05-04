@@ -24,12 +24,12 @@ public record BookingAggregate(
       throw new IllegalArgumentException("Cannot restore aggregate from empty event list");
     }
 
-    BookingEvent firstEvent = events.events().getFirst();
+    var firstEvent = events.events().getFirst();
     if (!(firstEvent instanceof BookingCreatedEvent created)) {
       throw new IllegalStateException("First event must be BookingCreatedEvent");
     }
 
-    BookingAggregate base =
+    var base =
         createBookingAggregate(
             created.bookingId(),
             created.propertyId(),

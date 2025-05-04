@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class CreateBookingCommandStrategy implements BookingCommandStrategy<CreateBookingCommand> {
-  private final BookingEventPublisher bookingEventPublisher;
   private final BookingAggregateMapper bookingAggregateMapper;
+
+  private final BookingEventPublisher bookingEventPublisher;
   private final BookingOutputMapper bookingOutputMapper;
 
   @Override

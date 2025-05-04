@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UpdateBookingCommandStrategy implements BookingCommandStrategy<UpdateBookingCommand> {
-
   private final EventStore eventStore;
-  private final BookingOutputMapper bookingOutputMapper;
+
   private final BookingEventPublisher bookingEventPublisher;
+  private final BookingOutputMapper bookingOutputMapper;
 
   @Override
   public boolean supports(Command command) {
