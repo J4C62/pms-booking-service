@@ -1,64 +1,41 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
-import io.cloudevents.CloudEvent;
-import java.net.URI;
-import java.util.UUID;
-import org.junit.jupiter.api.DisplayName;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(MockitoExtension.class)
-@DisplayName(
-    "Unit tests for CloudEventAssembler - Verifying CloudEvent conversion and exception handling")
+@ExtendWith(SpringExtension.class)
+@Import({CloudEventAssembler.class, JacksonAutoConfiguration.class})
 class CloudEventAssemblerTest {
-  @Mock private ObjectMapper objectMapper;
+  @MockitoBean private ObjectMapper objectMapper;
 
-  @InjectMocks private CloudEventAssembler cloudEventAssembler;
-
-  @Test
-  @DisplayName(
-      "Given BookingCreatedEvent when converted to CloudEvent then should be a valid CloudEvent")
-  void givenBookingCreatedEventWhenConvertedToCloudEventThenShouldBeValidCloudEvent()
-      throws JsonProcessingException {
-    UUID bookingId = UUID.randomUUID();
-    BookingCreatedEvent bookingCreatedEvent =
-        new BookingCreatedEvent(
-            bookingId, UUID.randomUUID(), UUID.randomUUID(), "2025-04-20", "2025-04-21");
-
-    String expectedJson = "{\"bookingId\":\"" + bookingId + "\"}";
-    when(objectMapper.writeValueAsString(bookingCreatedEvent)).thenReturn(expectedJson);
-
-    CloudEvent cloudEvent =
-        cloudEventAssembler.toCloudEvent(bookingCreatedEvent, BookingEventType.BOOKING_CREATED);
-
-    assertThat(cloudEvent).isNotNull();
-    assertThat(cloudEvent.getSource()).isEqualTo(URI.create("service://booking-service"));
-    assertThat(cloudEvent.getType()).isEqualTo(BookingEventType.BOOKING_CREATED.getEventType());
-    assertThat(cloudEvent.getDataContentType()).isEqualTo("application/json");
-    assertThat(cloudEvent.getData()).isNotNull();
-  }
+  @Autowired private CloudEventAssembler cloudEventAssembler;
 
   @Test
-  @DisplayName(
-      "Given ObjectMapper throws an exception when serializing BookingCreatedEvent when converted to CloudEvent then should throw RuntimeException")
-  void
-      givenObjectMapperThrowsExceptionWhenSerializingBookingCreatedEventThenShouldThrowRuntimeException()
-          throws JsonProcessingException {
-    when(objectMapper.writeValueAsString(any())).thenThrow(new JsonProcessingException("Boom!") {});
+  void givenABookingEventThatCannotSerializedWhenToCloudEventThenThrowIllegalStateException(
+      @Autowired CloudEventAssembler cloudEventAssembler) throws JsonProcessingException {
 
-    assertThatThrownBy(
-            () -> cloudEventAssembler.toCloudEvent("booking", BookingEventType.BOOKING_CREATED))
-        .isInstanceOf(RuntimeException.class)
-        .hasMessageContaining("Boom!");
+    BookingEvent mockEvent = mock(BookingCreatedEvent.class);
+    when(mockEvent.eventType()).thenReturn(BookingEventType.BOOKING_CREATED);
+
+    when(objectMapper.writeValueAsString(mockEvent))
+        .thenThrow(new JsonProcessingException("boom") {});
+
+    assertThatThrownBy(() -> cloudEventAssembler.toCloudEvent(mockEvent))
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Failed to serialize");
   }
 }

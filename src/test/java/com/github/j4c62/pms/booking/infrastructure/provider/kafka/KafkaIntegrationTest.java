@@ -7,7 +7,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
     partitions = 1,
     topics = {"booking.created", "booking.updated", "booking.cancelled"})
 @Import(KafkaAutoConfiguration.class)
-@DisplayName("Kafka Integration Tests")
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
   @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
@@ -46,7 +44,6 @@ class KafkaIntegrationTest {
   }
 
   @Test
-  @DisplayName("Should produce and consume messages on booking topics")
   void givenBookingEventsWhenProducedThenShouldBeConsumedSuccessfully() {
 
     kafkaTemplate.send("booking.created", "ping");

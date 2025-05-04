@@ -1,6 +1,9 @@
 spring:
   kafka:
     bootstrap-servers: 127.0.0.1:9092
+    streams:
+      bootstrap-servers: 127.0.0.1:9092
+      application-id: booking-service
     consumer:
       group-id: hotel-pms-group
     producer:

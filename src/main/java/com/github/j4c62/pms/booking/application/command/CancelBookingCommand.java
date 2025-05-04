@@ -1,16 +1,18 @@
 package com.github.j4c62.pms.booking.application.command;
 
-import com.github.j4c62.pms.booking.domain.driver.input.CancelBookingInput;
-import java.util.UUID;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingCommand;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
+import java.time.Instant;
 
-@Component
-@Scope("prototype")
-public class CancelBookingCommand extends CancelBookingInput {
-  public CancelBookingCommand(UUID bookingId, String reason, String cancelledBy) {
-    setBookingId(bookingId);
-    setReason(reason);
-    setCancelledBy(cancelledBy);
+public record CancelBookingCommand(BookingId bookingId, String reason, String cancelledBy)
+    implements UpdateBookingCommand {
+  @Override
+  public BookingAggregate applyTo(BookingAggregate aggregate) {
+    var event =
+        new BookingCancelledEvent(bookingId, Instant.now(), BookingEventType.BOOKING_CANCELLED);
+    return event.applyTo(aggregate);
   }
 }

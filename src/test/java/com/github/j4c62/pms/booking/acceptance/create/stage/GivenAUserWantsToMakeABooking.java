@@ -1,22 +1,21 @@
 package com.github.j4c62.pms.booking.acceptance.create.stage;
 
-import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
-import com.tngtech.jgiven.Stage;
+import com.github.j4c62.pms.booking.domain.driver.command.Command;
+import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
+import com.github.j4c62.pms.booking.shared.config.Fixture;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import java.time.LocalDate;
-import java.util.UUID;
+import com.tngtech.jgiven.integration.spring.JGivenStage;
 
-public class GivenAUserWantsToMakeABooking extends Stage<GivenAUserWantsToMakeABooking> {
-
-  @ProvidedScenarioState CreateBookingInput createBookingInput;
+@JGivenStage
+public class GivenAUserWantsToMakeABooking {
+  @ExpectedScenarioState Fixture.SetUpFixture setUpFixture;
+  @ProvidedScenarioState Command bookingCommand;
+  @ProvidedScenarioState BookingHandler bookingCommandHandler;
 
   public GivenAUserWantsToMakeABooking the_user_provides_valid_booking_details() {
-    createBookingInput = new CreateBookingInput();
-    createBookingInput.setPropertyId(UUID.randomUUID());
-    createBookingInput.setGuestId(UUID.randomUUID());
-    createBookingInput.setStartDate(String.valueOf(LocalDate.now()));
-    createBookingInput.setEndDate(String.valueOf(LocalDate.now().plusDays(2)));
-
-    return self();
+    bookingCommand = setUpFixture.createBookingCommand();
+    bookingCommandHandler = setUpFixture.bookingCommandHandler();
+    return this;
   }
 }

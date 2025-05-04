@@ -1,17 +1,26 @@
 package com.github.j4c62.pms.booking.application.command;
 
-import com.github.j4c62.pms.booking.domain.driver.input.CreateBookingInput;
-import java.util.UUID;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.driver.command.Command;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
+import java.time.Instant;
 
-@Component
-@Scope("prototype")
-public class CreateBookingCommand extends CreateBookingInput {
-  public CreateBookingCommand(UUID propertyId, UUID guestId, String startDate, String endDate) {
-    setPropertyId(propertyId);
-    setGuestId(guestId);
-    setStartDate(startDate);
-    setEndDate(endDate);
+public record CreateBookingCommand(
+    PropertyId propertyId, GuestId guestId, BookingDates bookingDates) implements Command {
+
+  @Override
+  public BookingAggregate applyTo(BookingAggregate aggregate) {
+    return new BookingCreatedEvent(
+            aggregate.bookingId(),
+            aggregate.propertyId(),
+            aggregate.guestId(),
+            aggregate.bookingDates(),
+            Instant.now(),
+            BookingEventType.BOOKING_CREATED)
+        .applyTo(null);
   }
 }

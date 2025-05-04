@@ -1,72 +1,76 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.gateway.event.BookingUpdatedEvent;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.BookingEventType;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.CloudEventAssembler;
-import java.util.UUID;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
+import com.github.j4c62.pms.booking.infrastructure.config.FixtureKafka;
+import io.cloudevents.CloudEvent;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(MockitoExtension.class)
-@DisplayName("Unit tests for KafkaAdapter - Verifying the publishing of booking events")
+@ExtendWith(SpringExtension.class)
+@Import(FixtureKafka.class)
 class KafkaAdapterTest {
-  @Mock private CloudEventAssembler cloudEventAssembler;
-  @Mock private KafkaTemplate<String, Object> kafkaTemplate;
-  @InjectMocks private KafkaAdapter kafkaAdapter;
-  @Captor private ArgumentCaptor<ProducerRecord<String, Object>> producerRecordCaptor;
+  @Autowired private ObjectMapper objectMapper;
+  @Autowired private FixtureKafka.SetUpFixtureIntegration setUpFixtureIntegration;
+  @MockitoBean private KafkaTemplate<String, Object> kafkaTemplate;
+  @Captor private ArgumentCaptor<ProducerRecord<String, Object>> recordCaptor;
 
   @Test
-  @DisplayName("Should publish BookingCreated event to Kafka")
-  void shouldPublishBookingCreatedEvent() {
-    UUID bookingId = UUID.randomUUID();
-    BookingCreatedEvent bookingCreatedEvent =
-        new BookingCreatedEvent(
-            bookingId, UUID.randomUUID(), UUID.randomUUID(), "2025-04-20", "2025-04-21");
+  void givenACreatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+    var bookingEvent = setUpFixtureIntegration.createBookingEvent();
 
-    kafkaAdapter.publishBookingCreated(bookingCreatedEvent);
+    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
 
-    verify(kafkaTemplate).send(producerRecordCaptor.capture());
-    var value = producerRecordCaptor.getValue();
-    assertThat(value.topic()).isEqualTo(BookingEventType.BOOKING_CREATED.getEventType());
+    thenEventIsPublished(bookingEvent, BookingEventType.BOOKING_CREATED, BookingCreatedEvent.class);
   }
 
   @Test
-  @DisplayName("Should publish BookingUpdated event to Kafka")
-  void shouldPublishBookingUpdatedEvent() {
-    UUID bookingId = UUID.randomUUID();
-    BookingUpdatedEvent bookingUpdatedEvent =
-        new BookingUpdatedEvent(bookingId, "2025-03-20", "2025-03-22", "2025-04-20", "2025-04-21");
+  void givenAUpdatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+    var bookingEvent = setUpFixtureIntegration.updateBookingEvent();
 
-    kafkaAdapter.publishBookingUpdated(bookingUpdatedEvent);
+    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
 
-    verify(kafkaTemplate).send(producerRecordCaptor.capture());
-    var value = producerRecordCaptor.getValue();
-    assertThat(value.topic()).isEqualTo(BookingEventType.BOOKING_UPDATED.getEventType());
+    thenEventIsPublished(bookingEvent, BookingEventType.BOOKING_UPDATED, BookingUpdateEvent.class);
   }
 
   @Test
-  @DisplayName("Should publish BookingCancelled event to Kafka")
-  void shouldPublishBookingCancelledEvent() {
-    UUID bookingId = UUID.randomUUID();
-    BookingCancelledEvent bookingCancelledEvent =
-        new BookingCancelledEvent(bookingId, "CancelledBy", "Reason", "2025-05-10");
+  void givenACancelledEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+    var bookingEvent = setUpFixtureIntegration.cancelBookingEvent();
 
-    kafkaAdapter.publishBookingCancelled(bookingCancelledEvent);
-    verify(kafkaTemplate).send(producerRecordCaptor.capture());
-    var value = producerRecordCaptor.getValue();
-    assertThat(value.topic()).isEqualTo(BookingEventType.BOOKING_CANCELLED.getEventType());
+    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
+
+    thenEventIsPublished(
+        bookingEvent, BookingEventType.BOOKING_CANCELLED, BookingCancelledEvent.class);
+  }
+
+  private <T extends BookingEvent> void thenEventIsPublished(
+      BookingEvent bookingEvent, BookingEventType bookingEventType, Class<T> eventClass)
+      throws JsonProcessingException {
+    verify(kafkaTemplate).send(recordCaptor.capture());
+    var resultValue = recordCaptor.getValue();
+    assertThat(resultValue.topic()).isEqualTo(bookingEventType.getEventType());
+    var cloudEvent = (CloudEvent) resultValue.value();
+    var json =
+        new String(Objects.requireNonNull(cloudEvent.getData()).toBytes(), StandardCharsets.UTF_8);
+    var event = objectMapper.readValue(json, eventClass);
+    assertThat(event).isEqualTo(bookingEvent);
   }
 }
