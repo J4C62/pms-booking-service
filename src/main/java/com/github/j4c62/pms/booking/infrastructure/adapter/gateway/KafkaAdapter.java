@@ -17,7 +17,7 @@ public class KafkaAdapter implements BookingEventPublisher {
 
   @Override
   public void publish(BookingEvent bookingEvent) {
-    var cloudEvent = cloudEventAssembler.toCloudEvent(bookingEvent, bookingEvent.eventType());
+    var cloudEvent = cloudEventAssembler.toCloudEvent(bookingEvent);
     kafkaTemplate.send(
         new ProducerRecord<>(
             bookingEvent.eventType().getEventType(), UUID.randomUUID().toString(), cloudEvent));

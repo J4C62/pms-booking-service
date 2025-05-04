@@ -10,7 +10,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
-import com.github.j4c62.pms.booking.infrastructure.config.FixtureIntegration;
+import com.github.j4c62.pms.booking.infrastructure.config.FixtureKafka;
 import io.cloudevents.CloudEvent;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -26,10 +26,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@Import(FixtureIntegration.class)
+@Import(FixtureKafka.class)
 class KafkaAdapterTest {
   @Autowired private ObjectMapper objectMapper;
-  @Autowired private FixtureIntegration.SetUpFixtureIntegration setUpFixtureIntegration;
+  @Autowired private FixtureKafka.SetUpFixtureIntegration setUpFixtureIntegration;
   @MockitoBean private KafkaTemplate<String, Object> kafkaTemplate;
   @Captor private ArgumentCaptor<ProducerRecord<String, Object>> recordCaptor;
 

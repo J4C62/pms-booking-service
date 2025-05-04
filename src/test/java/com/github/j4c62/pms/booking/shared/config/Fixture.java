@@ -86,8 +86,6 @@ public class Fixture {
     return new CancelBookingCommand(bookingId, cancelReason, cancelledBy);
   }
 
-
-
   @Component
   public record SetUpFixture(
       FakeBookingEventPublisher bookingEventPublisher,

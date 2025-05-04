@@ -6,7 +6,6 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.KafkaAdapter;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.KafkaStreamsStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.CloudEventAssembler;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @TestConfiguration
 @Import({KafkaAdapter.class, CloudEventAssembler.class, JacksonAutoConfiguration.class})
-public class FixtureIntegration {
+public class FixtureKafka {
   @Bean
   public BookingDates getBookingDates() {
     return new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2));
