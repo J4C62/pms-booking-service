@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;

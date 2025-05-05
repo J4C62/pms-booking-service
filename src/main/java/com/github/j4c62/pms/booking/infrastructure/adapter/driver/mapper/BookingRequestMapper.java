@@ -1,12 +1,12 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper;
 
-import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.application.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.driver.command.CancelBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
@@ -40,7 +40,6 @@ public interface BookingRequestMapper {
   CancelBookingCommand toCancelInput(CancelBookingRequest request);
 
   default UUID byteStringToUUID(ByteString value) {
-    if (value == null || value.isEmpty()) throw new IllegalArgumentException("UUID cannot be null");
     return UUID.nameUUIDFromBytes(value.toByteArray());
   }
 
@@ -57,9 +56,6 @@ public interface BookingRequestMapper {
   }
 
   default LocalDate toLocalDate(String date) {
-    if (date == null || date.isBlank()) {
-      throw new IllegalArgumentException("Date string cannot be null or empty");
-    }
     return LocalDate.parse(date);
   }
 

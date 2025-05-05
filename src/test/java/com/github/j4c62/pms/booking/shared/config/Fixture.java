@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.shared.config;
 
-import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.application.command.UpdateBookingDatesCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.CancelBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapperImpl;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapperImpl;
 import com.github.j4c62.pms.booking.application.handler.BookingCommandHandler;

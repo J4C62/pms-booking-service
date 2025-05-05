@@ -1,11 +1,10 @@
-package com.github.j4c62.pms.booking.application.command;
+package com.github.j4c62.pms.booking.domain.driver.command;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
-import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import java.time.Instant;
 

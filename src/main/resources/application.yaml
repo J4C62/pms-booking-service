@@ -9,23 +9,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.cloudevents.kafka.CloudEventSerializer
-  datasource:
-    url: jdbc:postgresql://localhost:5432/pms_booking
-    username: booking_user
-    password: secret123
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      pool-name: HikariPool-1
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
-
 
 grpc:
   server:
