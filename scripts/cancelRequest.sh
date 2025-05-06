@@ -1,6 +1,7 @@
 #!/bin/bash
 
-read -p "Ingrese el Booking ID: " bookingId
+read -p "Ingrese el Booking ID: " bookingIdB64
+bookingId=$(echo "$bookingIdB64" | base64 --decode)
 
 cancelledAt=$(date +"%Y-%m-%d")
 

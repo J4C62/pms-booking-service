@@ -44,7 +44,7 @@ public record BookingAggregate(
 
   public BookingAggregate cancel() {
     if (status.isCancelled()) throw new IllegalStateException("Booking already cancelled");
-    return withEvent(createBookingEvent(bookingId, null), BookingStatus.CANCELLED, bookingDates);
+    return withEvent(createBookingEvent(bookingId), BookingStatus.CANCELLED, bookingDates);
   }
 
   public BookingAggregate updateDates(BookingDates newDates) {

@@ -4,10 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import io.grpc.Status;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@Import(GrpcExceptionAdvice.class)
 class GrpcExceptionAdviceTest {
 
-  GrpcExceptionAdvice advice = new GrpcExceptionAdvice();
+  @Autowired private GrpcExceptionAdvice advice;
 
   @Test
   void givenIllegalArgumentExceptionWhenHandledThenReturnsInvalidArgumentStatus() {
