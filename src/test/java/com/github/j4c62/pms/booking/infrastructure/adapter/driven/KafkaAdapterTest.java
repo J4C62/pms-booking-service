@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
+package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;

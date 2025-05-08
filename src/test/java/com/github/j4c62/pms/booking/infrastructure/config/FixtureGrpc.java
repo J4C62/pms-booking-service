@@ -2,9 +2,9 @@ package com.github.j4c62.pms.booking.infrastructure.config;
 
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus;
-import com.github.j4c62.pms.booking.domain.driver.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.domain.driver.command.UpdateBookingDatesCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.types.CancelBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.types.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.github.j4c62.pms.booking.infrastructure.adapter.driver.GrpcControllerAdapter;
@@ -40,7 +40,9 @@ public class FixtureGrpc {
               new BookingOutput(updateBookingCommand.bookingId(), BookingStatus.PENDING);
           case CancelBookingCommand cancelBookingCommand ->
               new BookingOutput(cancelBookingCommand.bookingId(), BookingStatus.CANCELLED);
-          default -> throw new IllegalArgumentException("Unsupported command: %s".formatted(req.getClass()));
+          default ->
+              throw new IllegalArgumentException(
+                  "Unsupported command: %s".formatted(req.getClass()));
         };
   }
 }

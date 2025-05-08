@@ -2,8 +2,8 @@ package com.github.j4c62.pms.booking.shared.fake;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.domain.gateway.EventStore;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
+import com.github.j4c62.pms.booking.domain.driven.EventStore;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;

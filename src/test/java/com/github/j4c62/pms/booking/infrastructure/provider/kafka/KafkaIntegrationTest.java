@@ -1,11 +1,18 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
+import io.cloudevents.kafka.CloudEventDeserializer;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,8 +20,6 @@ import java.util.Objects;
 import java.util.Spliterators;
 import java.util.UUID;
 import java.util.stream.StreamSupport;
-
-import io.cloudevents.kafka.CloudEventDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -32,6 +37,7 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.util.FileSystemUtils;
 
 @SpringBootTest
 @EnableKafka
@@ -42,7 +48,8 @@ import org.springframework.test.context.TestPropertySource;
     properties = {
       "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.streams.bootstrap-servers=${spring.embedded.kafka.brokers}",
-      "spring.kafka.streams.application-id=booking-service"
+      "spring.kafka.streams.application-id=booking-service",
+      "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-test"
     })
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
@@ -69,12 +76,17 @@ class KafkaIntegrationTest {
   }
 
   @AfterEach
-  void tearDown() {
+  void tearDown() throws IOException {
     if (consumer != null) {
       consumer.close();
     }
     if (streamsBuilderFactoryBean.getKafkaStreams() != null) {
       streamsBuilderFactoryBean.getKafkaStreams().close();
+    }
+    Path stateDir =
+        Paths.get(System.getProperty("java.io.tmpdir"), "kafka-streams-test", "booking-service");
+    if (Files.exists(stateDir)) {
+      FileSystemUtils.deleteRecursively(stateDir);
     }
   }
 
@@ -105,6 +117,10 @@ class KafkaIntegrationTest {
 
     assertThat(records.count()).isEqualTo(3);
     consumer.close();
+
+    await()
+        .atMost(Duration.ofSeconds(20))
+        .untilAsserted(() -> assertThat(getStoreCount()).hasSize(3));
   }
 
   private List<String> getStoreCount() {

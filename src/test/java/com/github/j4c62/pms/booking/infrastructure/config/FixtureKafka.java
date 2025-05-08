@@ -4,9 +4,9 @@ import com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactor
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.KafkaAdapter;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driven.KafkaAdapter;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.UUID;

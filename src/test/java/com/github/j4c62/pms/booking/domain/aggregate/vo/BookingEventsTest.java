@@ -40,7 +40,6 @@ class BookingEventsTest {
     assertThat(appendEvents.events()).isNotEmpty().contains(bookingEventBase, bookingEventToAppend);
   }
 
-
   @Test
   void givenABookingAggregateBaseWithEventsWhenReplyOnThenReturnBookingAggregateWithEvents() {
     var bookingEventBase = createBookingEvent(new BookingId(UUID.randomUUID()));

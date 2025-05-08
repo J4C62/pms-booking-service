@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggr
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import java.util.List;
 

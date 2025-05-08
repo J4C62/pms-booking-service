@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.shared.fake;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import java.util.ArrayList;
 import java.util.List;
 

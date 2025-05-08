@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
-import com.github.j4c62.pms.booking.domain.driver.command.CreateBookingCommand;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
 import java.util.List;
 import java.util.UUID;
 import org.mapstruct.Mapper;

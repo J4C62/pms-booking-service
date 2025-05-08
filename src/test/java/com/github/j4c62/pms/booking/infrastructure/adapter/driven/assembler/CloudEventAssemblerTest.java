@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler;
+package com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
