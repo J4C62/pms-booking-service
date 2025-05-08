@@ -1,8 +1,8 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.gateway;
+package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.gateway.BookingEventPublisher;
-import com.github.j4c62.pms.booking.infrastructure.adapter.gateway.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;

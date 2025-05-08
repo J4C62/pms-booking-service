@@ -4,8 +4,8 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 
 public final class BookingEventFactory {
 

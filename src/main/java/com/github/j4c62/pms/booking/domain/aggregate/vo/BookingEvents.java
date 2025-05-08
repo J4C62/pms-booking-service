@@ -11,6 +11,10 @@ public record BookingEvents(List<BookingEvent> events) {
     events = events == null ? List.of() : List.copyOf(events);
   }
 
+  public static BookingEvents empty() {
+    return new BookingEvents(List.of());
+  }
+
   public BookingEvents append(BookingEvent event) {
     return new BookingEvents(Stream.concat(events.stream(), Stream.of(event)).toList());
   }

@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking.application.strategy;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.github.j4c62.pms.booking.application.strategy.executor.BookingCommandExecutor;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

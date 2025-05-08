@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggr
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public record BookingAggregate(
 
   public BookingAggregate cancel() {
     if (status.isCancelled()) throw new IllegalStateException("Booking already cancelled");
-    return withEvent(createBookingEvent(bookingId, null), BookingStatus.CANCELLED, bookingDates);
+    return withEvent(createBookingEvent(bookingId), BookingStatus.CANCELLED, bookingDates);
   }
 
   public BookingAggregate updateDates(BookingDates newDates) {

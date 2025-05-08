@@ -8,12 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootTest(
-    properties = {
-      "spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults=false",
-      "spring.jpa.hibernate.ddl-auto=none",
-      "grpc.server.port=-1"
-    })
+@SpringBootTest(properties = {"grpc.server.port=-1"})
 @Slf4j
 class BookingApplicationServiceContextLoadTest {
 

@@ -1,5 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver;
 
+import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.CANCELLED;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +37,7 @@ class GrpcControllerAdapterIntegrationTest {
   @Test
   void
       givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully() {
-    CreateBookingRequest createBookingRequest =
+    var createBookingRequest =
         CreateBookingRequest.newBuilder()
             .setPropertyId(
                 ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
@@ -55,7 +56,7 @@ class GrpcControllerAdapterIntegrationTest {
   @Test
   void
       givenValidCancelBookingRequestWhenCancelBookingIsCalledThenBookingShouldBeCancelledSuccessfully() {
-    CancelBookingRequest cancelBookingRequest =
+    var cancelBookingRequest =
         CancelBookingRequest.newBuilder()
             .setBookingId(UUID.randomUUID().toString())
             .setReason("Change of plans")
@@ -65,15 +66,14 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
 
-//    assertThat(result.getBookingId()).isNotNull();
-//    assertThat(result.getStatus()).isEqualTo(CANCELLED.name());
+    assertThat(result.getBookingId()).isNotNull();
+    assertThat(result.getStatus()).isEqualTo(CANCELLED.name());
   }
 
   @Test
   void
       givenValidUpdateBookingRequestWhenUpdateBookingIsCalledThenBookingShouldBeUpdatedSuccessfully() {
-    UpdateBookingRequest updateBookingRequest =
-
+    var updateBookingRequest =
         UpdateBookingRequest.newBuilder()
             .setBookingId(UUID.randomUUID().toString())
             .setNewStartDate("2025-05-10")

@@ -1,19 +1,19 @@
 package com.github.j4c62.pms.booking.shared.config;
 
-import com.github.j4c62.pms.booking.application.command.CancelBookingCommand;
-import com.github.j4c62.pms.booking.application.command.CreateBookingCommand;
-import com.github.j4c62.pms.booking.application.command.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapperImpl;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapperImpl;
 import com.github.j4c62.pms.booking.application.handler.BookingCommandHandler;
-import com.github.j4c62.pms.booking.application.strategy.BookingCommandExecutor;
-import com.github.j4c62.pms.booking.application.strategy.CreateBookingCommandStrategy;
-import com.github.j4c62.pms.booking.application.strategy.UpdateBookingCommandStrategy;
+import com.github.j4c62.pms.booking.application.strategy.executor.BookingCommandExecutor;
+import com.github.j4c62.pms.booking.application.strategy.types.CreateBookingCommandStrategy;
+import com.github.j4c62.pms.booking.application.strategy.types.UpdateBookingCommandStrategy;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
+import com.github.j4c62.pms.booking.domain.driver.command.types.CancelBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
+import com.github.j4c62.pms.booking.domain.driver.command.types.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.fake.InMemoryEventStore;

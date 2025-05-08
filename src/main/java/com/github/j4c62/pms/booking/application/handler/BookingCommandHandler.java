@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.handler;
 
-import com.github.j4c62.pms.booking.application.strategy.BookingCommandExecutor;
+import com.github.j4c62.pms.booking.application.strategy.executor.BookingCommandExecutor;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;

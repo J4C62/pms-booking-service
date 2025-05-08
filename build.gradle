@@ -56,24 +56,19 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-autoconfigure:3.4.4'
-    implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
-    implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-streams:3.6.1'
-    implementation 'io.hypersistence:hypersistence-utils-hibernate-60:3.9.4'
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0")
 
+    implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
+    implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
     implementation 'io.grpc:grpc-protobuf:1.71.0'
     implementation 'io.grpc:grpc-stub:1.71.0'
 
     implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
     implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
-
-    implementation 'org.postgresql:postgresql:42.6.0'
-
 
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
@@ -82,21 +77,19 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
-    testImplementation("org.assertj:assertj-core:4.0.0-M1")
-    testImplementation("io.grpc:grpc-testing:1.72.0")
+    testImplementation 'io.grpc:grpc-testing:1.72.0'
 
     testCompileOnly 'org.projectlombok:lombok:1.18.38'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
 
-    testImplementation 'io.zonky.test:embedded-postgres:2.1.0'
-    testImplementation 'io.zonky.test:embedded-database-spring-test:2.6.0'
 
     testImplementation 'com.tngtech.jgiven:jgiven-junit5:2.0.2'
     testImplementation 'com.tngtech.jgiven:jgiven-spring-junit5:2.0.2'
     testImplementation 'com.tngtech.jgiven:jgiven-html5-report:2.0.2'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    testImplementation 'org.assertj:assertj-core:4.0.0-M1'
 
 }
 

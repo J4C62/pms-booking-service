@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.gateway;
+package com.github.j4c62.pms.booking.domain.driven;
 
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
