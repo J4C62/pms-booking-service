@@ -1,5 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.deserializer.BookingEventDeserializer;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde.BookingEventSerde;
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class BookingTopology {
   @Autowired
-  public void buildTopology(StreamsBuilder builder, BookingEventDeserializer deserializer) {
+  public void buildTopology(
+      StreamsBuilder builder, BookingEventDeserializer deserializer, ObjectMapper objectMapper) {
     KStream<String, CloudEvent> stream =
         builder.stream(
             List.of("booking.created", "booking.updated", "booking.cancelled"),
@@ -32,7 +34,8 @@ public class BookingTopology {
               var event = deserializer.deserialize(cloudEvent);
               return KeyValue.pair(event.bookingId(), event);
             })
-        .groupByKey(Grouped.with(new JsonSerde<>(BookingId.class), new BookingEventSerde()))
+        .groupByKey(
+            Grouped.with(new JsonSerde<>(BookingId.class), new BookingEventSerde(objectMapper)))
         .aggregate(
             BookingEvents::empty,
             (key, newEvent, aggregate) -> aggregate.append(newEvent),

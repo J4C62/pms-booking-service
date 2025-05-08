@@ -16,9 +16,9 @@ public class BookingEventsSerde implements Serde<BookingEvents> {
   private final ObjectMapper objectMapper;
 
   public BookingEventsSerde() {
-    this.bookingEventSerde = new BookingEventSerde();
     this.objectMapper = new ObjectMapper();
     this.objectMapper.registerModule(new JavaTimeModule());
+    this.bookingEventSerde = new BookingEventSerde(objectMapper);
   }
 
   @Override
