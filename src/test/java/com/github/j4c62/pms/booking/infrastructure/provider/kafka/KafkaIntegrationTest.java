@@ -49,7 +49,8 @@ import org.springframework.util.FileSystemUtils;
       "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.streams.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.streams.application-id=booking-service",
-      "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-test"
+      "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-test",
+      "grpc.server.port=-1"
     })
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;

@@ -3,17 +3,20 @@ package com.github.j4c62.pms.booking.application.strategy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.github.j4c62.pms.booking.application.strategy.executor.BookingCommandExecutor;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.config.Fixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @Import(Fixture.class)
 class BookingCommandExecutorTest {
   @Autowired BookingCommandExecutor bookingCommandExecutor;
+  @MockitoBean BookingEventPublisher bookingEventPublisher;
 
   @Test
   void givenANullCommandThenThrowsNullPointerException() {

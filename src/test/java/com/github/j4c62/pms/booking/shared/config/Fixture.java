@@ -6,16 +6,12 @@ import com.github.j4c62.pms.booking.application.handler.BookingCommandHandler;
 import com.github.j4c62.pms.booking.application.strategy.executor.BookingCommandExecutor;
 import com.github.j4c62.pms.booking.application.strategy.types.CreateBookingCommandStrategy;
 import com.github.j4c62.pms.booking.application.strategy.types.UpdateBookingCommandStrategy;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CancelBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.command.types.UpdateBookingDatesCommand;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;
-import com.github.j4c62.pms.booking.shared.fake.FakeBookingEventPublisher;
 import com.github.j4c62.pms.booking.shared.fake.InMemoryEventStore;
 import com.tngtech.jgiven.integration.spring.EnableJGiven;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
@@ -33,7 +29,6 @@ import org.springframework.stereotype.Component;
   BookingCommandHandler.class,
   InMemoryEventStore.class,
   BookingAggregateMapperImpl.class,
-  FakeBookingEventPublisher.class,
   BookingCommandExecutor.class,
   CreateBookingCommandStrategy.class,
   UpdateBookingCommandStrategy.class,
@@ -88,7 +83,6 @@ public class Fixture {
 
   @Component
   public record SetUpFixture(
-      FakeBookingEventPublisher bookingEventPublisher,
       BookingHandler bookingCommandHandler,
       @Qualifier("givenValidCreateBookingCommand") Command createBookingCommand,
       @Qualifier("givenValidUpdateBookingDatesCommand") Command updateBookingCommand,
