@@ -9,8 +9,6 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceG
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
-import com.google.protobuf.ByteString;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -39,10 +37,8 @@ class GrpcControllerAdapterIntegrationTest {
       givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully() {
     var createBookingRequest =
         CreateBookingRequest.newBuilder()
-            .setPropertyId(
-                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
-            .setGuestId(
-                ByteString.copyFrom(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
+            .setPropertyId(UUID.randomUUID().toString())
+            .setGuestId(UUID.randomUUID().toString())
             .setStartDate(LocalDate.now().toString())
             .setEndDate(LocalDate.now().plusDays(2).toString())
             .build();

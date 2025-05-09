@@ -10,7 +10,6 @@ import com.github.j4c62.pms.booking.domain.driver.command.types.UpdateBookingDat
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
-import com.google.protobuf.ByteString;
 import java.time.LocalDate;
 import java.util.UUID;
 import org.mapstruct.Mapper;
@@ -21,10 +20,10 @@ public interface BookingRequestMapper {
 
   @Mapping(
       target = "propertyId",
-      expression = "java(mapPropertyId(byteStringToUUID(request.getPropertyId())))")
+      expression = "java(mapPropertyId(request.getPropertyId()))")
   @Mapping(
       target = "guestId",
-      expression = "java(mapGuestId(byteStringToUUID(request.getGuestId())))")
+      expression = "java(mapGuestId(request.getGuestId()))")
   @Mapping(
       target = "bookingDates",
       expression = "java(mapBookingDates(request.getStartDate(), request.getEndDate()))")
@@ -39,20 +38,17 @@ public interface BookingRequestMapper {
   @Mapping(target = "bookingId", expression = "java(mapBookingId(request.getBookingId()))")
   CancelBookingCommand toCancelInput(CancelBookingRequest request);
 
-  default UUID byteStringToUUID(ByteString value) {
-    return UUID.nameUUIDFromBytes(value.toByteArray());
-  }
 
   default BookingId mapBookingId(String id) {
     return new BookingId(UUID.fromString(id));
   }
 
-  default PropertyId mapPropertyId(UUID id) {
-    return new PropertyId(id);
+  default PropertyId mapPropertyId(String id) {
+    return new PropertyId(UUID.fromString(id));
   }
 
-  default GuestId mapGuestId(UUID id) {
-    return new GuestId(id);
+  default GuestId mapGuestId(String id) {
+    return new GuestId(UUID.fromString(id));
   }
 
   default LocalDate toLocalDate(String date) {

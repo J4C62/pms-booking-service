@@ -59,13 +59,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'org.apache.kafka:kafka-streams:4.0.0'
+    implementation 'org.apache.kafka:kafka-streams:3.6.1'
 
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
     implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
-    runtimeOnly 'io.grpc:grpc-netty-shaded:1.72.0'
-    implementation 'io.grpc:grpc-protobuf:1.72.0'
-    implementation 'io.grpc:grpc-stub:1.72.0'
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
+    implementation 'io.grpc:grpc-protobuf:1.71.0'
+    implementation 'io.grpc:grpc-stub:1.71.0'
 
     implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
     implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
@@ -95,11 +95,11 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.30.2"
+        artifact = "com.google.protobuf:protoc:3.25.1"
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.72.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.71.0'
         }
         javapgv {
             artifact = "build.buf.protoc-gen-validate:protoc-gen-validate:1.2.1"
