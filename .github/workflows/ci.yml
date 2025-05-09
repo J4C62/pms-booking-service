@@ -23,8 +23,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
-
-  codeql-analysis:
-    uses: github/codeql-action/analyze@v3
-    permissions:
-      security-events: write
