@@ -1,72 +1,53 @@
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "2181:2181"
-    networks:
-      - pms-network
   kafka:
-    image: confluentinc/cp-kafka:7.4.0
-    hostname: localhost
-    depends_on:
-      - zookeeper
+    image: bitnami/kafka:latest
     ports:
       - "9092:9092"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-    networks:
-      - pms-network
-  kafka-init:
-    image: monasca/kafka-init:latest
-    links:
-      - kafka
-    environment:
-      KAFKA_HOST: kafka:9092
-      KAFKA_CREATE_TOPICS: >
-        booking.created:1:1,booking.updated:1:1,booking.cancelled:1:1,booking-events:1:1
-
-    networks:
-      - pms-network
-
-  postgres:
-    image: postgres:15
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: pms_booking
-      POSTGRES_USER: booking_user
-      POSTGRES_PASSWORD: secret123
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_KRAFT_CLUSTER_ID: kraft-cluster
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - kafka_data:/bitnami/kafka
+    networks:
+      - pms-network
+    entrypoint: [ "/bin/bash", "-c" ]
+    command: >
+      "
+      /opt/bitnami/scripts/kafka/entrypoint.sh /opt/bitnami/scripts/kafka/run.sh &
+
+      echo 'Waiting for Kafka to start...';
+      while ! echo > /dev/tcp/localhost/9092; do sleep 1; done;
+
+      echo 'Creating topics...';
+      kafka-topics.sh --create --if-not-exists --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic booking.created;
+      kafka-topics.sh --create --if-not-exists --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic booking.updated;
+      kafka-topics.sh --create --if-not-exists --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic booking.cancelled;
+
+      wait
+      "
 
   app:
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ../
+      dockerfile: .docker/Dockerfile
     depends_on:
       - kafka
-      - postgres
     ports:
       - "8080:8080"
+      - "9090:9090"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pms_booking
-      SPRING_DATASOURCE_USERNAME: booking_user
-      SPRING_DATASOURCE_PASSWORD: secret123
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:9092
     networks:
       - pms-network
 
 volumes:
-  pgdata:
+  kafka_data: {}
 
 networks:
   pms-network:
