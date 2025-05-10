@@ -26,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @Import(KafkaFixture.class)
-class KafkaAdapterTest {
+class KafkaProducerAdapterTest {
   @Autowired private ObjectMapper objectMapper;
   @Autowired private KafkaFixture.SetUpFixtureIntegration setUpFixtureIntegration;
   @MockitoBean private KafkaTemplate<String, Object> kafkaTemplate;

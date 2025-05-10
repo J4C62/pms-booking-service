@@ -1,10 +1,7 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -21,6 +18,7 @@ public class BookingEventSerde implements Serde<BookingEvent> {
       case "BOOKING_CREATED" -> BookingCreatedEvent.class;
       case "BOOKING_CANCELLED" -> BookingCancelledEvent.class;
       case "BOOKING_UPDATED" -> BookingUpdateEvent.class;
+      case "BOOKING_CONFIRMED" -> BookingConfirmedEvent.class;
       default -> throw new IllegalArgumentException("Unknown eventType: %s".formatted(type));
     };
   }

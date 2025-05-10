@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 
+import com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
@@ -17,7 +17,7 @@ public record BookingAggregate(
     BookingEvents bookingEvents) {
 
   public BookingAggregate {
-    bookingEvents = bookingEvents == null ? new BookingEvents(List.of()) : bookingEvents;
+    bookingEvents = bookingEvents == null ? BookingEvents.empty() : bookingEvents;
   }
 
   public static BookingAggregate restoreFrom(BookingEvents events) {
@@ -37,20 +37,32 @@ public record BookingAggregate(
             created.guestId(),
             created.bookingDates(),
             BookingStatus.PENDING,
-            new BookingEvents(List.of(created)));
+            BookingEvents.of(List.of(created)));
 
-    var tailEvents = new BookingEvents(events.events().subList(1, events.events().size()));
+    var tailEvents = BookingEvents.of(events.events().subList(1, events.events().size()));
     return tailEvents.replayOn(base);
   }
 
   public BookingAggregate cancel() {
     if (status.isCancelled()) throw new IllegalStateException("Booking already cancelled");
-    return withEvent(createBookingEvent(bookingId), BookingStatus.CANCELLED, bookingDates);
+    return withEvent(
+        BookingEventFactory.createCancelledBookingEvent(bookingId),
+        BookingStatus.CANCELLED,
+        bookingDates);
+  }
+
+  public BookingAggregate confirm() {
+    if (status.isCancelled()) throw new IllegalStateException("Cannot confirm a cancelled booking");
+    return withEvent(
+        BookingEventFactory.createConfirmedBookingEvent(bookingId),
+        BookingStatus.CONFIRMED,
+        bookingDates);
   }
 
   public BookingAggregate updateDates(BookingDates newDates) {
     validateUpdatable(newDates);
-    return withEvent(createBookingEvent(bookingId, newDates), status, newDates);
+    return withEvent(
+        BookingEventFactory.createCancelledBookingEvent(bookingId, newDates), status, newDates);
   }
 
   private BookingAggregate withEvent(

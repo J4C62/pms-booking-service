@@ -25,7 +25,7 @@ public class BookingTopology {
       StreamsBuilder builder, BookingEventDeserializer deserializer, ObjectMapper objectMapper) {
     KStream<String, CloudEvent> stream =
         builder.stream(
-            List.of("booking.created", "booking.updated", "booking.cancelled"),
+            List.of("booking.created", "booking.updated", "booking.cancelled", "booking.confirmed"),
             Consumed.with(Serdes.String(), new CloudEventSerde()));
 
     stream

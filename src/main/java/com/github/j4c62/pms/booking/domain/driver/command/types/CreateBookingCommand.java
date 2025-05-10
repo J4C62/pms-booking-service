@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
@@ -13,6 +13,6 @@ public record CreateBookingCommand(
 
   @Override
   public BookingAggregate applyTo(BookingAggregate aggregate) {
-    return createBookingEvent(aggregate).applyTo(null);
+    return createCancelledBookingEvent(aggregate).applyTo(null);
   }
 }

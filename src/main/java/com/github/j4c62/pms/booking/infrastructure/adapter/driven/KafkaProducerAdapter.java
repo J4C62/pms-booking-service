@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
-import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.CloudEventAssembler;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class KafkaAdapter implements BookingEventPublisher {
+public class KafkaProducerAdapter implements BookingEventPublisher {
   private final KafkaTemplate<String, Object> kafkaTemplate;
   private final CloudEventAssembler cloudEventAssembler;
 

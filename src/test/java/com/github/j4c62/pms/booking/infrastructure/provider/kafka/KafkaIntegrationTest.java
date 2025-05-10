@@ -4,8 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
-import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.CloudEventAssembler;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import java.io.IOException;
@@ -42,7 +41,7 @@ import org.springframework.util.FileSystemUtils;
 @EnableKafka
 @EmbeddedKafka(
     partitions = 1,
-    topics = {"booking.created", "booking.updated", "booking.cancelled"})
+    topics = {"booking.created", "booking.updated", "booking.cancelled", "booking.confirmed"})
 @TestPropertySource(
     properties = {
       "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
@@ -71,7 +70,8 @@ class KafkaIntegrationTest {
         ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 
     consumer = new KafkaConsumer<>(consumerProps);
-    consumer.subscribe(List.of("booking.created", "booking.updated", "booking.cancelled"));
+    consumer.subscribe(
+        List.of("booking.created", "booking.updated", "booking.cancelled", "booking.confirmed"));
 
     streamsBuilderFactoryBean.start();
   }
@@ -95,19 +95,22 @@ class KafkaIntegrationTest {
   void givenBookingEventsWhenProducedThenShouldBeConsumedSuccessfully(
       @Autowired @Qualifier("bookingCreatedEvent") BookingEvent bookingCreatedEvent,
       @Autowired @Qualifier("bookingUpdateEvent") BookingEvent bookingUpdatedEvent,
-      @Autowired @Qualifier("bookingCancelledEvent") BookingEvent bookingCancelledEvent) {
+      @Autowired @Qualifier("bookingCancelledEvent") BookingEvent bookingCancelledEvent,
+      @Autowired @Qualifier("bookingConfirmedEvent") BookingEvent bookingConfirmedEvent) {
 
     var cloudEventCreated = cloudEventAssembler.toCloudEvent(bookingCreatedEvent);
     var cloudEventUpdated = cloudEventAssembler.toCloudEvent(bookingUpdatedEvent);
+    var cloudEventConfirmed = cloudEventAssembler.toCloudEvent(bookingConfirmedEvent);
     var cloudEventCancelled = cloudEventAssembler.toCloudEvent(bookingCancelledEvent);
 
     kafkaTemplate.send("booking.created", cloudEventCreated);
     kafkaTemplate.send("booking.updated", cloudEventUpdated);
+    kafkaTemplate.send("booking.confirmed", cloudEventConfirmed);
     kafkaTemplate.send("booking.cancelled", cloudEventCancelled);
 
     var records = KafkaTestUtils.getRecords(consumer);
 
-    assertThat(records.count()).isEqualTo(3);
+    assertThat(records.count()).isEqualTo(4);
     consumer.close();
 
     await()

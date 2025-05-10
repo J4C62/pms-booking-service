@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler;
+package com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

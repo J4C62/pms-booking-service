@@ -1,9 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka.resolver;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.*;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +13,8 @@ public class BookingEventTypeResolver {
       Map.of(
           BookingEventType.BOOKING_CREATED.getEventType(), BookingCreatedEvent.class,
           BookingEventType.BOOKING_CANCELLED.getEventType(), BookingCancelledEvent.class,
-          BookingEventType.BOOKING_UPDATED.getEventType(), BookingUpdateEvent.class);
+          BookingEventType.BOOKING_UPDATED.getEventType(), BookingUpdateEvent.class,
+          BookingEventType.BOOKING_CONFIRMED.getEventType(), BookingConfirmedEvent.class);
 
   public Class<? extends BookingEvent> resolve(String rawType) {
     try {

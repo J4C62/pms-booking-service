@@ -18,12 +18,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BookingRequestMapper {
 
-  @Mapping(
-      target = "propertyId",
-      expression = "java(mapPropertyId(request.getPropertyId()))")
-  @Mapping(
-      target = "guestId",
-      expression = "java(mapGuestId(request.getGuestId()))")
+  @Mapping(target = "propertyId", expression = "java(mapPropertyId(request.getPropertyId()))")
+  @Mapping(target = "guestId", expression = "java(mapGuestId(request.getGuestId()))")
   @Mapping(
       target = "bookingDates",
       expression = "java(mapBookingDates(request.getStartDate(), request.getEndDate()))")
@@ -37,7 +33,6 @@ public interface BookingRequestMapper {
 
   @Mapping(target = "bookingId", expression = "java(mapBookingId(request.getBookingId()))")
   CancelBookingCommand toCancelInput(CancelBookingRequest request);
-
 
   default BookingId mapBookingId(String id) {
     return new BookingId(UUID.fromString(id));

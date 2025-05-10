@@ -1,10 +1,11 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import java.time.LocalDate;
@@ -30,7 +31,7 @@ class BookingAggregateTest {
   void
       givenABookingEventsAndTheFirstOneIsNotABookingCreatedEventWhenRestoreBookingAggregateThenThrowsIllegalStateException() {
     var bookingId = BookingId.of(UUID.randomUUID());
-    var cancelledEvent = createBookingEvent(bookingId);
+    var cancelledEvent = BookingEventFactory.createCancelledBookingEvent(bookingId);
     var bookingEvents = getBookingEvents(cancelledEvent);
     thenMethodThrows(
         () -> BookingAggregate.restoreFrom(bookingEvents),
@@ -61,6 +62,19 @@ class BookingAggregateTest {
     var bookingAggregate = getDefaultBookingAggregate(BookingStatus.PENDING);
     var cancelledBooking = bookingAggregate.cancel();
     assertThat(cancelledBooking.status()).isEqualTo(BookingStatus.CANCELLED);
+  }
+
+  @Test
+  void givenAValidBookingAggregateWhenConfirmThenStatusChangeToConfirmed() {
+    var bookingAggregate = getDefaultBookingAggregate(BookingStatus.CONFIRMED);
+    var cancelledBooking = bookingAggregate.confirm();
+    assertThat(cancelledBooking.status()).isEqualTo(BookingStatus.CONFIRMED);
+  }
+
+  @Test
+  void givenACancelledBookingAggregateWhenConfirmThenThrowIllegalStateException() {
+    var bookingAggregate = getDefaultBookingAggregate(BookingStatus.CANCELLED);
+    thenMethodThrows(bookingAggregate::confirm, "Cannot confirm a cancelled booking");
   }
 
   @Test
@@ -135,6 +149,7 @@ class BookingAggregateTest {
   }
 
   private BookingEvent getBookingEvent() {
-    return createBookingEvent(getBookingAggregate(BookingStatus.PENDING, BookingEvents.empty()));
+    return createCancelledBookingEvent(
+        getBookingAggregate(BookingStatus.PENDING, BookingEvents.empty()));
   }
 }

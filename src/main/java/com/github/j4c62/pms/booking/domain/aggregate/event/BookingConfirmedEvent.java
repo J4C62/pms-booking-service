@@ -5,13 +5,11 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import java.time.Instant;
 
-public sealed interface BookingEvent
-    permits BookingCancelledEvent, BookingCreatedEvent, BookingUpdateEvent, BookingConfirmedEvent {
-  BookingId bookingId();
+public record BookingConfirmedEvent(
+    BookingId bookingId, BookingEventType eventType, Instant occurredAt) implements BookingEvent {
 
-  BookingAggregate applyTo(BookingAggregate aggregate);
-
-  BookingEventType eventType();
-
-  Instant occurredAt();
+  @Override
+  public BookingAggregate applyTo(BookingAggregate aggregate) {
+    return aggregate.confirm();
+  }
 }

@@ -4,7 +4,7 @@ import static org.mockito.Mockito.mock;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
-import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.CloudEventAssembler;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
@@ -18,7 +18,7 @@ import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 @TestConfiguration
 @Import({
   KafkaStreamsStoreBooking.class,
-  KafkaAdapter.class,
+  KafkaProducerAdapter.class,
   CloudEventAssembler.class,
   JacksonAutoConfiguration.class,
   AggregateFixture.class

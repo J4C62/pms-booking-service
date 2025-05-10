@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.shared;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createConfirmedBookingEvent;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory;
@@ -49,13 +49,19 @@ public class AggregateFixture {
   @Bean
   @Qualifier("bookingCancelledEvent")
   public BookingEvent bookingCancelledEvent(BookingId bookingId) {
-    return BookingEventFactory.createBookingEvent(bookingId);
+    return BookingEventFactory.createCancelledBookingEvent(bookingId);
   }
 
   @Bean
   @Qualifier("bookingUpdateEvent")
   public BookingEvent bookingUpdateEvent(BookingId bookingId, BookingDates bookingDates) {
-    return BookingEventFactory.createBookingEvent(bookingId, bookingDates);
+    return BookingEventFactory.createCancelledBookingEvent(bookingId, bookingDates);
+  }
+
+  @Bean
+  @Qualifier("bookingConfirmedEvent")
+  public BookingEvent bookingConfirmedEvent(BookingId bookingId) {
+    return createConfirmedBookingEvent(bookingId);
   }
 
   @Bean
