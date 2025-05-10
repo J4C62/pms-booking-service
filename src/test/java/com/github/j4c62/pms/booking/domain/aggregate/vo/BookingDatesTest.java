@@ -7,15 +7,20 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
 class BookingDatesTest {
+
+  private static BookingDates getBookingDates() {
+    return BookingDates.of(LocalDate.now(), LocalDate.now().plusDays(2));
+  }
+
   private static boolean checkIsSameAs(LocalDate startDate, LocalDate endDate) {
-    var datesToCheck = new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2));
-    var otherDates = new BookingDates(startDate, endDate);
+    var datesToCheck = getBookingDates();
+    var otherDates = BookingDates.of(startDate, endDate);
     return datesToCheck.isSameAs(otherDates);
   }
 
   private static void thenConstructorThrowsIllegalArgumentException(
       LocalDate startDate, String message) {
-    assertThatThrownBy(() -> new BookingDates(startDate, LocalDate.now()))
+    assertThatThrownBy(() -> BookingDates.of(startDate, LocalDate.now()))
         .isInstanceOf(IllegalArgumentException.class)
         .message()
         .contains(message);
@@ -23,7 +28,7 @@ class BookingDatesTest {
 
   private static void thenConstructorThrowsNullPointerException(
       LocalDate startDate, LocalDate endDate, String message) {
-    assertThatThrownBy(() -> new BookingDates(startDate, endDate))
+    assertThatThrownBy(() -> BookingDates.of(startDate, endDate))
         .isInstanceOf(NullPointerException.class)
         .message()
         .contains(message);
@@ -53,7 +58,7 @@ class BookingDatesTest {
 
   @Test
   void givenAValidStartDateWhenCreateBookingDatesThenBookingDatesCreated() {
-    var bookingDates = new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2));
+    var bookingDates = getBookingDates();
     assertThat(bookingDates).isNotNull();
   }
 

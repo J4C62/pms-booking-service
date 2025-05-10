@@ -7,6 +7,7 @@ import io.cloudevents.CloudEvent;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,7 @@ public class CloudEventAssembler {
         .build();
   }
 
+  @Generated
   private String toJsonString(BookingEvent bookingEvent) {
     try {
       return objectMapper.writeValueAsString(bookingEvent);

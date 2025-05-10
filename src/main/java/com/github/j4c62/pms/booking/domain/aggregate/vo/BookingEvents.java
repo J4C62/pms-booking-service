@@ -11,6 +11,10 @@ public record BookingEvents(List<BookingEvent> events) {
     events = events == null ? List.of() : List.copyOf(events);
   }
 
+  public static BookingEvents of(List<BookingEvent> events) {
+    return new BookingEvents(events);
+  }
+
   public static BookingEvents empty() {
     return new BookingEvents(List.of());
   }

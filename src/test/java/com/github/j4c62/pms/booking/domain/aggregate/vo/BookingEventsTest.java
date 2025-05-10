@@ -13,26 +13,26 @@ import org.junit.jupiter.api.Test;
 class BookingEventsTest {
 
   private static BookingEvents createBookingEvents(List<BookingEvent> bookingEvents) {
-    return new BookingEvents(bookingEvents);
+    return BookingEvents.of(bookingEvents);
   }
 
   @Test
   void givenEventsNullWhenCreateBookingEventsThenEventsIsEmpty() {
-    var events = new BookingEvents(null);
+    var events = BookingEvents.of(null);
     assertThat(events.events()).isEmpty();
   }
 
   @Test
   void givenEventsNoNullWhenCreateBookingEventsThenEventsIsNoEmpty() {
-    var bookingEvent = createBookingEvent(new BookingId(UUID.randomUUID()));
+    var bookingEvent = createBookingEvent(BookingId.of(UUID.randomUUID()));
     var events = createBookingEvents(List.of(bookingEvent));
     assertThat(events.events()).isNotEmpty().element(0).isEqualTo(bookingEvent);
   }
 
   @Test
   void givenABookingEventToAppendWhenAppendEventsThenBookingEventsNotNull() {
-    var bookingEventBase = createBookingEvent(new BookingId(UUID.randomUUID()));
-    var bookingEventToAppend = createBookingEvent(new BookingId(UUID.randomUUID()));
+    var bookingEventBase = createBookingEvent(BookingId.of(UUID.randomUUID()));
+    var bookingEventToAppend = createBookingEvent(BookingId.of(UUID.randomUUID()));
     var events = createBookingEvents(List.of(bookingEventBase));
 
     var appendEvents = events.append(bookingEventToAppend);
@@ -42,15 +42,15 @@ class BookingEventsTest {
 
   @Test
   void givenABookingAggregateBaseWithEventsWhenReplyOnThenReturnBookingAggregateWithEvents() {
-    var bookingEventBase = createBookingEvent(new BookingId(UUID.randomUUID()));
+    var bookingEventBase = createBookingEvent(BookingId.of(UUID.randomUUID()));
     var bookingAggregate =
         createBookingAggregate(
-            new BookingId(UUID.randomUUID()),
-            new PropertyId(UUID.randomUUID()),
-            new GuestId(UUID.randomUUID()),
-            new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2)),
+            BookingId.of(UUID.randomUUID()),
+            PropertyId.of(UUID.randomUUID()),
+            GuestId.of(UUID.randomUUID()),
+            BookingDates.of(LocalDate.now(), LocalDate.now().plusDays(2)),
             BookingStatus.PENDING,
-            new BookingEvents(List.of(bookingEventBase)));
+            BookingEvents.of(List.of(bookingEventBase)));
     var bookingEvents = createBookingEvents(List.of(bookingEventBase));
     var bookingAggregateUpdated = bookingEvents.replayOn(bookingAggregate);
     assertThat(bookingAggregateUpdated).isNotNull();

@@ -8,4 +8,8 @@ public record PropertyId(UUID value) {
   public PropertyId {
     requireNonNull(value, "Property ID cannot be null");
   }
+
+  public static PropertyId of(UUID value) {
+    return new PropertyId(value);
+  }
 }

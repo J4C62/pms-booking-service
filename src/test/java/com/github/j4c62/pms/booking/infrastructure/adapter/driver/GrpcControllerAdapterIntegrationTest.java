@@ -4,23 +4,25 @@ import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.CAN
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.j4c62.pms.booking.infrastructure.config.FixtureGrpc;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceGrpc;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.UUID;
+import java.time.Instant;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@Import(FixtureGrpc.class)
+@Import(GrpcFixture.class)
 @TestPropertySource(
     properties = {
       "grpc.server.inProcessName=test",
@@ -34,13 +36,16 @@ class GrpcControllerAdapterIntegrationTest {
 
   @Test
   void
-      givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully() {
+      givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully(
+          @Autowired PropertyId propertyId,
+          @Autowired GuestId guestId,
+          @Autowired BookingDates bookingDates) {
     var createBookingRequest =
         CreateBookingRequest.newBuilder()
-            .setPropertyId(UUID.randomUUID().toString())
-            .setGuestId(UUID.randomUUID().toString())
-            .setStartDate(LocalDate.now().toString())
-            .setEndDate(LocalDate.now().plusDays(2).toString())
+            .setPropertyId(propertyId.value().toString())
+            .setGuestId(guestId.value().toString())
+            .setStartDate(bookingDates.startDate().toString())
+            .setEndDate(bookingDates.endDate().toString())
             .build();
 
     var result = bookingServiceGrpc.createBooking(createBookingRequest);
@@ -51,13 +56,14 @@ class GrpcControllerAdapterIntegrationTest {
 
   @Test
   void
-      givenValidCancelBookingRequestWhenCancelBookingIsCalledThenBookingShouldBeCancelledSuccessfully() {
+      givenValidCancelBookingRequestWhenCancelBookingIsCalledThenBookingShouldBeCancelledSuccessfully(
+          @Autowired BookingId bookingId) {
     var cancelBookingRequest =
         CancelBookingRequest.newBuilder()
-            .setBookingId(UUID.randomUUID().toString())
+            .setBookingId(bookingId.value().toString())
             .setReason("Change of plans")
             .setCancelledBy("guest-120")
-            .setCancelledAt(LocalTime.now().toString())
+            .setCancelledAt(Instant.now().toString())
             .build();
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
@@ -68,12 +74,13 @@ class GrpcControllerAdapterIntegrationTest {
 
   @Test
   void
-      givenValidUpdateBookingRequestWhenUpdateBookingIsCalledThenBookingShouldBeUpdatedSuccessfully() {
+      givenValidUpdateBookingRequestWhenUpdateBookingIsCalledThenBookingShouldBeUpdatedSuccessfully(
+          @Autowired BookingId bookingId, @Autowired BookingDates bookingDates) {
     var updateBookingRequest =
         UpdateBookingRequest.newBuilder()
-            .setBookingId(UUID.randomUUID().toString())
-            .setNewStartDate("2025-05-10")
-            .setNewEndDate("2025-06-10")
+            .setBookingId(bookingId.value().toString())
+            .setNewStartDate(bookingDates.startDate().toString())
+            .setNewEndDate(bookingDates.startDate().toString())
             .setUpdateReason("Change of plans")
             .build();
 

@@ -8,4 +8,8 @@ public record GuestId(UUID value) {
   public GuestId {
     requireNonNull(value, "Guest ID cannot be null");
   }
+
+  public static GuestId of(UUID value) {
+    return new GuestId(value);
+  }
 }

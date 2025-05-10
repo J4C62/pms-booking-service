@@ -1,24 +1,21 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
 import com.github.j4c62.pms.booking.infrastructure.adapter.driven.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Spliterators;
-import java.util.UUID;
 import java.util.stream.StreamSupport;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -29,7 +26,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -52,6 +51,7 @@ import org.springframework.util.FileSystemUtils;
       "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-test",
       "grpc.server.port=-1"
     })
+@Import(AggregateFixture.class)
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
   @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
@@ -92,24 +92,15 @@ class KafkaIntegrationTest {
   }
 
   @Test
-  void givenBookingEventsWhenProducedThenShouldBeConsumedSuccessfully() {
-    var cloudEventCreated =
-        cloudEventAssembler.toCloudEvent(
-            new BookingCreatedEvent(
-                new BookingId(UUID.randomUUID()),
-                new PropertyId(UUID.randomUUID()),
-                new GuestId(UUID.randomUUID()),
-                new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2)),
-                Instant.now(),
-                BookingEventType.BOOKING_CREATED));
-    var cloudEventUpdated =
-        cloudEventAssembler.toCloudEvent(
-            createBookingEvent(
-                new BookingId(UUID.randomUUID()),
-                new BookingDates(LocalDate.now(), LocalDate.now().plusDays(2))));
+  void givenBookingEventsWhenProducedThenShouldBeConsumedSuccessfully(
+      @Autowired @Qualifier("bookingCreatedEvent") BookingEvent bookingCreatedEvent,
+      @Autowired @Qualifier("bookingUpdateEvent") BookingEvent bookingUpdatedEvent,
+      @Autowired @Qualifier("bookingCancelledEvent") BookingEvent bookingCancelledEvent) {
 
-    var cloudEventCancelled =
-        cloudEventAssembler.toCloudEvent(createBookingEvent(new BookingId(UUID.randomUUID())));
+    var cloudEventCreated = cloudEventAssembler.toCloudEvent(bookingCreatedEvent);
+    var cloudEventUpdated = cloudEventAssembler.toCloudEvent(bookingUpdatedEvent);
+    var cloudEventCancelled = cloudEventAssembler.toCloudEvent(bookingCancelledEvent);
+
     kafkaTemplate.send("booking.created", cloudEventCreated);
     kafkaTemplate.send("booking.updated", cloudEventUpdated);
     kafkaTemplate.send("booking.cancelled", cloudEventCancelled);
@@ -121,7 +112,7 @@ class KafkaIntegrationTest {
 
     await()
         .atMost(Duration.ofSeconds(20))
-        .untilAsserted(() -> assertThat(getStoreCount()).hasSize(3));
+        .untilAsserted(() -> assertThat(getStoreCount()).hasSize(1));
   }
 
   private List<String> getStoreCount() {

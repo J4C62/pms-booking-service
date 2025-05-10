@@ -10,7 +10,6 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
-import com.github.j4c62.pms.booking.infrastructure.config.FixtureKafka;
 import io.cloudevents.CloudEvent;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -26,10 +25,10 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@Import(FixtureKafka.class)
+@Import(KafkaFixture.class)
 class KafkaAdapterTest {
   @Autowired private ObjectMapper objectMapper;
-  @Autowired private FixtureKafka.SetUpFixtureIntegration setUpFixtureIntegration;
+  @Autowired private KafkaFixture.SetUpFixtureIntegration setUpFixtureIntegration;
   @MockitoBean private KafkaTemplate<String, Object> kafkaTemplate;
   @Captor private ArgumentCaptor<ProducerRecord<String, Object>> recordCaptor;
 
@@ -64,7 +63,9 @@ class KafkaAdapterTest {
   private <T extends BookingEvent> void thenEventIsPublished(
       BookingEvent bookingEvent, BookingEventType bookingEventType, Class<T> eventClass)
       throws JsonProcessingException {
+
     verify(kafkaTemplate).send(recordCaptor.capture());
+
     var resultValue = recordCaptor.getValue();
     assertThat(resultValue.topic()).isEqualTo(bookingEventType.getEventType());
     var cloudEvent = (CloudEvent) resultValue.value();

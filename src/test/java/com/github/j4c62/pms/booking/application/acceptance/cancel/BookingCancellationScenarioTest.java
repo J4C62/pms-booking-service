@@ -1,39 +1,37 @@
-package com.github.j4c62.pms.booking.acceptance.cancel;
+package com.github.j4c62.pms.booking.application.acceptance.cancel;
 
-import com.github.j4c62.pms.booking.acceptance.cancel.stage.GivenAUserWantsToCancelABooking;
-import com.github.j4c62.pms.booking.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
-import com.github.j4c62.pms.booking.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
+import static org.mockito.Mockito.reset;
+
+import com.github.j4c62.pms.booking.application.ApplicationFixture;
+import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.GivenAUserWantsToCancelABooking;
+import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
+import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
-import com.github.j4c62.pms.booking.shared.config.Fixture;
-import com.github.j4c62.pms.booking.shared.utils.BookingTestUtils;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@Import(Fixture.class)
+@Import(ApplicationFixture.class)
 class BookingCancellationScenarioTest
     extends SpringScenarioTest<
         GivenAUserWantsToCancelABooking,
         WhenTheUserCancelsTheBooking,
         ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified> {
 
-  @ProvidedScenarioState @Autowired Fixture.SetUpFixture setUpFixture;
+  @ProvidedScenarioState @Autowired ApplicationFixture.SetUpFixture setUpFixture;
   @ProvidedScenarioState @Captor ArgumentCaptor<BookingEvent> bookingEventArgumentCaptor;
-  @ProvidedScenarioState @MockitoBean BookingEventPublisher bookingEventPublisher;
 
-  @AfterEach
-  void tearDown() {
-    BookingTestUtils.reset(setUpFixture);
+  @BeforeEach
+  void resetMocks() {
+    reset(setUpFixture.bookingEventPublisher());
   }
 
   @Test

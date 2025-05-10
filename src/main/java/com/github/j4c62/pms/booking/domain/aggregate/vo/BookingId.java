@@ -8,4 +8,8 @@ public record BookingId(UUID value) {
   public BookingId {
     requireNonNull(value, "Booking ID cannot be null");
   }
+
+  public static BookingId of(UUID value) {
+    return new BookingId(value);
+  }
 }
