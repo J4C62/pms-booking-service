@@ -9,5 +9,5 @@ updates:
   schedule:
     interval: monthly
     time: "08:00"
-    timezone: Asia/Jakarta
+    timezone: Europe/Madrid
   open-pull-requests-limit: 100
