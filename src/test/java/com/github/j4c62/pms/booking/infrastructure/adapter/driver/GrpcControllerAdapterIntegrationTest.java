@@ -80,7 +80,7 @@ class GrpcControllerAdapterIntegrationTest {
         UpdateBookingRequest.newBuilder()
             .setBookingId(bookingId.value().toString())
             .setNewStartDate(bookingDates.startDate().toString())
-            .setNewEndDate(bookingDates.startDate().toString())
+            .setNewEndDate(bookingDates.endDate().toString())
             .setUpdateReason("Change of plans")
             .build();
 

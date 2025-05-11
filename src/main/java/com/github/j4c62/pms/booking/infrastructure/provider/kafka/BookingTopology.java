@@ -15,11 +15,15 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.*;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BookingTopology {
+  @Value("${application.booking.kafka.store-name}")
+  String storeName;
+
   @Autowired
   public void buildTopology(
       StreamsBuilder builder, BookingEventDeserializer deserializer, ObjectMapper objectMapper) {
@@ -39,8 +43,7 @@ public class BookingTopology {
         .aggregate(
             BookingEvents::empty,
             (key, newEvent, aggregate) -> aggregate.append(newEvent),
-            Materialized.<BookingId, BookingEvents, KeyValueStore<Bytes, byte[]>>as(
-                    "booking-events-store")
+            Materialized.<BookingId, BookingEvents, KeyValueStore<Bytes, byte[]>>as(storeName)
                 .withKeySerde(new JsonSerde<>(BookingId.class))
                 .withValueSerde(new BookingEventsSerde()));
   }

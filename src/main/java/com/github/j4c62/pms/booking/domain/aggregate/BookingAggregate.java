@@ -62,13 +62,13 @@ public record BookingAggregate(
   public BookingAggregate updateDates(BookingDates newDates) {
     validateUpdatable(newDates);
     return withEvent(
-        BookingEventFactory.createCancelledBookingEvent(bookingId, newDates), status, newDates);
+        BookingEventFactory.createUpdateBookingEvent(bookingId, newDates), status, newDates);
   }
 
   private BookingAggregate withEvent(
       BookingEvent event, BookingStatus newStatus, BookingDates newDates) {
     return createBookingAggregate(
-        bookingId, propertyId, guestId, newDates, newStatus, bookingEvents.append(event));
+        bookingId, propertyId, guestId, newDates, newStatus,BookingEvents.of(List.of(event)));
   }
 
   private void validateUpdatable(BookingDates newDates) {

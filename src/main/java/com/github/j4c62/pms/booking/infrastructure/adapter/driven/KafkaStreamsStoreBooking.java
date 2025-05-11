@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
 import org.springframework.stereotype.Component;
@@ -19,13 +20,16 @@ public class KafkaStreamsStoreBooking implements BookingEventStore {
 
   private final StreamsBuilderFactoryBean streamsBuilderFactoryBean;
 
+  @Value("${application.booking.kafka.store-name}")
+  String storeName;
+
   @Override
   public BookingEvents getEventsForBooking(BookingId bookingId) {
     ReadOnlyKeyValueStore<BookingId, BookingEvents> eventStore =
         Objects.requireNonNull(streamsBuilderFactoryBean.getKafkaStreams())
             .store(
                 StoreQueryParameters.fromNameAndType(
-                    "booking-events-store", QueryableStoreTypes.keyValueStore()));
+                    storeName, QueryableStoreTypes.keyValueStore()));
     return eventStore.get(bookingId);
   }
 }
