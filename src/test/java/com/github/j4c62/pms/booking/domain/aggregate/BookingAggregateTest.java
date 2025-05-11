@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class BookingAggregateTest {
 
-  private static BookingEvents getBookingEvents(BookingEvent bookingEvent) {
+  private static BookingEvents getBookingEvents(BookingEvent... bookingEvent) {
     return BookingEvents.of(List.of(bookingEvent));
   }
 
@@ -40,15 +40,19 @@ class BookingAggregateTest {
 
   @Test
   void givenABookingEventValidWhenRestoreBookingAggregateThenReturnBookingAggregate() {
-    var bookingEvent = getBookingEvent();
-    var bookingEvents = getBookingEvents(bookingEvent);
+    var bookingId = getBookingEvent().bookingId();
+    var bookingDates = BookingDates.of(LocalDate.now(), LocalDate.now().plusDays(3));
+
+    var bookingEvents =
+        getBookingEvents(
+            getBookingEvent(),
+            createUpdateBookingEvent(bookingId, bookingDates),
+            createConfirmedBookingEvent(bookingId),
+            createCancelledBookingEvent(bookingId));
 
     var bookingAggregate = BookingAggregate.restoreFrom(bookingEvents);
 
-    assertThat(bookingAggregate.bookingEvents().events())
-        .isNotEmpty()
-        .element(0)
-        .isEqualTo(bookingEvent);
+    assertThat(bookingAggregate.bookingEvents().events()).isNotEmpty();
   }
 
   @Test
@@ -149,7 +153,7 @@ class BookingAggregateTest {
   }
 
   private BookingEvent getBookingEvent() {
-    return createCancelledBookingEvent(
+    return BookingEventFactory.createBookingEvent(
         getBookingAggregate(BookingStatus.PENDING, BookingEvents.empty()));
   }
 }

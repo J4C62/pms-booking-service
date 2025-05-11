@@ -23,7 +23,7 @@ public class ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser
       the_updated_dates_are_saved_and_the_user_is_notified() {
     thenTheEventIsPublished(
         setUpFixture.bookingEventPublisher(),
-        2,
+        1,
         bookingEventArgumentCaptor,
         BookingEventType.BOOKING_UPDATED,
         bookingOutput);

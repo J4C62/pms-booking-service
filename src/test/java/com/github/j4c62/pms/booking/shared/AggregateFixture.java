@@ -55,7 +55,7 @@ public class AggregateFixture {
   @Bean
   @Qualifier("bookingUpdateEvent")
   public BookingEvent bookingUpdateEvent(BookingId bookingId, BookingDates bookingDates) {
-    return BookingEventFactory.createCancelledBookingEvent(bookingId, bookingDates);
+    return BookingEventFactory.createUpdateBookingEvent(bookingId, bookingDates);
   }
 
   @Bean

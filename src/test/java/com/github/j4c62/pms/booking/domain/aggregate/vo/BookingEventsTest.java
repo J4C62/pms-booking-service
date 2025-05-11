@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggr
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory;
+import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,15 +25,18 @@ class BookingEventsTest {
 
   @Test
   void givenEventsNoNullWhenCreateBookingEventsThenEventsIsNoEmpty() {
-    var bookingEvent = BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
+    var bookingEvent =
+        BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
     var events = createBookingEvents(List.of(bookingEvent));
     assertThat(events.events()).isNotEmpty().element(0).isEqualTo(bookingEvent);
   }
 
   @Test
   void givenABookingEventToAppendWhenAppendEventsThenBookingEventsNotNull() {
-    var bookingEventBase = BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
-    var bookingEventToAppend = BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
+    var bookingEventBase =
+        BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
+    var bookingEventToAppend =
+        BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
     var events = createBookingEvents(List.of(bookingEventBase));
 
     var appendEvents = events.append(bookingEventToAppend);
@@ -42,7 +46,8 @@ class BookingEventsTest {
 
   @Test
   void givenABookingAggregateBaseWithEventsWhenReplyOnThenReturnBookingAggregateWithEvents() {
-    var bookingEventBase = BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
+    var bookingEventBase =
+        BookingEventFactory.createCancelledBookingEvent(BookingId.of(UUID.randomUUID()));
     var bookingAggregate =
         createBookingAggregate(
             BookingId.of(UUID.randomUUID()),
@@ -54,6 +59,8 @@ class BookingEventsTest {
     var bookingEvents = createBookingEvents(List.of(bookingEventBase));
     var bookingAggregateUpdated = bookingEvents.replayOn(bookingAggregate);
     assertThat(bookingAggregateUpdated).isNotNull();
-    assertThat(bookingAggregateUpdated.bookingEvents().events()).contains(bookingEventBase);
+    assertThat(bookingAggregateUpdated.bookingEvents().events())
+        .element(0)
+        .isExactlyInstanceOf(BookingCancelledEvent.class);
   }
 }

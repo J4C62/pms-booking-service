@@ -9,8 +9,7 @@ public final class BookingEventFactory {
 
   private BookingEventFactory() {}
 
-  public static BookingEvent createCancelledBookingEvent(
-      BookingId bookingId, BookingDates newDates) {
+  public static BookingEvent createUpdateBookingEvent(BookingId bookingId, BookingDates newDates) {
     return new BookingUpdateEvent(
         bookingId, newDates, Instant.now(), BookingEventType.BOOKING_UPDATED);
   }
@@ -23,7 +22,7 @@ public final class BookingEventFactory {
     return new BookingConfirmedEvent(bookingId, BookingEventType.BOOKING_CONFIRMED, Instant.now());
   }
 
-  public static BookingEvent createCancelledBookingEvent(BookingAggregate aggregate) {
+  public static BookingEvent createBookingEvent(BookingAggregate aggregate) {
     return new BookingCreatedEvent(
         aggregate.bookingId(),
         aggregate.propertyId(),

@@ -39,6 +39,6 @@ message UpdateBookingRequest {
 
 /** Response containing booking status */
 message BookingResponse {
-  bytes bookingId = 1;
+  string bookingId = 1;
   string status = 2;
 }

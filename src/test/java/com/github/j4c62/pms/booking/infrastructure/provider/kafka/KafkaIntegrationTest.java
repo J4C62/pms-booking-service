@@ -8,9 +8,6 @@ import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.Clou
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import io.cloudevents.kafka.CloudEventDeserializer;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -35,7 +33,6 @@ import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.util.FileSystemUtils;
 
 @SpringBootTest
 @EnableKafka
@@ -47,15 +44,17 @@ import org.springframework.util.FileSystemUtils;
       "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.streams.bootstrap-servers=${spring.embedded.kafka.brokers}",
       "spring.kafka.streams.application-id=booking-service",
-      "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-test",
-      "grpc.server.port=-1"
+      "spring.kafka.streams.state-dir: ${java.io.tmpdir}/kafka-streams-integration-test",
+      "grpc.server.port=-1",
+      "application.booking.kafka.store-name=kafka-streams-integration-test"
     })
 @Import(AggregateFixture.class)
 class KafkaIntegrationTest {
   @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
+  @Value("${application.booking.kafka.store-name}")
+  String storeName;
   @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
   private KafkaConsumer<String, String> consumer;
-
   @Autowired private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
   @Autowired private CloudEventAssembler cloudEventAssembler;
 
@@ -83,11 +82,7 @@ class KafkaIntegrationTest {
     }
     if (streamsBuilderFactoryBean.getKafkaStreams() != null) {
       streamsBuilderFactoryBean.getKafkaStreams().close();
-    }
-    Path stateDir =
-        Paths.get(System.getProperty("java.io.tmpdir"), "kafka-streams-test", "booking-service");
-    if (Files.exists(stateDir)) {
-      FileSystemUtils.deleteRecursively(stateDir);
+      streamsBuilderFactoryBean.getKafkaStreams().cleanUp();
     }
   }
 
@@ -123,7 +118,7 @@ class KafkaIntegrationTest {
         Objects.requireNonNull(streamsBuilderFactoryBean.getKafkaStreams())
             .store(
                 StoreQueryParameters.fromNameAndType(
-                    "booking-events-store", QueryableStoreTypes.keyValueStore()))
+                    storeName, QueryableStoreTypes.keyValueStore()))
             .all();
     return StreamSupport.stream(Spliterators.spliteratorUnknownSize(outputEvents, 0), false)
         .map(objectObjectKeyValue -> objectObjectKeyValue.value.toString())
