@@ -62,10 +62,8 @@ dependencies {
     implementation 'org.apache.kafka:kafka-streams:3.6.1'
 
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
-    implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
-    implementation 'io.grpc:grpc-protobuf:1.72.0'
-    implementation 'io.grpc:grpc-stub:1.71.0'
+    compileOnly 'io.grpc:grpc-protobuf:1.72.0'
 
     implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
     implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
@@ -76,6 +74,8 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.3'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
 
+    testImplementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
+    testImplementation 'io.grpc:grpc-stub:1.71.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
