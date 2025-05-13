@@ -65,6 +65,7 @@ dependencies {
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.71.0'
     compileOnly 'io.grpc:grpc-protobuf:1.72.0'
 
+
     implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
     implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
 
@@ -101,7 +102,7 @@ protobuf {
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.71.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.72.0'
         }
         javapgv {
             artifact = "build.buf.protoc-gen-validate:protoc-gen-validate:1.2.1"
