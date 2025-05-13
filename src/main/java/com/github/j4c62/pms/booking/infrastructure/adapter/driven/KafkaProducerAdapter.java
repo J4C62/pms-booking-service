@@ -9,6 +9,8 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import static java.lang.Thread.startVirtualThread;
+
 @Service
 @RequiredArgsConstructor
 public class KafkaProducerAdapter implements BookingEventPublisher {
@@ -17,9 +19,14 @@ public class KafkaProducerAdapter implements BookingEventPublisher {
 
   @Override
   public void publish(BookingEvent bookingEvent) {
-    var cloudEvent = cloudEventAssembler.toCloudEvent(bookingEvent);
-    kafkaTemplate.send(
-        new ProducerRecord<>(
-            bookingEvent.eventType().getEventType(), UUID.randomUUID().toString(), cloudEvent));
+    startVirtualThread(
+        () -> {
+          var cloudEvent = cloudEventAssembler.toCloudEvent(bookingEvent);
+          kafkaTemplate.send(
+              new ProducerRecord<>(
+                  bookingEvent.eventType().getEventType(),
+                  UUID.randomUUID().toString(),
+                  cloudEvent));
+        });
   }
 }

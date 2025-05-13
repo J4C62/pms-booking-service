@@ -1,9 +1,9 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.verify;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
@@ -12,6 +12,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import io.cloudevents.CloudEvent;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Objects;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class KafkaProducerAdapterTest {
   @Captor private ArgumentCaptor<ProducerRecord<String, Object>> recordCaptor;
 
   @Test
-  void givenACreatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenACreatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.createBookingEvent();
 
     setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
@@ -42,7 +43,7 @@ class KafkaProducerAdapterTest {
   }
 
   @Test
-  void givenAUpdatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenAUpdatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.updateBookingEvent();
 
     setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
@@ -51,7 +52,7 @@ class KafkaProducerAdapterTest {
   }
 
   @Test
-  void givenACancelledEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenACancelledEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.cancelBookingEvent();
 
     setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
@@ -61,17 +62,23 @@ class KafkaProducerAdapterTest {
   }
 
   private <T extends BookingEvent> void thenEventIsPublished(
-      BookingEvent bookingEvent, BookingEventType bookingEventType, Class<T> eventClass)
-      throws JsonProcessingException {
+      BookingEvent bookingEvent, BookingEventType bookingEventType, Class<T> eventClass) {
 
-    verify(kafkaTemplate).send(recordCaptor.capture());
+    await()
+        .atMost(Duration.ofSeconds(2))
+        .untilAsserted(
+            () -> {
+              verify(kafkaTemplate).send(recordCaptor.capture());
+              ProducerRecord<String, Object> value = recordCaptor.getValue();
+              assertThat(value.topic()).isEqualTo(bookingEventType.getEventType());
 
-    var resultValue = recordCaptor.getValue();
-    assertThat(resultValue.topic()).isEqualTo(bookingEventType.getEventType());
-    var cloudEvent = (CloudEvent) resultValue.value();
-    var json =
-        new String(Objects.requireNonNull(cloudEvent.getData()).toBytes(), StandardCharsets.UTF_8);
-    var event = objectMapper.readValue(json, eventClass);
-    assertThat(event).isEqualTo(bookingEvent);
+              var cloudEvent = (CloudEvent) value.value();
+              var json =
+                  new String(
+                      Objects.requireNonNull(cloudEvent.getData()).toBytes(),
+                      StandardCharsets.UTF_8);
+              var event = objectMapper.readValue(json, eventClass);
+              assertThat(event).isEqualTo(bookingEvent);
+            });
   }
 }
