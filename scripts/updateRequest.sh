@@ -1,6 +1,5 @@
 #!/bin/bash
-read -p "Ingrese el Booking ID (base64): " bookingIdB64
-bookingId=$(echo "$bookingIdB64" | base64 --decode)
+read -p "Ingrese el Booking ID (base64): " bookingId
 
 grpcurl -plaintext \
   -d '{

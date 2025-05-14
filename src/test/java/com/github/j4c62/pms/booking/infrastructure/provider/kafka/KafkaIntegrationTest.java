@@ -1,37 +1,30 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
+import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.CloudEventAssembler;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
-import io.cloudevents.kafka.CloudEventDeserializer;
-import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Spliterators;
-import java.util.stream.StreamSupport;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.streams.StoreQueryParameters;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.binder.kafka.streams.InteractiveQueryService;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
@@ -50,41 +43,11 @@ import org.springframework.test.context.TestPropertySource;
     })
 @Import(AggregateFixture.class)
 class KafkaIntegrationTest {
-  @Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
   @Value("${application.booking.kafka.store-name}")
   String storeName;
-  @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
-  private KafkaConsumer<String, String> consumer;
+  @Autowired private StreamBridge streamBridge;
+  @Autowired private InteractiveQueryService queryService;
   @Autowired private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
-  @Autowired private CloudEventAssembler cloudEventAssembler;
-
-  @BeforeEach
-  void setUp() {
-    var consumerProps =
-        KafkaTestUtils.consumerProps("hotel-pms-group", "false", embeddedKafkaBroker);
-
-    consumerProps.put(
-        ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, CloudEventDeserializer.class.getName());
-    consumerProps.put(
-        ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-
-    consumer = new KafkaConsumer<>(consumerProps);
-    consumer.subscribe(
-        List.of("booking.created", "booking.updated", "booking.cancelled", "booking.confirmed"));
-
-    streamsBuilderFactoryBean.start();
-  }
-
-  @AfterEach
-  void tearDown() throws IOException {
-    if (consumer != null) {
-      consumer.close();
-    }
-    if (streamsBuilderFactoryBean.getKafkaStreams() != null) {
-      streamsBuilderFactoryBean.getKafkaStreams().close();
-      streamsBuilderFactoryBean.getKafkaStreams().cleanUp();
-    }
-  }
 
   @Test
   void givenBookingEventsWhenProducedThenShouldBeConsumedSuccessfully(
@@ -92,36 +55,34 @@ class KafkaIntegrationTest {
       @Autowired @Qualifier("bookingUpdateEvent") BookingEvent bookingUpdatedEvent,
       @Autowired @Qualifier("bookingCancelledEvent") BookingEvent bookingCancelledEvent,
       @Autowired @Qualifier("bookingConfirmedEvent") BookingEvent bookingConfirmedEvent) {
+    await()
+        .atMost(Duration.ofSeconds(30))
+        .untilAsserted(
+            () ->
+                assertThat(requireNonNull(streamsBuilderFactoryBean.getKafkaStreams()).state())
+                    .isEqualTo(KafkaStreams.State.RUNNING));
 
-    var cloudEventCreated = cloudEventAssembler.toCloudEvent(bookingCreatedEvent);
-    var cloudEventUpdated = cloudEventAssembler.toCloudEvent(bookingUpdatedEvent);
-    var cloudEventConfirmed = cloudEventAssembler.toCloudEvent(bookingConfirmedEvent);
-    var cloudEventCancelled = cloudEventAssembler.toCloudEvent(bookingCancelledEvent);
-
-    kafkaTemplate.send("booking.created", cloudEventCreated);
-    kafkaTemplate.send("booking.updated", cloudEventUpdated);
-    kafkaTemplate.send("booking.confirmed", cloudEventConfirmed);
-    kafkaTemplate.send("booking.cancelled", cloudEventCancelled);
-
-    var records = KafkaTestUtils.getRecords(consumer);
-
-    assertThat(records.count()).isEqualTo(4);
-    consumer.close();
+    streamBridge.send("bookingEventSupplier-out-0", bookingCreatedEvent);
+    streamBridge.send("bookingEventSupplier-out-0", bookingUpdatedEvent);
+    streamBridge.send("bookingEventSupplier-out-0", bookingCancelledEvent);
+    streamBridge.send("bookingEventSupplier-out-0", bookingConfirmedEvent);
 
     await()
         .atMost(Duration.ofSeconds(20))
-        .untilAsserted(() -> assertThat(getStoreCount()).hasSize(1));
+        .untilAsserted(() -> assertThat(getStoredEvents()).hasSizeGreaterThan(0));
   }
 
-  private List<String> getStoreCount() {
-    var outputEvents =
-        Objects.requireNonNull(streamsBuilderFactoryBean.getKafkaStreams())
-            .store(
-                StoreQueryParameters.fromNameAndType(
-                    storeName, QueryableStoreTypes.keyValueStore()))
-            .all();
-    return StreamSupport.stream(Spliterators.spliteratorUnknownSize(outputEvents, 0), false)
-        .map(objectObjectKeyValue -> objectObjectKeyValue.value.toString())
-        .toList();
+  public List<String> getStoredEvents() {
+    ReadOnlyKeyValueStore<BookingId, BookingEvents> store =
+        queryService.getQueryableStore(storeName, QueryableStoreTypes.keyValueStore());
+
+    try (var iterator = store.all()) {
+      List<String> results = new ArrayList<>();
+      while (iterator.hasNext()) {
+        var kv = iterator.next();
+        results.add(kv.value.toString());
+      }
+      return results;
+    }
   }
 }

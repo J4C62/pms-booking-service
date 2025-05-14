@@ -4,16 +4,24 @@ application:
       store-name: booking-events-store
 
 spring:
-  kafka:
-    bootstrap-servers: 127.0.0.1:9092
-    streams:
-      bootstrap-servers: 127.0.0.1:9092
-      application-id: booking-service
-    consumer:
-      group-id: hotel-pms-group
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: io.cloudevents.kafka.CloudEventSerializer
+  application:
+    name: booking-service
+  cloud:
+    stream:
+      bindings:
+        bookingEventSupplier-out-0:
+          destination: booking-events
+          contentType: application/json
+        processBookingEvents-in-0:
+          destination: booking-events
+          contentType: application/json
+    kafka:
+      streams:
+        binder:
+          stateStoreRetry:
+            maxAttempts: 5
+          configuration:
+            default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
 
 grpc:
   server:

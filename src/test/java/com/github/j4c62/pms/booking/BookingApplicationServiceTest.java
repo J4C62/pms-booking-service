@@ -10,9 +10,9 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.*;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper.BookingResponseMapper;
-import com.github.j4c62.pms.booking.infrastructure.adapter.shared.assembler.CloudEventAssembler;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceGrpc;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
@@ -36,7 +36,6 @@ import org.springframework.boot.testcontainers.context.ImportTestcontainers;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -57,13 +56,14 @@ class BookingApplicationServiceTest {
       new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka"))
           .withStartupTimeout(Duration.ofSeconds(60));
   private static String createdBookingId;
+
   @GrpcClient("inProcess")
   private BookingServiceGrpc.BookingServiceBlockingStub bookingServiceGrpc;
+
   @Autowired private BookingEventStore bookingEventStore;
   @Autowired private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
   @Autowired private BookingResponseMapper bookingResponseMapper;
-  @Autowired private KafkaTemplate<String, Object> kafkaTemplate;
-  @Autowired private CloudEventAssembler cloudEventAssembler;
+  @Autowired private BookingEventPublisher bookingEventPublisher;
 
   @BeforeAll
   static void setUpKafka() throws Exception {
@@ -184,11 +184,8 @@ class BookingApplicationServiceTest {
               assertThat(events.events()).isNotEmpty();
             });
 
-    var cloudEventConfirmed =
-        cloudEventAssembler.toCloudEvent(
-            createConfirmedBookingEvent(BookingId.of(UUID.fromString(createdBookingId))));
-
-    kafkaTemplate.send("booking.confirmed", cloudEventConfirmed);
+    bookingEventPublisher.publish(
+        createConfirmedBookingEvent(BookingId.of(UUID.fromString(createdBookingId))));
     await()
         .atMost(Duration.ofSeconds(40))
         .untilAsserted(

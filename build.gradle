@@ -58,18 +58,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
 
-    implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'org.apache.kafka:kafka-streams:3.6.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.2.1'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.2.1'
 
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
     implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.72.0'
     implementation 'io.grpc:grpc-protobuf:1.72.0'
-    implementation 'io.grpc:grpc-stub:1.72.0'
-
-    implementation 'io.cloudevents:cloudevents-kafka:4.0.1'
-    implementation 'io.cloudevents:cloudevents-json-jackson:4.0.1'
-
+    implementation 'io.grpc:grpc-stub:1.71.0'
     compileOnly 'org.projectlombok:lombok:1.18.38'
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
 

@@ -1,77 +1,62 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
-import io.cloudevents.CloudEvent;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Import;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-@Import(KafkaFixture.class)
+@Import({KafkaFixture.class, KafkaProducerAdapter.class})
 class KafkaProducerAdapterTest {
-  @Autowired private ObjectMapper objectMapper;
+  @MockitoBean StreamBridge streamBridge;
+  @Autowired BookingEventPublisher bookingEventPublisher;
   @Autowired private KafkaFixture.SetUpFixtureIntegration setUpFixtureIntegration;
-  @MockitoBean private KafkaTemplate<String, Object> kafkaTemplate;
-  @Captor private ArgumentCaptor<ProducerRecord<String, Object>> recordCaptor;
+  @Captor private ArgumentCaptor<BookingEvent> recordCaptor;
 
   @Test
-  void givenACreatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenACreatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.createBookingEvent();
 
-    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
+    bookingEventPublisher.publish(bookingEvent);
 
-    thenEventIsPublished(bookingEvent, BookingEventType.BOOKING_CREATED, BookingCreatedEvent.class);
+    thenEventIsPublished(bookingEvent, BookingCreatedEvent.class);
   }
 
   @Test
-  void givenAUpdatedEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenAUpdatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.updateBookingEvent();
 
-    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
-
-    thenEventIsPublished(bookingEvent, BookingEventType.BOOKING_UPDATED, BookingUpdateEvent.class);
+    bookingEventPublisher.publish(bookingEvent);
+    thenEventIsPublished(bookingEvent, BookingUpdateEvent.class);
   }
 
   @Test
-  void givenACancelledEventWhenPublishThenEventIsPublished() throws JsonProcessingException {
+  void givenACancelledEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.cancelBookingEvent();
 
-    setUpFixtureIntegration.bookingEventPublisher().publish(bookingEvent);
+    bookingEventPublisher.publish(bookingEvent);
 
-    thenEventIsPublished(
-        bookingEvent, BookingEventType.BOOKING_CANCELLED, BookingCancelledEvent.class);
+    thenEventIsPublished(bookingEvent, BookingCancelledEvent.class);
   }
 
   private <T extends BookingEvent> void thenEventIsPublished(
-      BookingEvent bookingEvent, BookingEventType bookingEventType, Class<T> eventClass)
-      throws JsonProcessingException {
-
-    verify(kafkaTemplate).send(recordCaptor.capture());
-
+      BookingEvent bookingEvent, Class<T> eventClass) {
+    verify(streamBridge).send(anyString(), recordCaptor.capture());
     var resultValue = recordCaptor.getValue();
-    assertThat(resultValue.topic()).isEqualTo(bookingEventType.getEventType());
-    var cloudEvent = (CloudEvent) resultValue.value();
-    var json =
-        new String(Objects.requireNonNull(cloudEvent.getData()).toBytes(), StandardCharsets.UTF_8);
-    var event = objectMapper.readValue(json, eventClass);
-    assertThat(event).isEqualTo(bookingEvent);
+    assertThat(resultValue).isEqualTo(bookingEvent).isExactlyInstanceOf(eventClass);
   }
 }
