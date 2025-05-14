@@ -45,6 +45,7 @@ import org.springframework.test.context.TestPropertySource;
 class KafkaIntegrationTest {
   @Value("${application.booking.kafka.store-name}")
   String storeName;
+
   @Autowired private StreamBridge streamBridge;
   @Autowired private InteractiveQueryService queryService;
   @Autowired private StreamsBuilderFactoryBean streamsBuilderFactoryBean;
