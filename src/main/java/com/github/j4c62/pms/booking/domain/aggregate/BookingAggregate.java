@@ -68,7 +68,7 @@ public record BookingAggregate(
   private BookingAggregate withEvent(
       BookingEvent event, BookingStatus newStatus, BookingDates newDates) {
     return createBookingAggregate(
-        bookingId, propertyId, guestId, newDates, newStatus,BookingEvents.of(List.of(event)));
+        bookingId, propertyId, guestId, newDates, newStatus, BookingEvents.of(List.of(event)));
   }
 
   private void validateUpdatable(BookingDates newDates) {
