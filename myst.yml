@@ -1,15 +1,15 @@
-# See docs at: https://mystmd.org/guide/frontmatter
 version: 1
 project:
   id: 49c3ef2e-ce5a-417f-bf28-efaf61d48d7e
-  # title:
-  # description:
-  # keywords: []
-  # authors: []
+  title: PMS Booking Service
+  description: PMS Booking Service is a service for booking rooms
+  toc:
+    - file: ./docs/index.md
+  authors: [ Jose Antonio(J4c62) ]
   github: https://github.com/J4C62/pms-booking-service
-  # To autogenerate a Table of Contents, run "myst init --write-toc"
 site:
+  title: 'PMS Booking Service'
   template: book-theme
-  # options:
-  #   favicon: favicon.ico
-  #   logo: site_logo.png
+  options:
+    favicon: ./docs/favicon.ico
+    logo: ./docs/favicon-32x32.png
