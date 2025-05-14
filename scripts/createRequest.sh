@@ -1,8 +1,8 @@
 #!/bin/bash
 
 
-propertyId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
-guestId=$(uuidgen | tr -d '-' | xxd -r -p | base64)
+propertyId=$(uuidgen)
+guestId=$(uuidgen)
 
 startDate=$(date -d "2025-06-01" '+%Y-%m-%d')
 endDate=$(date -d "2025-06-07" '+%Y-%m-%d')
