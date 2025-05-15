@@ -1,9 +1,10 @@
 package com.github.j4c62.pms.booking.application.acceptance.cancel;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.reset;
 
 import com.github.j4c62.pms.booking.application.ApplicationFixture;
-import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.GivenAUserWantsToCancelABooking;
+import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.GivenUserWantsToCancelBooking;
 import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
 import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Import(ApplicationFixture.class)
 class BookingCancellationScenarioTest
     extends SpringScenarioTest<
-        GivenAUserWantsToCancelABooking,
+        GivenUserWantsToCancelBooking,
         WhenTheUserCancelsTheBooking,
         ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified> {
 
@@ -35,9 +36,10 @@ class BookingCancellationScenarioTest
   }
 
   @Test
-  void user_can_cancel_a_booking_successfully() {
-    given().the_user_provides_a_valid_booking_id();
-    when().the_booking_is_cancelled();
-    then().the_booking_status_is_updated_and_the_user_is_notified();
+  void userCanCancelBookingSuccessfully() {
+    given().theUserProvidesValidBookingId();
+    when().theBookingIsCancelled();
+    then().theBookingStatusIsUpdatedAndTheUserIsNotified();
+    assertThat(setUpFixture).isNotNull();
   }
 }

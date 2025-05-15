@@ -1,9 +1,10 @@
 package com.github.j4c62.pms.booking.application.acceptance.create;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.reset;
 
 import com.github.j4c62.pms.booking.application.ApplicationFixture;
-import com.github.j4c62.pms.booking.application.acceptance.create.stage.GivenAUserWantsToMakeABooking;
+import com.github.j4c62.pms.booking.application.acceptance.create.stage.GivenUserWantsToMakeBooking;
 import com.github.j4c62.pms.booking.application.acceptance.create.stage.ThenTheSystemStoresTheBookingAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.application.acceptance.create.stage.WhenTheUserSubmitsTheBooking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Import(ApplicationFixture.class)
 class BookingCreationScenarioTest
     extends SpringScenarioTest<
-        GivenAUserWantsToMakeABooking,
+        GivenUserWantsToMakeBooking,
         WhenTheUserSubmitsTheBooking,
         ThenTheSystemStoresTheBookingAndNotifiesTheUser> {
 
@@ -35,9 +36,10 @@ class BookingCreationScenarioTest
   }
 
   @Test
-  void user_can_create_a_booking_successfully() {
-    given().the_user_provides_valid_booking_details();
-    when().the_booking_is_created();
-    then().the_booking_is_saved_and_user_is_notified();
+  void userCanCreateBookingSuccessfully() {
+    given().theUserProvidesValidBookingDetails();
+    when().theBookingIsCreated();
+    then().theBookingIsSavedAndUserIsNotified();
+    assertThat(setUpFixture).isNotNull();
   }
 }

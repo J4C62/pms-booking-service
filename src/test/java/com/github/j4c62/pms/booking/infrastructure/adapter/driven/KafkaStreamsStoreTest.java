@@ -28,6 +28,15 @@ class KafkaStreamsStoreTest {
   @MockitoBean InteractiveQueryService queryService;
   @Autowired private KafkaFixture.SetUpFixtureIntegration setUpFixtureIntegration;
 
+  @SuppressWarnings("DataFlowIssue")
+  @Test
+  void givenNullBookingIdWhenWhenGetEventsForBookingThenThrowNullPointerException() {
+
+    assertThatThrownBy(() -> kafkaStreamsStore.getEventsForBooking(null))
+        .as("Expected NullPointerException")
+        .isExactlyInstanceOf(NullPointerException.class);
+  }
+
   @Test
   void givenValidBookingIdWhenGetEventsForBookingThenReturnsBookingEvents(
       @Autowired BookingId bookingId, @Autowired BookingEvents expectedEvents) {
@@ -39,16 +48,20 @@ class KafkaStreamsStoreTest {
 
     var result = kafkaStreamsStore.getEventsForBooking(bookingId);
 
-    assertThat(result).isEqualTo(expectedEvents);
+    assertThat(result)
+        .as("Expected to retrieve booking events from Kafka store for booking ID: %s", bookingId)
+        .isEqualTo(expectedEvents);
     verify(keyValueStore).get(bookingId);
   }
 
   @Test
-  void givenNoKafkaStreamsInstanceWhenGetEventsForBookingThenThrowsNPE(
+  void givenNoKafkaStreamsInstanceWhenGetEventsForBookingThenThrowsNullPointerException(
       @Autowired BookingId bookingId) {
 
     when(queryService.getQueryableStore(anyString(), any())).thenReturn(null);
+
     assertThatThrownBy(() -> kafkaStreamsStore.getEventsForBooking(bookingId))
+        .as("Expected NullPointerException when Kafka Streams instance is unavailable")
         .isInstanceOf(NullPointerException.class);
   }
 }

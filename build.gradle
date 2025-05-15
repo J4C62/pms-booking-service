@@ -15,6 +15,9 @@ plugins {
     id 'com.google.protobuf' version '0.9.5'
     id 'com.tngtech.jgiven.gradle-plugin' version '2.0.2'
     id 'jacoco'
+    id 'pmd'
+    id "checkstyle"
+    id 'org.openrewrite.rewrite' version '7.6.1'
 }
 
 group = 'com.github.j4c62.pms'
@@ -89,6 +92,18 @@ dependencies {
 
     testImplementation 'org.assertj:assertj-core:4.0.0-M1'
 
+
+    rewrite("org.openrewrite.recipe:rewrite-rewrite:0.6.0")
+    implementation 'com.puppycrawl.tools:checkstyle:10.23.1'
+}
+checkstyle {
+    toolVersion = '10.23.1'
+    configFile = file("config/checkstyle/google_checks.xml")
+}
+checkstyleMain {
+    exclude '**/grpc/**'
+    exclude '**/*MapperImpl.class'
+    exclude '**/io/envoyproxy/pgv/validate/**'
 }
 
 protobuf {
@@ -119,6 +134,17 @@ sourceSets {
         }
     }
 }
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compileClasspath
+    destinationDir = file("build/docs/javadoc")
+    exclude '**/io/envoyproxy/pgv/validate/**'
+    options {
+        encoding = 'UTF-8'
+        windowTitle = 'PMS Booking Service - Javadoc Document'
+    }
+}
+
 test {
     finalizedBy jacocoTestReport
     useJUnitPlatform()
@@ -127,8 +153,28 @@ test {
 
 }
 test.finalizedBy(jgivenTestReport)
+pmd {
+    toolVersion = "7.13.0"
+    ruleSetFiles = files("config/pmd/custom-ruleset.xml")
+    ruleSets = []
+}
+tasks.withType(Pmd).configureEach {
+    exclude '**/grpc/**'
+    exclude '**/io/envoyproxy/pgv/validate/**'
+}
+tasks.check {
+    dependsOn("pmdMain")
+}
+rewrite {
+    activeRecipe("org.openrewrite.java.recipes.JavaRecipeBestPractices")
+    activeRecipe("org.openrewrite.java.OrderImports")
+    activeRecipe("com.github.j4c62.pms.booking.StaticImportRecipe")
+}
 
 
+tasks.named("rewriteRun") {
+    dependsOn("compileJava")
+}
 tasks.withType(JavaCompile).configureEach {
     options.annotationProcessorPath = configurations.annotationProcessor
 }

@@ -10,6 +10,17 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
+/**
+ * Test configuration for gRPC-related components.
+ *
+ * <p>This fixture sets up the gRPC controller adapter and all required gRPC server/client
+ * configurations for integration testing or test context bootstrapping. It also imports driver-side
+ * mappers and mock driver beans from {@link DriverFixture}.
+ *
+ * @author Jose Antonio (J4c62)
+ * @version 1.0.0
+ * @since 2025-05-01
+ */
 @TestConfiguration
 @Import({
   GrpcControllerAdapter.class,

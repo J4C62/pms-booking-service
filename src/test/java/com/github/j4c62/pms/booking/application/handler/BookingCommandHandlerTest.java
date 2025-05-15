@@ -15,9 +15,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class BookingCommandHandlerTest {
 
   @Test
-  void givenANullCommandThenReturnNullPointerException(
+  void givenNullCommandThenReturnNullPointerException(
       @Autowired BookingHandler bookingCommandHandler) {
     assertThatThrownBy(() -> bookingCommandHandler.handle(null))
+        .as("Expected NullPointerException when handling a null command")
         .isInstanceOf(NullPointerException.class)
         .message()
         .contains("command is marked non-null but is null");

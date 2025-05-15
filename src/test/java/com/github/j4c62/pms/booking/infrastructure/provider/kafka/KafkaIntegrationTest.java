@@ -8,13 +8,21 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +49,8 @@ import org.springframework.test.context.TestPropertySource;
       "grpc.server.port=-1",
       "application.booking.kafka.store-name=kafka-streams-integration-test"
     })
-@Import(AggregateFixture.class)
+@Import({AggregateFixture.class, BookingTopology.class})
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class KafkaIntegrationTest {
   @Value("${application.booking.kafka.store-name}")
   String storeName;
@@ -84,6 +93,23 @@ class KafkaIntegrationTest {
         results.add(kv.value.toString());
       }
       return results;
+    }
+  }
+
+  @SuppressWarnings("ResultOfMethodCallIgnored")
+  @AfterAll
+  void cleanUp() throws IOException {
+    var kafkaStreams = streamsBuilderFactoryBean.getKafkaStreams();
+    if (kafkaStreams != null) {
+      kafkaStreams.close(Duration.ofSeconds(10));
+    }
+    var stateDir = System.getProperty("java.io.tmpdir") + "/kafka-streams-integration-test";
+
+    var dir = Paths.get(stateDir);
+    if (Files.exists(dir)) {
+      try (var stream = Files.walk(dir)) {
+        stream.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+      }
     }
   }
 }

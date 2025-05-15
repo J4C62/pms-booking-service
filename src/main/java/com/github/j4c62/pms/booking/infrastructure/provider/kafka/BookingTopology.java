@@ -19,11 +19,45 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.support.serializer.JsonSerde;
 
+/**
+ * Kafka Streams topology configuration for processing booking events.
+ *
+ * <p>This configuration defines the stream processing logic to consume, aggregate, and store
+ * booking events keyed by {@link BookingId} in a state store. It also declares the required SerDes
+ * for {@link BookingEvent} and {@link BookingEvents} to enable Kafka serialization and
+ * deserialization.
+ *
+ * <p>The main processing function performs the following steps:
+ *
+ * <ul>
+ *   <li>Filters out null events
+ *   <li>Re-keys the stream by bookingId
+ *   <li>Groups events by bookingId
+ *   <li>Aggregates events into {@link BookingEvents}
+ *   <li>Materializes the aggregated results into a Kafka state store
+ *   <li>Converts the aggregated state back into a stream for downstream processing
+ * </ul>
+ *
+ * @author Jose Antonio (J4c62)
+ * @version 1.0.0
+ * @since 2025-05-02
+ */
 @Configuration
 public class BookingTopology {
   @Value("${application.booking.kafka.store-name}")
   String storeName;
 
+  /**
+   * Defines the Kafka Streams processing function that aggregates booking events by bookingId.
+   *
+   * @param bookingEventSerde Serde for {@link BookingEvent} used in deserialization and
+   *     serialization
+   * @param bookingEventsSerde Serde for {@link BookingEvents} used for state store serialization
+   * @return a function transforming an input KStream keyed by String to an output KStream keyed by
+   *     BookingId with aggregated BookingEvents
+   * @author Jose Antonio (J4c62)
+   * @since 2025-05-14
+   */
   @Bean
   public Function<KStream<String, BookingEvent>, KStream<BookingId, BookingEvents>>
       processBookingEvents(
@@ -31,7 +65,6 @@ public class BookingTopology {
 
     return input ->
         input
-            .filter((key, value) -> value != null)
             .map((key, cloudEvent) -> KeyValue.pair(cloudEvent.bookingId(), cloudEvent))
             .groupByKey(Grouped.with(new JsonSerde<>(BookingId.class), bookingEventSerde))
             .aggregate(
@@ -43,11 +76,26 @@ public class BookingTopology {
             .toStream();
   }
 
+  /**
+   * Provides a Serde for {@link BookingEvent} using a custom {@link BookingEventSerde}.
+   *
+   * @param objectMapper the Jackson {@link ObjectMapper} to use for serialization
+   * @return a {@link Serde} for BookingEvent
+   * @author Jose Antonio (J4c62)
+   * @since 2025-05-14
+   */
   @Bean
   public Serde<BookingEvent> bookingEventSerde(ObjectMapper objectMapper) {
     return new BookingEventSerde(objectMapper);
   }
 
+  /**
+   * Provides a Serde for {@link BookingEvents}.
+   *
+   * @return a {@link Serde} for BookingEvents
+   * @author Jose Antonio (J4c62)
+   * @since 2025-05-14
+   */
   @Bean
   public Serde<BookingEvents> bookingEventsSerde() {
     return new BookingEventsSerde();

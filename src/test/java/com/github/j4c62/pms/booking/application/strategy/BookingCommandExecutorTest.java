@@ -16,16 +16,19 @@ class BookingCommandExecutorTest {
   @Autowired BookingCommandExecutor bookingCommandExecutor;
 
   @Test
-  void givenANullCommandThenThrowsNullPointerException() {
+  @SuppressWarnings("DataFlowIssue")
+  void givenNullCommandThenThrowsNullPointerException() {
     assertThatThrownBy(() -> bookingCommandExecutor.execute(null))
+        .as("Expected NullPointerException when executing a null command")
         .isInstanceOf(NullPointerException.class)
         .message()
         .contains("command is marked non-null but is null");
   }
 
   @Test
-  void givenAUnsupportedCommandThenThrowsIllegalArgumentException() {
+  void givenUnsupportedCommandThenThrowsIllegalArgumentException() {
     assertThatThrownBy(() -> bookingCommandExecutor.execute(aggregate -> null))
+        .as("Expected IllegalArgumentException for unsupported command type")
         .isInstanceOf(IllegalArgumentException.class)
         .message()
         .contains("Unsupported command type");

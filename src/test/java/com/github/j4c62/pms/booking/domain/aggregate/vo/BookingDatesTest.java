@@ -21,6 +21,7 @@ class BookingDatesTest {
   private static void thenConstructorThrowsIllegalArgumentException(
       LocalDate startDate, String message) {
     assertThatThrownBy(() -> BookingDates.of(startDate, LocalDate.now()))
+        .as("Should throw IllegalArgumentException with message: %s", message)
         .isInstanceOf(IllegalArgumentException.class)
         .message()
         .contains(message);
@@ -29,54 +30,63 @@ class BookingDatesTest {
   private static void thenConstructorThrowsNullPointerException(
       LocalDate startDate, LocalDate endDate, String message) {
     assertThatThrownBy(() -> BookingDates.of(startDate, endDate))
+        .as("Should throw NullPointerException with message: %s", message)
         .isInstanceOf(NullPointerException.class)
         .message()
         .contains(message);
   }
 
   @Test
-  void givenAStartDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
+  void givenStartDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
     thenConstructorThrowsNullPointerException(null, LocalDate.now(), "Start date cannot be null");
   }
 
   @Test
-  void givenAEndDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
+  void givenEndDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
     thenConstructorThrowsNullPointerException(LocalDate.now(), null, "End date cannot be null");
   }
 
   @Test
-  void givenAStartDateAfterEndDateWhenCreateBookingDatesIllegalArgumentException() {
+  void givenStartDateAfterEndDateWhenCreateBookingDatesIllegalArgumentException() {
     thenConstructorThrowsIllegalArgumentException(
         LocalDate.now().plusDays(2), "Start date must be before end date");
   }
 
   @Test
-  void givenAStartDateInPastWhenCreateBookingDatesIllegalArgumentException() {
+  void givenStartDateInPastWhenCreateBookingDatesIllegalArgumentException() {
     thenConstructorThrowsIllegalArgumentException(
         LocalDate.of(2024, 2, 3), "Start date must not be in the past");
   }
 
   @Test
-  void givenAValidStartDateWhenCreateBookingDatesThenBookingDatesCreated() {
+  void givenValidStartDateWhenCreateBookingDatesThenBookingDatesCreated() {
     var bookingDates = getBookingDates();
-    assertThat(bookingDates).isNotNull();
+    assertThat(bookingDates)
+        .as("BookingDates object should be created and not null for valid input")
+        .isNotNull();
   }
 
   @Test
   void givenDifferentStartDatesWhenCheckIsSameThatOtherDatesThenReturnFalse() {
     var isSameAs = checkIsSameAs(LocalDate.now().plusDays(2), LocalDate.now().plusDays(2));
-    assertThat(isSameAs).isFalse();
+    assertThat(isSameAs)
+        .as("Expected isSameAs() to return false for different start dates")
+        .isFalse();
   }
 
   @Test
   void givenDifferentEndDatesWhenCheckIsSameThatOtherDatesThenReturnFalse() {
     var isSameAs = checkIsSameAs(LocalDate.now(), LocalDate.now().plusDays(3));
-    assertThat(isSameAs).isFalse();
+    assertThat(isSameAs)
+        .as("Expected isSameAs() to return false for different end dates")
+        .isFalse();
   }
 
   @Test
-  void givenAIdenticalBookingDatesWhenCheckIsSameThatOtherDatesThenReturnTrue() {
+  void givenIdenticalBookingDatesWhenCheckIsSameThatOtherDatesThenReturnTrue() {
     var isSameAs = checkIsSameAs(LocalDate.now(), LocalDate.now().plusDays(2));
-    assertThat(isSameAs).isTrue();
+    assertThat(isSameAs)
+        .as("Expected isSameAs() to return true for identical booking dates")
+        .isTrue();
   }
 }

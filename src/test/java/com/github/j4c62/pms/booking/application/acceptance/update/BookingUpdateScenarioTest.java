@@ -1,9 +1,10 @@
 package com.github.j4c62.pms.booking.application.acceptance.update;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.reset;
 
 import com.github.j4c62.pms.booking.application.ApplicationFixture;
-import com.github.j4c62.pms.booking.application.acceptance.update.stage.GivenAUserWantsToModifyBookingDates;
+import com.github.j4c62.pms.booking.application.acceptance.update.stage.GivenUserWantsToModifyBookingDates;
 import com.github.j4c62.pms.booking.application.acceptance.update.stage.ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.application.acceptance.update.stage.WhenTheUserUpdatesTheBooking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Import(ApplicationFixture.class)
 class BookingUpdateScenarioTest
     extends SpringScenarioTest<
-        GivenAUserWantsToModifyBookingDates,
+        GivenUserWantsToModifyBookingDates,
         WhenTheUserUpdatesTheBooking,
         ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser> {
   @ProvidedScenarioState @Autowired ApplicationFixture.SetUpFixture setUpFixture;
@@ -34,9 +35,10 @@ class BookingUpdateScenarioTest
   }
 
   @Test
-  void user_can_update_a_booking_successfully() {
-    given().the_user_provides_valid_new_booking_dates_and_booking_exits();
-    when().the_booking_is_updated();
-    then().the_updated_dates_are_saved_and_the_user_is_notified();
+  void userCanUpdateBookingSuccessfully() {
+    given().theUserProvidesValidNewBookingDatesAndBookingExits();
+    when().theBookingIsUpdated();
+    then().theUpdatedDatesAreSavedAndTheUserIsNotified();
+    assertThat(setUpFixture).isNotNull();
   }
 }

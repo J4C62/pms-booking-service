@@ -1,6 +1,7 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
@@ -28,7 +29,15 @@ class KafkaProducerAdapterTest {
   @Captor private ArgumentCaptor<BookingEvent> recordCaptor;
 
   @Test
-  void givenACreatedEventWhenPublishThenEventIsPublished() {
+  void givenNullEventWhenPublishThenThrowNullPointerException() {
+
+    assertThatThrownBy(() -> bookingEventPublisher.publish(null))
+        .as("Expected NullPointerException")
+        .isExactlyInstanceOf(NullPointerException.class);
+  }
+
+  @Test
+  void givenCreatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.createBookingEvent();
 
     bookingEventPublisher.publish(bookingEvent);
@@ -37,7 +46,7 @@ class KafkaProducerAdapterTest {
   }
 
   @Test
-  void givenAUpdatedEventWhenPublishThenEventIsPublished() {
+  void givenUpdatedEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.updateBookingEvent();
 
     bookingEventPublisher.publish(bookingEvent);
@@ -45,7 +54,7 @@ class KafkaProducerAdapterTest {
   }
 
   @Test
-  void givenACancelledEventWhenPublishThenEventIsPublished() {
+  void givenCancelledEventWhenPublishThenEventIsPublished() {
     var bookingEvent = setUpFixtureIntegration.cancelBookingEvent();
 
     bookingEventPublisher.publish(bookingEvent);
@@ -57,6 +66,12 @@ class KafkaProducerAdapterTest {
       BookingEvent bookingEvent, Class<T> eventClass) {
     verify(streamBridge).send(anyString(), recordCaptor.capture());
     var resultValue = recordCaptor.getValue();
-    assertThat(resultValue).isEqualTo(bookingEvent).isExactlyInstanceOf(eventClass);
+    assertThat(resultValue)
+        .as("Expected event to be equal to the published bookingEvent")
+        .isEqualTo(bookingEvent);
+
+    assertThat(resultValue)
+        .as("Expected event to be exactly instance of %s", eventClass.getSimpleName())
+        .isExactlyInstanceOf(eventClass);
   }
 }

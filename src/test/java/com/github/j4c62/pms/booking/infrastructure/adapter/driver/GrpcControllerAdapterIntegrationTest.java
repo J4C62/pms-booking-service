@@ -35,11 +35,10 @@ class GrpcControllerAdapterIntegrationTest {
   private BookingServiceGrpc.BookingServiceBlockingStub bookingServiceGrpc;
 
   @Test
-  void
-      givenValidCreateBookingRequestWhenCreateBookingIsCalledThenBookingShouldBeCreatedSuccessfully(
-          @Autowired PropertyId propertyId,
-          @Autowired GuestId guestId,
-          @Autowired BookingDates bookingDates) {
+  void givenValidCreateBookingRequestWhenCreateBookingThenBookingShouldBeCreatedSuccessfully(
+      @Autowired PropertyId propertyId,
+      @Autowired GuestId guestId,
+      @Autowired BookingDates bookingDates) {
     var createBookingRequest =
         CreateBookingRequest.newBuilder()
             .setPropertyId(propertyId.value().toString())
@@ -50,14 +49,18 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.createBooking(createBookingRequest);
 
-    assertThat(result.getBookingId()).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(PENDING.name());
+    assertThat(result.getBookingId())
+        .as("Booking ID should not be null when a booking is successfully created")
+        .isNotNull();
+
+    assertThat(result.getStatus())
+        .as("Expected booking status to be 'PENDING' after creation")
+        .isEqualTo(PENDING.name());
   }
 
   @Test
-  void
-      givenValidCancelBookingRequestWhenCancelBookingIsCalledThenBookingShouldBeCancelledSuccessfully(
-          @Autowired BookingId bookingId) {
+  void givenValidCancelBookingRequestWhenCancelBookingThenBookingShouldBeCancelledSuccessfully(
+      @Autowired BookingId bookingId) {
     var cancelBookingRequest =
         CancelBookingRequest.newBuilder()
             .setBookingId(bookingId.value().toString())
@@ -68,14 +71,18 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
 
-    assertThat(result.getBookingId()).isNotNull();
-    assertThat(result.getStatus()).isEqualTo(CANCELLED.name());
+    assertThat(result.getBookingId())
+        .as("Booking ID should not be null after cancellation")
+        .isNotNull();
+
+    assertThat(result.getStatus())
+        .as("Expected booking status to be 'CANCELLED' after cancellation")
+        .isEqualTo(CANCELLED.name());
   }
 
   @Test
-  void
-      givenValidUpdateBookingRequestWhenUpdateBookingIsCalledThenBookingShouldBeUpdatedSuccessfully(
-          @Autowired BookingId bookingId, @Autowired BookingDates bookingDates) {
+  void givenValidUpdateBookingRequestWhenUpdateBookingThenBookingShouldBeUpdatedSuccessfully(
+      @Autowired BookingId bookingId, @Autowired BookingDates bookingDates) {
     var updateBookingRequest =
         UpdateBookingRequest.newBuilder()
             .setBookingId(bookingId.value().toString())
@@ -86,7 +93,13 @@ class GrpcControllerAdapterIntegrationTest {
 
     var result = bookingServiceGrpc.updateBooking(updateBookingRequest);
 
-    assertThat(result.getBookingId()).isNotEmpty().isNotNull();
-    assertThat(result.getStatus()).isEqualTo(PENDING.name());
+    assertThat(result.getBookingId())
+        .as("Booking ID should not be empty or null after update")
+        .isNotEmpty()
+        .isNotNull();
+
+    assertThat(result.getStatus())
+        .as("Expected booking status to remain 'PENDING' after update")
+        .isEqualTo(PENDING.name());
   }
 }
