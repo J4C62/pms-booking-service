@@ -1,0 +1,30 @@
+//[srcMain](../../../index.md)/[com.github.j4c62.pms.booking.application.strategy.types](../index.md)/[CreateBookingCommandStrategy](index.md)/[supports](supports.md)
+
+# supports
+
+[src]\
+open fun [supports](supports.md)(
+command: [Command](../../com.github.j4c62.pms.booking.domain.driver.command/-command/index.md)): [Boolean](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html)
+
+Checks if this strategy supports the given command.
+
+#### Return
+
+`true` if the command is an instance
+of [CreateBookingCommand](../../com.github.j4c62.pms.booking.domain.driver.command.types/-create-booking-command/index.md).
+
+#### Author
+
+Jose Antonio (J4c62)
+
+#### Since
+
+2025-04-30
+
+#### Parameters
+
+src
+
+|         |                       |
+|---------|-----------------------|
+| command | The command to check. |

@@ -22,8 +22,8 @@ import java.util.List;
  * Represents the aggregate root for a booking in the domain model.
  *
  * <p>This class encapsulates the state and behavior of a booking, including operations such as
- * confirmation, cancellation, and date updates. It is designed to be restored from a sequence of
- * domain events (event sourcing pattern).
+ * creation ,confirmation, cancellation, and date updates. It is designed to be restored from a
+ * sequence of domain events (event sourcing pattern).
  *
  * @param bookingId The unique identifier of the booking.
  * @param propertyId The identifier of the property being booked.
