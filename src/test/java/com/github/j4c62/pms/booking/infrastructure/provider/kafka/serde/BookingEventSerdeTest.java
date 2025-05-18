@@ -50,7 +50,7 @@ class BookingEventSerdeTest {
   void givenUnknownEventTypeWhenDeserializedThenThrowsSerializationException() throws IOException {
 
     var json =
-        """
+      """
       {
         "eventType": "UNKNOWN_EVENT"
       }

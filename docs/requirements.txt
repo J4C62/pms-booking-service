@@ -1,0 +1,6 @@
+sphinx>=7.0
+myst-parser
+sphinx-revealjs
+sphinx-copybutton
+sphinx-design
+sphinx-jinja
