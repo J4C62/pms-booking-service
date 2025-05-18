@@ -4,3 +4,4 @@ sphinx-revealjs
 sphinx-copybutton
 sphinx-design
 sphinx-jinja
+shibuya
