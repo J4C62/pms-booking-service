@@ -61,6 +61,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.2.1'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.2.1'
@@ -96,7 +97,8 @@ dependencies {
 
     rewrite("org.openrewrite.recipe:rewrite-rewrite:0.6.0")
     implementation 'com.puppycrawl.tools:checkstyle:10.23.1'
-    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:2.0.0")
+    dokkaPlugin("org.jetbrains.dokka:gfm-plugin:2.0.0")
+
 }
 checkstyle {
     toolVersion = '10.23.1'
@@ -180,13 +182,21 @@ tasks.named("rewriteRun") {
 tasks.withType(JavaCompile).configureEach {
     options.annotationProcessorPath = configurations.annotationProcessor
 }
+tasks.register("upKafka", Exec) {
+    group = "Docker"
+    workingDir = project.rootDir
+    environment("KAFKA_ADVERTISED_LISTENERS", "PLAINTEXT://localhost:9092")
+    commandLine = ["docker", "compose", "-f", "${rootDir}/.docker/docker-compose.yml", "up", "-d", "kafka"]
 
-
-tasks.dokkaGfm {
-    dokkaSourceSets {
-        register("srcMain") {
-            moduleName.set("srcMain")
-            sourceRoots.from("src/main/java")
-        }
-    }
 }
+
+tasks.register("downKafka", Exec) {
+    group = "Docker"
+    workingDir = project.rootDir
+    commandLine = [
+            "docker", "compose",
+            "-f", "${project.rootDir}/.docker/docker-compose.yml",
+            "down"
+    ]
+}
+

@@ -1,14 +1,14 @@
 # PMS Booking Service Documentation
 
-Welcome to the documentation for the Property Management System Booking Service. This documentation is structured
-according to the Diátaxis framework and integrated with MyST.
+<iframe src="slides/overview.html" width="100%" height="300px" style="border:1px solid #ccc;"></iframe>
 
-::::{grid} 6
-:gutter: 0
+---
 
+::::{grid} 2
 :::{grid-item}
+:columns: auto
 
-```{button-link} https://example.com
+```{button-link} tutorial/getting_started.html 
 :color: primary
 :shadow:
 Get Started
@@ -39,7 +39,7 @@ This documentation system is built using Sphinx, following the Diátaxis framewo
 comprehensive information about the PMS Booking Service, including tutorials, how-to guides, technical reference, and
 explanatory content.
 
-:::::{grid} 2
+:::::{grid} 1 1 2 2
 :class-container: sd-equal-height
 :gutter: 2
 
@@ -57,7 +57,7 @@ Background information that explains why things are the way they are.
 ::::
 ::::{grid-item}
 
-```{button-link} https://example.com
+```{button-link} https://diataxis.fr/
 :color: black
 :class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
 :shadow:
@@ -78,19 +78,21 @@ Visualize how the documentation is organized
 
 ## Documentation Sections
 
-::::{grid} 2
+::::{grid} 1 1 2 2
 :class-container: sd-equal-height
 :gutter: 2
 
 :::{grid-item-card}
-:class-header: sd-bg-dark sd-py-2
+:class-header: sd-bg-light sd-bg-dark:dark sd-text-black sd-text-white:dark
 :class-body: sd-py-2
 <i class="i-lucide cricle-help"></i> **Tutorials** \
 *Learning-oriented guides for beginners*
 ^^^^^^
-[Getting Started with PMS Booking](index.md) \
-[Creating Your First Booking](index.md) \
-[Managing users and permissions](index.md)
+
+```{toctree}
+:maxdepth: 1
+tutorial/getting_started.md
+```
 
 ```{button-link} https://example.com
 :color: black
@@ -106,9 +108,12 @@ View All Tutorials
 <i class="i-lucide file-text"></i> **How-to Guides** \
 *Problem-oriented guides for specific tasks*
 ^^^^^^
-Bulk Importing Reservations \
-Setting Up Payment Processing \
-Generating Custom Reports
+
+```{toctree}
+:maxdepth: 1
+guide/how_to_local_mode.md
+guide/how_to_docker_mode.md
+```
 
 ```{button-link} https://example.com
 :color: black

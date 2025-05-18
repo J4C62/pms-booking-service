@@ -23,7 +23,14 @@ spring:
           configuration:
             default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
 
-grpc:
-  server:
-    address: 0.0.0.0
-    port: 9090
+  grpc:
+    server:
+      address: 0.0.0.0
+      port: 9090
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include=*:
