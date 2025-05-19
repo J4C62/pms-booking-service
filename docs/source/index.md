@@ -92,14 +92,13 @@ Visualize how the documentation is organized
 ```{toctree}
 :maxdepth: 1
 tutorial/getting_started.md
-
 tutorial/development_environment.md
 ```
 
 ```{button-link} https://example.com
 :class: sd-border-3 sd-text-black sd-btn-outline-primary 
-
 :shadow:
+
 View All Tutorials
 ```
 
@@ -119,10 +118,9 @@ guide/how_to_docker_mode.md
 ```
 
 ```{button-link} https://example.com
-
 :class: sd-border-3 sd-text-black sd-btn-outline-primary 
-
 :shadow:
+
 View All How-to Guides
 ```
 
@@ -162,10 +160,9 @@ Booking Workflow Explained \
 Security Model
 
 ```{button-link} https://example.com
-
 :class: sd-border-3 sd-text-black sd-btn-outline-primary 
-
 :shadow:
+
 View All Explanation
 ```
 
