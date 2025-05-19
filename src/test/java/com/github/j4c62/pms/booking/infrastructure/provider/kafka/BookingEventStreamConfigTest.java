@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 class BookingEventStreamConfigTest {
 
   @Test
-  void givenBookingEVentWhenBookingEventSupplierApplyThenReturnCorrectPayload(
+  void givenBookingEventWhenBookingEventSupplierApplyThenReturnCorrectPayload(
       @Autowired @Qualifier("bookingCreatedEvent") BookingEvent bookingCreatedEvent,
       @Autowired BookingEventStreamConfig config) {
 

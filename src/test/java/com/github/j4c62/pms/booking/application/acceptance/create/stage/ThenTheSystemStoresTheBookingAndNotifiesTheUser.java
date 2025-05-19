@@ -48,6 +48,5 @@ public class ThenTheSystemStoresTheBookingAndNotifiesTheUser {
         BOOKING_CREATED,
         bookingOutput);
     thenBookingOutputValid(bookingOutput, PENDING, "status is Pending");
-
   }
 }
