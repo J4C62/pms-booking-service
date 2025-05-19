@@ -50,11 +50,11 @@ class BookingEventSerdeTest {
   void givenUnknownEventTypeWhenDeserializedThenThrowsSerializationException() throws IOException {
 
     var json =
-      """
-      {
-        "eventType": "UNKNOWN_EVENT"
-      }
-      """;
+        """
+        {
+           "eventType": "UNKNOWN_EVENT"
+        }
+        """;
     var bytes = json.getBytes(StandardCharsets.UTF_8);
 
     var node = mock(JsonNode.class);

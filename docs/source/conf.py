@@ -54,14 +54,21 @@ exclude_patterns = []
 html_theme = 'shibuya'
 html_static_path = ['_static']
 html_css_files = ['custom-tab.css']
+
 html_theme_options = {
-    "page_layout": "compact",
+    "globaltoc_expand_depth": 1,
+    "github_url": "https://github.com/J4C62/pms-booking-service",
+    "discussion_url": "https://github.com/J4C62/pms-booking-service/discussions",
 }
-html_sidebars = {
-  "**": [
-    "sidebars/localtoc.html"
-  ]
+html_context = {
+    "source_type": "github",
+    "source_user": "J4C62",
+    "source_repo": "pms-booking-service",
+    "source_version": "main",
+    "source_docs_path": "/docs/source/",
 }
+
+
 revealjs_style_theme = "moon"
 revealjs_static_path = ['_static']
 revealjs_script_conf = """

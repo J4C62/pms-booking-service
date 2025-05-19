@@ -3,30 +3,29 @@
 Welcome to **PMS Booking Service**  
 A lightweight booking microservice powered by Java and Kafka.
 
----
+# How to start PMS Booking Service local mode
 
-## Installation
+## Requirements Checklist
 
-Clone the repo and move into the directory:
+Use  [sdkman](https://sdkman.io/) to download 23
+`sdk install java 23.ea.36-open`
 
-```git
-git clone https://github.com/J4C62/pms-booking-service.git
-cd pms-booking-service
-````
+- Java 23 
+- [Gradle](https://gradle.org/)
+- [Docker](https://www.docker.com/) or [Podman](https://podman.io/)
+- [grpcurl](https://github.com/fullstorydev/grpcurl)
+- [git](https://git-scm.com/downloads)
 
----
+## Clone the repository
 
-## Requirements
-
-Make sure the following are installed:
-
-* ✅ Java **23**
-* ✅  <a href="https://gradle.org/" target="_blank" data-preview-link>Gradle</a>
-* ✅  <a href="https://www.docker.com/" target="_blank" data-preview-link>Docker</a>
-  or <a href="https://podman.io/" target="_blank" data-preview-link>Podman</a>
-* ✅ <a href="https://github.com/fullstorydev/grpcurl" target="_blank" data-preview-link>grpcurl</a>
-  or <a href="https://github.com/fullstorydev/grpcui" target="_blank" data-preview-link>
-  grpcui</a>
+* HTTPS method
+  ```bash
+    git clone https://github.com/J4C62/pms-booking-service.git
+  ```
+* SSH method
+  ```bash
+     git clone git@github.com:J4C62/pms-booking-service.git
+  ```
 
 ---
 
@@ -34,13 +33,13 @@ Make sure the following are installed:
 
 Start Kafka first:
 
-```gradle
+```sh
 ./gradlew upKafka
 ```
 
 Then run the app:
 
-```gradle
+```sh
 ./gradlew bootRun
 ```
 
@@ -50,7 +49,7 @@ Then run the app:
 
 ### Health Check (gRPC)
 
-```bash
+```sh
 grpcurl -plaintext localhost:9090 grpc.health.v1.Health/Check
 ````
 

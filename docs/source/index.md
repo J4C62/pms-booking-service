@@ -58,8 +58,7 @@ Background information that explains why things are the way they are.
 ::::{grid-item}
 
 ```{button-link} https://diataxis.fr/
-:color: black
-:class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
+:class: sd-border-3 sd-text-black sd-btn-outline-primary 
 :shadow:
 Learn more about Diátaxis
 ```
@@ -82,9 +81,10 @@ Visualize how the documentation is organized
 :class-container: sd-equal-height
 :gutter: 2
 
-:::{grid-item-card}
+:::{card}
 :class-header: sd-bg-light sd-bg-dark:dark sd-text-black sd-text-white:dark
 :class-body: sd-py-2
+
 <i class="i-lucide cricle-help"></i> **Tutorials** \
 *Learning-oriented guides for beginners*
 ^^^^^^
@@ -92,11 +92,11 @@ Visualize how the documentation is organized
 ```{toctree}
 :maxdepth: 1
 tutorial/getting_started.md
+tutorial/development_environment.md
 ```
 
 ```{button-link} https://example.com
-:color: black
-:class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
+:class: sd-border-3 sd-text-black sd-btn-outline-primary 
 :shadow:
 View All Tutorials
 ```
@@ -116,8 +116,7 @@ guide/how_to_docker_mode.md
 ```
 
 ```{button-link} https://example.com
-:color: black
-:class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
+:class: sd-border-3 sd-text-black sd-btn-outline-primary 
 :shadow:
 View All How-to Guides
 ```
@@ -137,8 +136,7 @@ reference/domain/index.md
 ```
 
 ```{button-link} https://example.com
-:color: black
-:class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
+:class: sd-border-3 sd-text-black sd-btn-outline-primary 
 :shadow:
 View All References
 ```
@@ -156,8 +154,7 @@ Booking Workflow Explained \
 Security Model
 
 ```{button-link} https://example.com
-:color: black
-:class: sd-border-3  sd-text-black sd-btn-outline-primary sd-bg-white hover:sd-bg-gray-50
+:class: sd-border-3 sd-text-black sd-btn-outline-primary 
 :shadow:
 View All Explanation
 ```
