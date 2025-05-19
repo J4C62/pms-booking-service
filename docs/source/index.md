@@ -104,9 +104,10 @@ View All Tutorials
 ```
 
 :::
-:::{grid-item-card}
+:::{card}
 :class-header: sd-bg-light sd-bg-dark:dark sd-text-black sd-text-white:dark
 :class-body: sd-py-2
+
 <i class="i-lucide file-text"></i> **How-to Guides** \
 *Problem-oriented guides for specific tasks*
 ^^^^^^
@@ -126,9 +127,10 @@ View All How-to Guides
 ```
 
 :::
-:::{grid-item-card}
+:::{card}
 :class-header: sd-bg-light sd-bg-dark:dark sd-text-black sd-text-white:dark
 :class-body: sd-py-2
+
 <i class="i-lucide book-open"></i> **Reference** \
 *Information-oriented technical descriptions*
 ^^^^^^
@@ -148,9 +150,10 @@ View All References
 
 :::
 
-:::{grid-item-card}
+:::{card}
 :class-header: sd-bg-light sd-bg-dark:dark sd-text-black sd-text-white:dark
 :class-body: sd-py-2
+
 <i class="i-lucide lightbulb"></i> **Explanation** \
 *Understanding-oriented background information*
 ^^^^^^
