@@ -55,6 +55,7 @@ html_theme = 'shibuya'
 html_static_path = ['_static']
 html_css_files = ['custom-tab.css']
 
+
 html_theme_options = {
     "globaltoc_expand_depth": 1,
     "github_url": "https://github.com/J4C62/pms-booking-service",
@@ -67,6 +68,7 @@ html_context = {
     "source_version": "main",
     "source_docs_path": "/docs/source/",
 }
+
 
 
 revealjs_style_theme = "moon"
