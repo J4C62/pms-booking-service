@@ -79,6 +79,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
     testImplementation "org.testcontainers:kafka:1.19.3"
     testImplementation 'io.grpc:grpc-testing:1.72.0'
 
@@ -199,14 +200,6 @@ tasks.register("downKafka", Exec) {
     ]
 }
 
-if (!System.getenv().containsKey("GITHUB_ACTIONS")) {
-    tasks.named("bootBuildImage") {
-        docker {
-            host = "unix:///run/user/1000/podman/podman.sock"
-            bindHostToBuilder = true
-        }
-    }
-}
 
 bootBuildImage {
     imageName = "ghcr.io/j4c62/pms-booking-service:1.0.0"
