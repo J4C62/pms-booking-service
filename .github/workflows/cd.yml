@@ -47,9 +47,6 @@ jobs:
       - name: Build & Publish OCI image
         run: |
           ./gradlew bootBuildImage \
-            -Ddocker.publishRegistry.username=${{ github.actor }} \
-            -Ddocker.publishRegistry.password=${{ secrets.GHCR_PAT }} \
-            -Ddocker.publishRegistry.url=https://ghcr.io \
             --imageName=${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
             --no-daemon
 
