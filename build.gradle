@@ -202,11 +202,14 @@ tasks.register("downKafka", Exec) {
 
 
 bootBuildImage {
-    imageName = "ghcr.io/j4c62/pms-booking-service:1.0.0"
+    imageName = "ghcr.io/${project.group}/${project.name}:${project.version}"
     docker {
-        builderRegistry {
-            token = System.getenv("GITHUB_TOKEN")
+        publishRegistry {
+            username = System.getenv("GITHUB_ACTOR")
+            password = System.getenv("GITHUB_TOKEN")
+            url = "https://ghcr.io"
         }
     }
 }
+
 
