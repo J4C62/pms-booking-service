@@ -33,7 +33,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GITHUB_TOKEN }}  # Cambiado a GITHUB_TOKEN
 
       - name: Generate version from timestamp
         id: tagger
@@ -48,10 +48,11 @@ jobs:
       - name: Build & Publish OCI image
         run: |
           ./gradlew bootBuildImage \
-            -Ddocker.publishRegistry.username=${{ github.actor }} \
-            -Ddocker.publishRegistry.password=${{ secrets.GHCR_PAT }} \
-            -Ddocker.publishRegistry.url=https://ghcr.io \
+            -Pdocker.publishRegistry.username=${{ github.actor }} \
+            -Pdocker.publishRegistry.password=${{ secrets.GITHUB_TOKEN }} \
+            -Pdocker.publishRegistry.url=https://ghcr.io \
             --imageName=${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
+            --publish \
             --no-daemon
 
       - name: Generate Release Notes
