@@ -210,6 +210,7 @@ bootBuildImage {
             url = project.findProperty("docker.publishRegistry.url") ?: "https://ghcr.io"
         }
     }
+    publish = true
 }
 
 
