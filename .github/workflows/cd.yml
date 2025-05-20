@@ -2,8 +2,7 @@ name: CD - Build & Publish OCI to GHCR
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -33,7 +32,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}  # Cambiado a GITHUB_TOKEN
+          password: ${{ secrets.GHCR_PAT }}
 
       - name: Generate version from timestamp
         id: tagger
@@ -48,11 +47,10 @@ jobs:
       - name: Build & Publish OCI image
         run: |
           ./gradlew bootBuildImage \
-            -Pdocker.publishRegistry.username=${{ github.actor }} \
-            -Pdocker.publishRegistry.password=${{ secrets.GITHUB_TOKEN }} \
-            -Pdocker.publishRegistry.url=https://ghcr.io \
+            -Ddocker.publishRegistry.username=${{ github.actor }} \
+            -Ddocker.publishRegistry.password=${{ secrets.GHCR_PAT }} \
+            -Ddocker.publishRegistry.url=https://ghcr.io \
             --imageName=${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
-            --publish \
             --no-daemon
 
       - name: Generate Release Notes
