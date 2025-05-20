@@ -202,14 +202,6 @@ tasks.register("downKafka", Exec) {
 
 
 bootBuildImage {
-    imageName = "ghcr.io/j4c62/pms-booking-service:${project.version}"
-    docker {
-        publishRegistry {
-            username = project.findProperty("docker.publishRegistry.username") ?: ""
-            password = project.findProperty("docker.publishRegistry.password") ?: ""
-            url = project.findProperty("docker.publishRegistry.url") ?: "https://ghcr.io"
-        }
-    }
     publish = true
 }
 
