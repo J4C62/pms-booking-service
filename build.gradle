@@ -208,3 +208,7 @@ if (!System.getenv().containsKey("GITHUB_ACTIONS")) {
         }
     }
 }
+
+bootBuildImage {
+    imageName = "ghcr.io/j4c62/pms-booking-service:1.0.0"
+}
