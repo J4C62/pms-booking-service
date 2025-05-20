@@ -79,7 +79,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
-    testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
     testImplementation "org.testcontainers:kafka:1.19.3"
     testImplementation 'io.grpc:grpc-testing:1.72.0'
 
@@ -211,4 +210,10 @@ if (!System.getenv().containsKey("GITHUB_ACTIONS")) {
 
 bootBuildImage {
     imageName = "ghcr.io/j4c62/pms-booking-service:1.0.0"
+    docker {
+        builderRegistry {
+            token = System.getenv("GITHUB_TOKEN")
+        }
+    }
 }
+
