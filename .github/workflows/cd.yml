@@ -46,9 +46,13 @@ jobs:
         run: echo "version=${{ steps.tagger.outputs.version }}" > gradle.properties
 
       - name: Build & Publish OCI image
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew bootBuildImage --imageName=${{ env.IMAGE_NAME }}:${{ env.VERSION }} --no-daemon
+        run: |
+          ./gradlew bootBuildImage \
+            -Ddocker.publishRegistry.username=${{ github.actor }} \
+            -Ddocker.publishRegistry.password=${{ secrets.GITHUB_TOKEN }} \
+            -Ddocker.publishRegistry.url=https://ghcr.io \
+            --imageName=${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
+            --no-daemon
 
       - name: Generate Release Notes
         id: changelog
