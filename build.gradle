@@ -200,10 +200,11 @@ tasks.register("downKafka", Exec) {
     ]
 }
 
-tasks.named("bootBuildImage") {
-    imageName = "ghcr.io/j4c62/pms-booking-service:${version}"
-    docker {
-        host = "unix:///run/user/1000/podman/podman.sock"
-        bindHostToBuilder = true
+if (!System.getenv().containsKey("GITHUB_ACTIONS")) {
+    tasks.named("bootBuildImage") {
+        docker {
+            host = "unix:///run/user/1000/podman/podman.sock"
+            bindHostToBuilder = true
+        }
     }
 }
