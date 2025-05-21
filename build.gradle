@@ -201,9 +201,5 @@ tasks.register("downKafka", Exec) {
 }
 
 
-bootBuildImage {
-    publish = true
-}
-
 
 
