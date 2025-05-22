@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="log-path">logs/app.log</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="JsonFile"
+                     fileName="${log-path}"
+                     filePattern="logs/app-%d{yyyy-MM-dd}.log.gz">
+            <JsonLayout complete="false" compact="true" eventEol="true" properties="true"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="com.github.j4c62.pms.booking" level="info" additivity="false">
+            <AppenderRef ref="JsonFile"/>
+        </Logger>
+
+
+        <Root level="error"/>
+    </Loggers>
+</Configuration>

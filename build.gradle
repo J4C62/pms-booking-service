@@ -23,6 +23,16 @@ plugins {
 
 group = 'com.github.j4c62.pms'
 version = '1.0.0'
+
+configurations {
+    configureEach {
+        exclude group: 'ch.qos.logback'
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+    }
+}
+
+
 jacoco {
     toolVersion = "0.8.13"
 }
@@ -62,6 +72,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-autoconfigure'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.2.1'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.2.1'
