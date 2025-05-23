@@ -1,0 +1,50 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: "pms-booking-service"
+          scrape_interval: 5s
+          static_configs:
+            - targets: ["app:5010"]
+        - job_name: "jaeger"
+          scrape_interval: 5s
+          static_configs:
+            - targets: ["jaeger:14269"]
+exporters:
+  debug:
+    verbosity: detailed
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+  otlp:
+    endpoint: "jaeger:4317"
+    tls:
+      insecure: true
+
+processors:
+  resource:
+    attributes:
+      - action: insert
+        key: service_name
+        from_attribute: service.name
+      - action: insert
+        key: loki.resource.labels
+        value: service_name
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [debug, otlp]
+    metrics:
+      receivers: [prometheus]
+      exporters: [debug, prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [resource]
+      exporters: [debug, loki]

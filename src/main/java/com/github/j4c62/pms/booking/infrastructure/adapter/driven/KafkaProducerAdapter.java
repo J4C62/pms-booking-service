@@ -4,6 +4,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class KafkaProducerAdapter implements BookingEventPublisher {
   private final StreamBridge streamBridge;
 
@@ -35,5 +37,9 @@ public class KafkaProducerAdapter implements BookingEventPublisher {
   @Override
   public void publish(@NonNull BookingEvent bookingEvent) {
     streamBridge.send("bookingEventSupplier-out-0", bookingEvent);
+    log.info(
+        "BookingEvent published: type={}, bookingId={}",
+        bookingEvent.eventType(),
+        bookingEvent.bookingId());
   }
 }
