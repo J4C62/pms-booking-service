@@ -6,7 +6,9 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde.BookingEventSerde;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde.BookingEventsSerde;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.utils.Bytes;
 import org.apache.kafka.streams.KeyValue;
@@ -43,6 +45,7 @@ import org.springframework.kafka.support.serializer.JsonSerde;
  * @since 2025-05-02
  */
 @Configuration
+@Slf4j
 public class BookingTopology {
   @Value("${application.booking.kafka.store-name}")
   String storeName;
@@ -59,6 +62,7 @@ public class BookingTopology {
    * @since 2025-05-14
    */
   @Bean
+  @WithSpan("[store] Topology - Kafka stream store")
   public Function<KStream<String, BookingEvent>, KStream<BookingId, BookingEvents>>
       processBookingEvents(
           Serde<BookingEvent> bookingEventSerde, Serde<BookingEvents> bookingEventsSerde) {
@@ -69,7 +73,18 @@ public class BookingTopology {
             .groupByKey(Grouped.with(new JsonSerde<>(BookingId.class), bookingEventSerde))
             .aggregate(
                 BookingEvents::empty,
-                (key, newEvent, aggregate) -> aggregate.append(newEvent),
+                (key, newEvent, aggregate) -> {
+                  log.info(
+                      "[store] Appended event: {} with booking_id:{}",
+                      newEvent.eventType(),
+                      key.value());
+                  log.debug(
+                      "[store] Appended booking_type:{} with booking_id:{} to aggregate:{}",
+                      newEvent,
+                      key,
+                      aggregate);
+                  return aggregate.append(newEvent);
+                },
                 Materialized.<BookingId, BookingEvents, KeyValueStore<Bytes, byte[]>>as(storeName)
                     .withKeySerde(new JsonSerde<>(BookingId.class))
                     .withValueSerde(bookingEventsSerde))

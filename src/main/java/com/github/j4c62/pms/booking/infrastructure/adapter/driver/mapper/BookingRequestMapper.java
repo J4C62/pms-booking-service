@@ -17,6 +17,7 @@ import java.time.format.DateTimeParseException;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * Mapper interface for converting incoming gRPC booking requests into domain-level command objects.
@@ -34,7 +35,7 @@ import org.mapstruct.Mapping;
  * @version 1.0.0
  * @since 2025-04-18
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface BookingRequestMapper {
   /**
    * Maps a gRPC {@code CreateBookingRequest} to a {@code CreateBookingCommand}.

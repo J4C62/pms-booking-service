@@ -1,5 +1,7 @@
 package com.github.j4c62.pms.booking.application.strategy.types;
 
+import static java.util.concurrent.CompletableFuture.runAsync;
+
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapper;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
 import com.github.j4c62.pms.booking.application.strategy.BookingCommandStrategy;
@@ -71,6 +73,9 @@ public class CreateBookingCommandStrategy implements BookingCommandStrategy<Crea
   }
 
   private void publishEvent(BookingAggregate aggregate) {
-    aggregate.bookingEvents().events().forEach(bookingEventPublisher::publish);
+    aggregate
+        .bookingEvents()
+        .events()
+        .forEach(event -> runAsync(() -> bookingEventPublisher.publish(event)));
   }
 }

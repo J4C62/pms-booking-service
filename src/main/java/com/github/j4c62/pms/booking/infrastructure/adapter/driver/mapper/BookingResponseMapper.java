@@ -21,10 +21,7 @@ import org.mapstruct.ReportingPolicy;
  * @version 1.0.0
  * @since 2025-04-18
  */
-@Mapper(
-    componentModel = "spring",
-    unmappedTargetPolicy = ReportingPolicy.IGNORE,
-    unmappedSourcePolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 @SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface BookingResponseMapper {
 
@@ -37,5 +34,15 @@ public interface BookingResponseMapper {
    * @since 2025-04-18
    */
   @Mapping(target = "bookingId", expression = "java(output.bookingId().value().toString())")
+  @Mapping(target = "status", expression = "java(output.status().name())")
+  @Mapping(target = "mergeFrom", ignore = true)
+  @Mapping(target = "clearExtension", ignore = true)
+  @Mapping(target = "clearField", ignore = true)
+  @Mapping(target = "clearOneof", ignore = true)
+  @Mapping(target = "bookingIdBytes", ignore = true)
+  @Mapping(target = "statusBytes", ignore = true)
+  @Mapping(target = "unknownFields", ignore = true)
+  @Mapping(target = "mergeUnknownFields", ignore = true)
+  @Mapping(target = "allFields", ignore = true)
   BookingResponse toResponse(BookingOutput output);
 }

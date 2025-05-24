@@ -12,6 +12,11 @@ spring:
         bookingEventSupplier-out-0:
           destination: booking-events
           contentType: application/json
+          producer:
+            batch.size: 32_768
+            linger.ms: 1-5
+            acks: 1
+            batch-mode: true
         processBookingEvents-in-0:
           destination: booking-events
           contentType: application/json

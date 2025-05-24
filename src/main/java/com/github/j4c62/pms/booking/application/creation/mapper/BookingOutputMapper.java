@@ -3,6 +3,7 @@ package com.github.j4c62.pms.booking.application.creation.mapper;
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * MapStruct mapper interface for converting a {@link BookingAggregate} to a {@link BookingOutput}
@@ -17,7 +18,7 @@ import org.mapstruct.Mapper;
  * @version 1.0.0
  * @since 2025-04-30
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 @SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface BookingOutputMapper {
   /**
