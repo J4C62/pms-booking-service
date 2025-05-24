@@ -63,10 +63,10 @@ public class DriverFixture {
    */
   @Bean
   @Qualifier("updateBookingDatesCommand")
-  public Command updateBookingCommand(BookingId bookingId) {
+  public Command updateBookingCommand(BookingId bookingId, GuestId guestId) {
     var updateReason = "We have to stay seven day more";
     var dates = BookingDates.of(LocalDate.now(), LocalDate.now().plusDays(7));
-    return new UpdateBookingDatesCommand(bookingId, dates, updateReason);
+    return new UpdateBookingDatesCommand(bookingId, guestId, dates, updateReason);
   }
 
   /**
@@ -79,10 +79,9 @@ public class DriverFixture {
    */
   @Bean
   @Qualifier("cancelBookingCommand")
-  public Command cancelBookingCommand(BookingId bookingId) {
+  public Command cancelBookingCommand(BookingId bookingId, GuestId guestId) {
     var cancelReason = "Emergency";
-    var cancelledBy = "guest-1234";
-    return new CancelBookingCommand(bookingId, cancelReason, cancelledBy);
+    return new CancelBookingCommand(bookingId, guestId, cancelReason);
   }
 
   /**

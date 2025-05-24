@@ -26,7 +26,7 @@ public record BookingId(UUID value) {
    * @since 2025-04-23
    */
   public BookingId {
-    requireNonNull(value, "Booking ID cannot be null");
+    requireNonNull(value, "booking_id cannot be null");
   }
 
   /**

@@ -38,24 +38,24 @@ class BookingDatesTest {
 
   @Test
   void givenStartDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
-    thenConstructorThrowsNullPointerException(null, LocalDate.now(), "Start date cannot be null");
+    thenConstructorThrowsNullPointerException(null, LocalDate.now(), "start_date cannot be null");
   }
 
   @Test
   void givenEndDateNullWhenCreateBookingDatesThenThrowNullPointerException() {
-    thenConstructorThrowsNullPointerException(LocalDate.now(), null, "End date cannot be null");
+    thenConstructorThrowsNullPointerException(LocalDate.now(), null, "end_date cannot be null");
   }
 
   @Test
   void givenStartDateAfterEndDateWhenCreateBookingDatesIllegalArgumentException() {
     thenConstructorThrowsIllegalArgumentException(
-        LocalDate.now().plusDays(2), "Start date must be before end date");
+        LocalDate.now().plusDays(2), "start_date must be before end_date");
   }
 
   @Test
   void givenStartDateInPastWhenCreateBookingDatesIllegalArgumentException() {
     thenConstructorThrowsIllegalArgumentException(
-        LocalDate.of(2024, 2, 3), "Start date must not be in the past");
+        LocalDate.of(2024, 2, 3), "start_date must not be in the past");
   }
 
   @Test

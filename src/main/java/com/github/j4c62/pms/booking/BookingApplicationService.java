@@ -1,6 +1,5 @@
 package com.github.j4c62.pms.booking;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -17,7 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2025-04-15
  */
 @SpringBootApplication
-@Slf4j
 public class BookingApplicationService {
   /**
    * Starts the Booking application.
@@ -27,7 +25,6 @@ public class BookingApplicationService {
    * @since 2025-04-15
    */
   public static void main(String[] args) {
-    log.info("Starting app");
     SpringApplication.run(BookingApplicationService.class, args);
   }
 }

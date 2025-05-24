@@ -29,8 +29,8 @@ services:
     volumes:
       - ./otel-collector-config.yml:/etc/otelcol/otel-collector-config.yml
     ports:
-      - "4317:4317"
       - "4318:4318"
+      - "4317:4317"
     networks:
       - observability
   jaeger:
@@ -47,10 +47,11 @@ services:
     networks:
       - observability
 
+
   prometheus:
     image: prom/prometheus
     ports:
-      - "9090:9090"
+      - "8089:9090"
     networks:
       - observability
     volumes:

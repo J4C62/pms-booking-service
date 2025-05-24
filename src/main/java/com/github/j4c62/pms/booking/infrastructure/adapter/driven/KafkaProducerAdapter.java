@@ -2,6 +2,8 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,11 +37,24 @@ public class KafkaProducerAdapter implements BookingEventPublisher {
    * @since 2025-04-18
    */
   @Override
+  @WithSpan("[publisher] Publish Event - Stream Bridge send")
   public void publish(@NonNull BookingEvent bookingEvent) {
-    streamBridge.send("bookingEventSupplier-out-0", bookingEvent);
+    var current = Span.current();
+    current.setAttribute("booking.id", String.valueOf(bookingEvent.bookingId().value()));
+    current.setAttribute("booking.at", String.valueOf(bookingEvent.occurredAt()));
+
+    if (!streamBridge.send("bookingEventSupplier-out-0", bookingEvent)) {
+      log.warn(
+          "[publisher] Event with booking_id:{} not published", bookingEvent.bookingId().value());
+    }
     log.info(
-        "BookingEvent published: type={}, bookingId={}",
+        "[publisher] BookingEvent published: booking_type:{}, booking_id:{}",
         bookingEvent.eventType(),
-        bookingEvent.bookingId());
+        bookingEvent.bookingId().value());
+    log.debug(
+        "[publisher] BookingEvent published: booking_type:{}, booking_id:{}, occurred_at:{}",
+        bookingEvent.eventType(),
+        bookingEvent.bookingId().value(),
+        bookingEvent.occurredAt());
   }
 }

@@ -22,7 +22,6 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRe
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -146,7 +145,7 @@ class BookingApplicationServiceTest {
   @Test
   @Order(3)
   void givenGuestUpdateDatesWhenGuestUpdateDatesThenBookingIsUpdateAndGuestIsNotified(
-      @Autowired BookingDates bookingDates) {
+      @Autowired BookingDates bookingDates, @Autowired GuestId guestId) {
     await()
         .atMost(Duration.ofSeconds(10))
         .untilAsserted(
@@ -163,6 +162,7 @@ class BookingApplicationServiceTest {
     var updateBookingRequest =
         UpdateBookingRequest.newBuilder()
             .setBookingId(createdBookingId)
+            .setGuestId(guestId.value().toString())
             .setNewStartDate(bookingDates.startDate().toString())
             .setNewEndDate(bookingDates.endDate().plusDays(3).toString())
             .setUpdateReason("Change of plans")
@@ -222,7 +222,8 @@ class BookingApplicationServiceTest {
 
   @Test
   @Order(5)
-  void givenGuestCancelBookingWhenGuestCancelTheBookingThenBookingIsCancelAndGuestIsNotified() {
+  void givenGuestCancelBookingWhenGuestCancelTheBookingThenBookingIsCancelAndGuestIsNotified(
+      @Autowired GuestId guestId) {
     await()
         .atMost(Duration.ofSeconds(10))
         .untilAsserted(
@@ -238,9 +239,8 @@ class BookingApplicationServiceTest {
     var cancelBookingRequest =
         CancelBookingRequest.newBuilder()
             .setBookingId(createdBookingId)
+            .setGuestId(guestId.value().toString())
             .setReason("Change of plans")
-            .setCancelledBy("guest-120")
-            .setCancelledAt(Instant.now().toString())
             .build();
 
     var booking = bookingServiceGrpc.cancelBooking(cancelBookingRequest);

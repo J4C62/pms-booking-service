@@ -1,6 +1,7 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception;
+package com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice;
 
 import io.grpc.Status;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.advice.GrpcAdvice;
 import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
 
@@ -18,43 +19,45 @@ import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
  * @since 2025-04-22
  */
 @GrpcAdvice
+@Slf4j
 public class GrpcExceptionAdvice {
   /**
-   * Handles {@link IllegalArgumentException} by returning {@link Status#INVALID_ARGUMENT}.
+   * Handles {@link IllegalArgumentException} {@link IllegalStateException} {@link
+   * NullPointerException} by returning {@link Status#INVALID_ARGUMENT}.
    *
    * @param e the exception thrown during execution
    * @return a gRPC {@link Status} with description and cause
    * @author Jose Antonio (J4c62)
    * @since 2025-04-22
    */
-  @GrpcExceptionHandler(IllegalArgumentException.class)
-  public Status handleInvalidArgument(IllegalArgumentException e) {
+  @GrpcExceptionHandler({
+    IllegalArgumentException.class,
+    IllegalStateException.class,
+    NullPointerException.class
+  })
+  public Status handleInvalidArgument(RuntimeException e) {
+    log.warn(
+        "[advice] RuntimeException - type={}, message={}, cause={}",
+        e.getClass().getSimpleName(),
+        e.getMessage(),
+        e.getCause(),
+        e);
+
     return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
   }
 
   /**
-   * Handles {@link IllegalStateException} by returning {@link Status#INVALID_ARGUMENT}.
+   * Handles {@link Exception} by returning {@link Status#INTERNAL}.
    *
    * @param e the exception thrown during execution
    * @return a gRPC {@link Status} with description and cause
    * @author Jose Antonio (J4c62)
-   * @since 2025-05-03
+   * @since 2025-06-24
    */
-  @GrpcExceptionHandler(IllegalStateException.class)
-  public Status handleInvalidArgument(IllegalStateException e) {
-    return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
+  @GrpcExceptionHandler(Exception.class)
+  public Status handleException(Exception e) {
+    log.warn("[advice] Critical error: cause:{}", e.getMessage());
+    return Status.INTERNAL.withDescription(e.getMessage()).withCause(e);
   }
 
-  /**
-   * Handles {@link NullPointerException} by returning {@link Status#INVALID_ARGUMENT}.
-   *
-   * @param e the exception thrown during execution
-   * @return a gRPC {@link Status} with description and cause
-   * @author Jose Antonio (J4c62)
-   * @since 2025-04-22
-   */
-  @GrpcExceptionHandler(NullPointerException.class)
-  public Status handleNullPointerArgument(NullPointerException e) {
-    return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
-  }
 }

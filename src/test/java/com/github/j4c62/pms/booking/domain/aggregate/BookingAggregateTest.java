@@ -67,7 +67,7 @@ class BookingAggregateTest {
   @Test
   void givenCancelledBookingWhenCancelThenThrowIllegalStateException() {
     var bookingAggregate = getDefaultBookingAggregate(CANCELLED);
-    thenMethodThrows(bookingAggregate::cancel, "Booking already cancelled");
+    thenMethodThrows(bookingAggregate::cancel, "is already cancelled");
   }
 
   @Test
@@ -91,15 +91,14 @@ class BookingAggregateTest {
   @Test
   void givenCancelledBookingWhenConfirmThenThrowIllegalStateException() {
     var bookingAggregate = getDefaultBookingAggregate(CANCELLED);
-    thenMethodThrows(bookingAggregate::confirm, "Cannot confirm a cancelled booking");
+    thenMethodThrows(bookingAggregate::confirm, "is cancelled");
   }
 
   @Test
   void givenCancelledBookingAggregateWhenUpdateDatesThenThrowIllegalStateException() {
     var bookingAggregate = getDefaultBookingAggregate(CANCELLED);
     var newDates = BookingDates.of(LocalDate.now(), LocalDate.now().plusDays(3));
-    thenMethodThrows(
-        () -> bookingAggregate.updateDates(newDates), "Cannot update a cancelled booking");
+    thenMethodThrows(() -> bookingAggregate.updateDates(newDates), "is cancelled");
   }
 
   @Test
