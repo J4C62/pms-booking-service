@@ -54,18 +54,22 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
     current.setAttribute("booking.property", request.getPropertyId());
 
     current.setAttribute("booking.source", "web");
-    log.info(
-        "[controller] guest_id:{} request to reserve a property_id:{} ",
-        request.getGuestId(),
-        request.getPropertyId());
+    if (log.isInfoEnabled()) {
+      log.info(
+          "[controller] guest_id:{} request to reserve a property_id:{} ",
+          request.getGuestId(),
+          request.getPropertyId());
+    }
 
-    log.debug(
-        "[controller] Create booking request -  guest_id:{} | property_id:{}"
-            + " | end_date:{} | start_date:{}",
-        request.getGuestId(),
-        request.getPropertyId(),
-        request.getEndDate(),
-        request.getStartDate());
+    if (log.isDebugEnabled()) {
+      log.debug(
+          "[controller] Create booking request -  guest_id:{} | property_id:{}"
+              + " | end_date:{} | start_date:{}",
+          request.getGuestId(),
+          request.getPropertyId(),
+          request.getEndDate(),
+          request.getStartDate());
+    }
 
     current.addEvent("Starting map");
     var createBookingInput = bookingRequestMapper.toCreateInput(request);

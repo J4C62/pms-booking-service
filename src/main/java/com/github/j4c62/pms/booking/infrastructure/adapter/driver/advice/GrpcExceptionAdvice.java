@@ -36,12 +36,14 @@ public class GrpcExceptionAdvice {
     NullPointerException.class
   })
   public Status handleInvalidArgument(RuntimeException e) {
-    log.warn(
-        "[advice] RuntimeException - type={}, message={}, cause={}",
-        e.getClass().getSimpleName(),
-        e.getMessage(),
-        e.getCause(),
-        e);
+    if (log.isWarnEnabled()) {
+      log.warn(
+          "[advice] RuntimeException - type={}, message={}, cause={}",
+          e.getClass().getSimpleName(),
+          e.getMessage(),
+          e.getCause(),
+          e);
+    }
 
     return Status.INVALID_ARGUMENT.withDescription(e.getMessage()).withCause(e);
   }
@@ -56,7 +58,9 @@ public class GrpcExceptionAdvice {
    */
   @GrpcExceptionHandler(Exception.class)
   public Status handleException(Exception e) {
-    log.warn("[advice] Critical error: cause:{}", e.getMessage());
+    if (log.isWarnEnabled()) {
+      log.warn("[advice] Critical error: cause:{}", e.getMessage());
+    }
     return Status.INTERNAL.withDescription(e.getMessage()).withCause(e);
   }
 

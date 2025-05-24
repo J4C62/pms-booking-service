@@ -56,7 +56,9 @@ public class KafkaStreamsStoreBooking implements BookingEventStore {
     current.addEvent("Getting event form store");
     ReadOnlyKeyValueStore<BookingId, BookingEvents> store =
         queryService.getQueryableStore(storeName, QueryableStoreTypes.keyValueStore());
-    log.info("[store] BookingEvent retrieved: booking_id:{}", bookingId.value());
+    if (log.isInfoEnabled()) {
+      log.info("[store] BookingEvent retrieved: booking_id:{}", bookingId.value());
+    }
     return store.get(bookingId);
   }
 }

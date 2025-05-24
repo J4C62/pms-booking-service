@@ -74,15 +74,19 @@ public class BookingTopology {
             .aggregate(
                 BookingEvents::empty,
                 (key, newEvent, aggregate) -> {
-                  log.info(
-                      "[store] Appended event: {} with booking_id:{}",
-                      newEvent.eventType(),
-                      key.value());
-                  log.debug(
-                      "[store] Appended booking_type:{} with booking_id:{} to aggregate:{}",
-                      newEvent,
-                      key,
-                      aggregate);
+                  if (log.isInfoEnabled()) {
+                    log.info(
+                        "[store] Appended event: {} with booking_id:{}",
+                        newEvent.eventType(),
+                        key.value());
+                  }
+                  if (log.isDebugEnabled()) {
+                    log.debug(
+                        "[store] Appended booking_type:{} with booking_id:{} to aggregate:{}",
+                        newEvent,
+                        key,
+                        aggregate);
+                  }
                   return aggregate.append(newEvent);
                 },
                 Materialized.<BookingId, BookingEvents, KeyValueStore<Bytes, byte[]>>as(storeName)
