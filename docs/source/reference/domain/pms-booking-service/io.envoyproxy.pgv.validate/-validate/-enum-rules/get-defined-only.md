@@ -1,0 +1,17 @@
+//[pms-booking-service](../../../../index.md)/[io.envoyproxy.pgv.validate](../../index.md)/[Validate](../index.md)/[EnumRules](index.md)/[getDefinedOnly](get-defined-only.md)
+
+# getDefinedOnly
+
+[java]\
+open fun [getDefinedOnly](get-defined-only.md)(): [Boolean](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html)
+
+```kotlin
+DefinedOnly specifies that this field must be only one of the defined
+values for this enum, failing on any undefined value.
+
+```
+`optional bool defined_only = 2;`
+
+#### Return
+
+The definedOnly.

@@ -1,0 +1,25 @@
+//[pms-booking-service](../../../../../index.md)/[io.envoyproxy.pgv.validate](../../../index.md)/[Validate](../../index.md)/[MapRules](../index.md)/[Builder](index.md)/[setMinPairs](set-min-pairs.md)
+
+# setMinPairs
+
+[java]\
+open fun [setMinPairs](set-min-pairs.md)(value: [Long](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html)): [Validate.MapRules.Builder](index.md)
+
+```kotlin
+MinPairs specifies that this field must have the specified number of
+KVs at a minimum
+
+```
+`optional uint64 min_pairs = 1;`
+
+#### Return
+
+This builder for chaining.
+
+#### Parameters
+
+java
+
+| | |
+|---|---|
+| value | The minPairs to set. |

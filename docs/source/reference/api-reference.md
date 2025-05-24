@@ -80,43 +80,43 @@ BookingService defines RPC operations to create, update and cancel bookings.
 
 Response containing the result of a booking operation.
 
-| Field     | Type   | Description                                                                                |     
-|-----------|--------|--------------------------------------------------------------------------------------------|
-| bookingId | string | ID UUID type of the booking affected by the operation.                                     |     
-| status    | string | Status of the booking (e.g., &#34;CONFIRMED&#34;, &#34;CANCELLED&#34;, &#34;UPDATED&#34;). |     
+| Field      | Type   | Description                                                                                |     
+|------------|--------|--------------------------------------------------------------------------------------------|
+| booking_id | string | ID UUID type of the booking affected by the operation.                                     |     
+| status     | string | Status of the booking (e.g., &#34;CONFIRMED&#34;, &#34;CANCELLED&#34;, &#34;UPDATED&#34;). |     
 
 ### CancelBookingRequest
 
 Request for cancelling an existing booking.
 
-| Field       | Type   | Description                                                                        |
-|-------------|--------|------------------------------------------------------------------------------------|
-| bookingId   | string | ID UUID type of the booking to cancel.                                             |
-| reason      | string | Reason for cancelling the booking.                                                 |
-| cancelledBy | string | Identifier of the user or service initiating the cancellation.                     |
-| cancelledAt | string | ISO 8601 timestamp of when the booking was cancelled (e.g., 2025-05-14T10:00:00Z). |
+| Field      | Type   | Description                            |
+|------------|--------|----------------------------------------|
+| booking_id | string | ID UUID type of the booking to cancel. |
+| guest_id   | string | ID of the guest cancel the booking.    |
+| reason     | string | Reason for cancelling the booking.     |
 
 ### CreateBookingRequest
 
 Request for creating a booking.
 
-| Field      | Type   | Description                                     |  
-|------------|--------|-------------------------------------------------|  
-| propertyId | string | ID UUID of the property being booked .          |  
-| guestId    | string | ID UUID of the guest making the booking.        |  
-| startDate  | string | Start date of the booking in YYYY-MM-DD format. |  
-| endDate    | string | End date of the booking in YYYY-MM-DD format.   |  
+| Field       | Type   | Description                                     |  
+|-------------|--------|-------------------------------------------------|  
+| property_id | string | ID UUID of the property being booked .          |  
+| guest_id    | string | ID UUID of the guest making the booking.        |  
+| start_date  | string | Start date of the booking in YYYY-MM-DD format. |  
+| end_date    | string | End date of the booking in YYYY-MM-DD format.   |  
 
 ### UpdateBookingRequest
 
 Request to update the dates of an existing booking.
 
-| Field        | Type   | Description                                  |  
-|--------------|--------|----------------------------------------------|  
-| bookingId    | string | ID UUID of the booking to update.            |  
-| newStartDate | string | New start date for the booking (YYYY-MM-DD). |  
-| newEndDate   | string | New end date for the booking (YYYY-MM-DD).   |  
-| updateReason | string | Reason for updating the booking dates.       |  
+| Field          | Type   | Description                                  |  
+|----------------|--------|----------------------------------------------|  
+| booking_id     | string | ID UUID of the booking to update.            |  
+| guest_id       | string | ID of the guest cancel the booking.          |
+| new_start_date | string | New start date for the booking (YYYY-MM-DD). |  
+| new_end_date   | string | New end date for the booking (YYYY-MM-DD).   |  
+| updateReason   | string | Reason for updating the booking dates.       |  
 
 ::::::
 :::::::
@@ -139,10 +139,10 @@ Request to update the dates of an existing booking.
 
 ```sh
 grpcurl -d '{
-"propertyId": "201fc7e8-aed3-4f8c-8998-acce82783ce2",
-"guestId": "5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
-"startDate": "2025-07-01",
-"endDate": "2025-07-05"
+"property_id": "201fc7e8-aed3-4f8c-8998-acce82783ce2",
+"guest_id": "5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
+"start_date": "2025-07-01",
+"end_date": "2025-07-05"
 }' -plaintext localhost:9090 BookingService/CreateBooking
 
 ```
@@ -159,10 +159,10 @@ channel = grpc.insecure_channel("localhost:9090")
 stub = booking_pb2_grpc.BookingServiceStub(channel)
 
 request = booking_pb2.CreateBookingRequest(
-    propertyId="201fc7e8-aed3-4f8c-8998-acce82783ce2",
-    guestId="5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
-    startDate="2025-07-01",
-    endDate="2025-07-05"
+    property_id="201fc7e8-aed3-4f8c-8998-acce82783ce2",
+    guest_id="5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
+    start_date="2025-07-01",
+    end_date="2025-07-05"
 )
 
 response = stub.CreateBooking(request)
@@ -182,10 +182,10 @@ const bookingProto = grpc.loadPackageDefinition(packageDef).BookingService;
 const client = new bookingProto('localhost:9090', grpc.credentials.createInsecure());
 
 client.CreateBooking({
-  propertyId: '201fc7e8-aed3-4f8c-8998-acce82783ce2',
-  guestId: '5724287e-ac14-4cb3-9d6f-4a4825e3dd40',
-  startDate: '2025-07-01',
-  endDate: '2025-07-05'
+  property_id: '201fc7e8-aed3-4f8c-8998-acce82783ce2',
+  guest_id: '5724287e-ac14-4cb3-9d6f-4a4825e3dd40',
+  start_date: '2025-07-01',
+  end_date: '2025-07-05'
 }, (err, response) => {
   if (err) console.error(err);
   else console.log(response);
@@ -206,9 +206,10 @@ client.CreateBooking({
 ```sh
 grpcurl -plaintext \
   -d '{
-    "bookingId": "f403e84a-7ece-4605-b830-59b303cf0dc4",
-    "newStartDate": "2025-06-10",
-    "newEndDate": "2025-06-12",
+    "booking_id": "f403e84a-7ece-4605-b830-59b303cf0dc4",
+    "guest_id: "5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
+    "new_start_date": "2025-06-10",
+    "new_end_date": "2025-06-12",
     "updateReason": "I want to stay more time"
   }' \
   localhost:9090 BookingService/UpdateBooking
@@ -228,10 +229,11 @@ channel = grpc.insecure_channel("localhost:9090")
 stub = booking_pb2_grpc.BookingServiceStub(channel)
 
 request = booking_pb2.UpdateBookingRequest(
-    bookingId="f403e84a-7ece-4605-b830-59b303cf0dc4",
-    newStartDate="2025-06-10",
-    newEndDate="2025-06-12",
-    updateReason="I want to stay more time"
+    booking_id="f403e84a-7ece-4605-b830-59b303cf0dc4",
+    guest_id="5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
+    new_start_date="2025-06-10",
+    new_end_date="2025-06-12",
+    update_reason="I want to stay more time"
 
 )
 
@@ -252,10 +254,11 @@ const bookingProto = grpc.loadPackageDefinition(packageDef).BookingService;
 const client = new bookingProto('localhost:9090', grpc.credentials.createInsecure());
 
 client.UpdateBooking({
-    bookingId: 'f403e84a-7ece-4605-b830-59b303cf0dc4',
-    newStartDate: '2025-06-10',
-    newEndDate: '2025-06-12',
-    updateReason: 'I want to stay more time'
+    booking_id: 'f403e84a-7ece-4605-b830-59b303cf0dc4',
+    guest_id: '5724287e-ac14-4cb3-9d6f-4a4825e3dd40',
+    new_start_date: '2025-06-10',
+    new_end_date: '2025-06-12',
+    update_reason: 'I want to stay more time'
 
 }, (err, response) => {
   if (err) console.error(err);
@@ -278,10 +281,9 @@ client.UpdateBooking({
 ```sh
 grpcurl -plaintext \
   -d '{
-    "bookingId": "f403e84a-7ece-4605-b830-59b303cf0dc4",
+    "booking_id": "f403e84a-7ece-4605-b830-59b303cf0dc4",
+    "guest_id": "5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
     "reason": "Fly delayed",
-    "cancelledBy": "Jhon Doe",
-    "cancelledAt": "2025-05-17"
   }' \
   localhost:9090 BookingService/CancelBooking
 
@@ -300,10 +302,9 @@ channel = grpc.insecure_channel("localhost:9090")
 stub = booking_pb2_grpc.BookingServiceStub(channel)
 
 request = booking_pb2.CancelBookingRequest(
-    bookingId="f403e84a-7ece-4605-b830-59b303cf0dc4",
+    booking_id="f403e84a-7ece-4605-b830-59b303cf0dc4",
+    guest_id= "5724287e-ac14-4cb3-9d6f-4a4825e3dd40",
     reason="Fly delayed",
-    cancelledBy="Jhon Doe",
-    cancelledAt="2025-05-17"
 
 )
 
@@ -324,10 +325,9 @@ const bookingProto = grpc.loadPackageDefinition(packageDef).BookingService;
 const client = new bookingProto('localhost:9090', grpc.credentials.createInsecure());
 
 client.CancelBooking({
-    bookingId: 'f403e84a-7ece-4605-b830-59b303cf0dc4',
+    booking_id: 'f403e84a-7ece-4605-b830-59b303cf0dc4',
+    guest_id: '5724287e-ac14-4cb3-9d6f-4a4825e3dd40',
     reason: 'Fly delayed',
-    cancelledBy: 'Jhon Doe',
-    cancelledAt: '2025-05-17'
 
 }, (err, response) => {
   if (err) console.error(err);

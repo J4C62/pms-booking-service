@@ -1,0 +1,25 @@
+//[pms-booking-service](../../../../../index.md)/[io.envoyproxy.pgv.validate](../../../index.md)/[Validate](../../index.md)/[DoubleRules](../index.md)/[Builder](index.md)/[setLt](set-lt.md)
+
+# setLt
+
+[java]\
+open fun [setLt](set-lt.md)(value: [Double](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html)): [Validate.DoubleRules.Builder](index.md)
+
+```kotlin
+Lt specifies that this field must be less than the specified value,
+exclusive
+
+```
+`optional double lt = 2;`
+
+#### Return
+
+This builder for chaining.
+
+#### Parameters
+
+java
+
+| | |
+|---|---|
+| value | The lt to set. |
