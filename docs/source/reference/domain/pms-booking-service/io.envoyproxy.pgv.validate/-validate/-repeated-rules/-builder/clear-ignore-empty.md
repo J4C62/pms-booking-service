@@ -1,0 +1,17 @@
+//[pms-booking-service](../../../../../index.md)/[io.envoyproxy.pgv.validate](../../../index.md)/[Validate](../../index.md)/[RepeatedRules](../index.md)/[Builder](index.md)/[clearIgnoreEmpty](clear-ignore-empty.md)
+
+# clearIgnoreEmpty
+
+[java]\
+open fun [clearIgnoreEmpty](clear-ignore-empty.md)(): [Validate.RepeatedRules.Builder](index.md)
+
+```kotlin
+IgnoreEmpty specifies that the validation rules of this field should be
+evaluated only if the field is not empty
+
+```
+`optional bool ignore_empty = 5;`
+
+#### Return
+
+This builder for chaining.

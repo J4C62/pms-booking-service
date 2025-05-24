@@ -1,6 +1,7 @@
 package com.github.j4c62.pms.booking.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -56,7 +57,9 @@ public class BookingTestUtils {
       ArgumentCaptor<BookingEvent> argumentCaptor,
       BookingEventType bookingEventType,
       BookingOutput bookingOutput) {
-    verify(bookingEventPublisher, times(times)).publish(argumentCaptor.capture());
+    await()
+        .untilAsserted(
+            () -> verify(bookingEventPublisher, times(times)).publish(argumentCaptor.capture()));
     var bookingCreatedEvent = argumentCaptor.getValue();
     assertThat(bookingCreatedEvent.eventType())
         .as("Expected event type to be %s", bookingEventType)

@@ -1,0 +1,18 @@
+//[pms-booking-service](../../../../index.md)/[io.envoyproxy.pgv.validate](../../index.md)/[Validate](../index.md)/[RepeatedRulesOrBuilder](index.md)/[getItems](get-items.md)
+
+# getItems
+
+[java]\
+abstract fun [getItems](get-items.md)(): [Validate.FieldRules](../-field-rules/index.md)
+
+```kotlin
+Items specifies the constraints to be applied to each item in the field.
+Repeated message fields will still execute validation against each item
+unless skip is specified here.
+
+```
+`optional .validate.FieldRules items = 4;`
+
+#### Return
+
+The items.

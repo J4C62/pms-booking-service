@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * MapStruct mapper interface for converting input commands into domain aggregates.
@@ -25,7 +26,8 @@ import org.mapstruct.Mapping;
  */
 @Mapper(
     componentModel = "spring",
-    imports = {UUID.class, List.class})
+    imports = {UUID.class, List.class},
+    unmappedTargetPolicy = ReportingPolicy.ERROR)
 @SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface BookingAggregateMapper {
   /**

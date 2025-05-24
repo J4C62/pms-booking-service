@@ -25,7 +25,7 @@ public record PropertyId(UUID value) {
    * @since 2025-04-23
    */
   public PropertyId {
-    requireNonNull(value, "Property ID cannot be null");
+    requireNonNull(value, "property_id cannot be null");
   }
 
   /**

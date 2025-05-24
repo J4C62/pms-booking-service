@@ -1,0 +1,17 @@
+//[pms-booking-service](../../../../index.md)/[io.envoyproxy.pgv.validate](../../index.md)/[Validate](../index.md)/[FloatRules](index.md)/[getNotInList](get-not-in-list.md)
+
+# getNotInList
+
+[java]\
+open fun [getNotInList](get-not-in-list.md)(): [List](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/util/List.html)&lt;[Float](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/lang/Float.html)&gt;
+
+```kotlin
+NotIn specifies that this field cannot be equal to one of the specified
+values
+
+```
+`repeated float not_in = 7;`
+
+#### Return
+
+A list containing the notIn.

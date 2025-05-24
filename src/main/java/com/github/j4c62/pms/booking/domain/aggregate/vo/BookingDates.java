@@ -35,8 +35,8 @@ public record BookingDates(LocalDate startDate, LocalDate endDate) {
    * @since 2025-04-25
    */
   public BookingDates {
-    requireNonNull(startDate, "Start date cannot be null");
-    requireNonNull(endDate, "End date cannot be null");
+    requireNonNull(startDate, "start_date cannot be null");
+    requireNonNull(endDate, "end_date cannot be null");
     requireStartBeforeEnd(startDate, endDate);
     requireStartNotInPast(startDate);
   }

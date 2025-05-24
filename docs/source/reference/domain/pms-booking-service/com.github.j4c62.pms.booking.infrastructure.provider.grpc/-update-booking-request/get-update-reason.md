@@ -1,0 +1,16 @@
+//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.infrastructure.provider.grpc](../index.md)/[UpdateBookingRequest](index.md)/[getUpdateReason](get-update-reason.md)
+
+# getUpdateReason
+
+[java]\
+open fun [getUpdateReason](get-update-reason.md)(): [String](https://docs.oracle.com/en/java/javase/23/docs/api/java.base/java/lang/String.html)
+
+```kotlin
+Reason for updating the booking dates.
+
+```
+`string update_reason = 5 [(.validate.rules) = { ... }`
+
+#### Return
+
+The updateReason.
