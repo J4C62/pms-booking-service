@@ -1,4 +1,61 @@
 services:
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/mnt/config/loki-config.yml -config.expand-env=true
+    ports:
+      - "3100:3100"
+    networks:
+      - observability
+    volumes:
+      - ./loki-config.yml:/mnt/config/loki-config.yml
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+      GF_AUTH_DISABLE_LOGIN_FORM: true
+    volumes:
+      - ./grafana.ini:/etc/grafana/grafana.ini
+      - ./datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml
+    networks:
+      - observability
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.91.0
+    command: --config /etc/otelcol/otel-collector-config.yml
+    volumes:
+      - ./otel-collector-config.yml:/etc/otelcol/otel-collector-config.yml
+    ports:
+      - "4318:4318"
+      - "4317:4317"
+    networks:
+      - observability
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # Jaeger UI
+    command: --query.ui-config=/etc/jaeger/jaeger-ui.json --collector.otlp.enabled=true --prometheus.server-url=http://prometheus:9090
+    environment:
+      METRICS_STORAGE_TYPE: "prometheus"
+      PROMETHEUS_QUERY_NORMALIZE_CALLS: true
+      PROMETHEUS_QUERY_NORMALIZE_DURATION: true
+    volumes:
+      - "./jaeger-ui.json:/etc/jaeger/jaeger-ui.json"
+    networks:
+      - observability
+
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "8089:9090"
+    networks:
+      - observability
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
   kafka:
     image: bitnami/kafka:latest
     ports:
@@ -17,24 +74,26 @@ services:
     networks:
       - pms-network
 
-  app:
-    build:
-      context: ../
-      dockerfile: .docker/Dockerfile
-    depends_on:
-      - kafka
-    ports:
-      - "8080:8080"
-      - "9090:9090"
-    environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:9092
-    networks:
-      - pms-network
+#  app:
+#    build:
+#      context: ../
+#      dockerfile: .docker/Dockerfile
+#    depends_on:
+#      - kafka
+#    ports:
+#      - "8080:8080"
+#      - "9090:9090"
+#    environment:
+#      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+#      SPRING_KAFKA_STREAMS_BOOTSTRAP_SERVERS: kafka:9092
+#    networks:
+#      - pms-network
 
 volumes:
   kafka_data: { }
 
 networks:
+  observability:
+    driver: bridge
   pms-network:
     driver: bridge

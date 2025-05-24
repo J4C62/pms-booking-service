@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver;
 
-import com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception.GrpcExceptionAdvice;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice.GrpcExceptionAdvice;
 import com.github.j4c62.pms.booking.shared.DriverFixture;
 import net.devh.boot.grpc.client.autoconfigure.GrpcClientAutoConfiguration;
 import net.devh.boot.grpc.server.autoconfigure.GrpcAdviceAutoConfiguration;

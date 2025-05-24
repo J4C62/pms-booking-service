@@ -5,6 +5,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEven
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 
 /**
  * Command representing an update to the booking dates of an existing booking.
@@ -15,6 +16,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
  * {@link BookingAggregate}.
  *
  * @param bookingId The identifier of the booking to be updated.
+ * @param guestId The identifier of the actor responsible for the update.
  * @param bookingDates The new check-in and check-out dates for the booking.
  * @param updateReason A business-contextual reason for changing the booking dates.
  * @author Jose Antonio (J4c62)
@@ -22,7 +24,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
  * @since 2025-05-01
  */
 public record UpdateBookingDatesCommand(
-    BookingId bookingId, BookingDates bookingDates, String updateReason)
+    BookingId bookingId, GuestId guestId, BookingDates bookingDates, String updateReason)
     implements UpdateBookingCommand {
 
   /**

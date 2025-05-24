@@ -25,7 +25,7 @@ public record GuestId(UUID value) {
    * @since 2025-04-23
    */
   public GuestId {
-    requireNonNull(value, "Guest ID cannot be null");
+    requireNonNull(value, "guest_id cannot be null");
   }
 
   /**

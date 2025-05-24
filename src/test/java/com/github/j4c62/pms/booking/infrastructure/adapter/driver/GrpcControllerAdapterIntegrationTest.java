@@ -12,7 +12,6 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceG
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
-import java.time.Instant;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -60,13 +59,12 @@ class GrpcControllerAdapterIntegrationTest {
 
   @Test
   void givenValidCancelBookingRequestWhenCancelBookingThenBookingShouldBeCancelledSuccessfully(
-      @Autowired BookingId bookingId) {
+      @Autowired BookingId bookingId, @Autowired GuestId guestId) {
     var cancelBookingRequest =
         CancelBookingRequest.newBuilder()
             .setBookingId(bookingId.value().toString())
+            .setGuestId(guestId.value().toString())
             .setReason("Change of plans")
-            .setCancelledBy("guest-120")
-            .setCancelledAt(Instant.now().toString())
             .build();
 
     var result = bookingServiceGrpc.cancelBooking(cancelBookingRequest);
@@ -82,10 +80,13 @@ class GrpcControllerAdapterIntegrationTest {
 
   @Test
   void givenValidUpdateBookingRequestWhenUpdateBookingThenBookingShouldBeUpdatedSuccessfully(
-      @Autowired BookingId bookingId, @Autowired BookingDates bookingDates) {
+      @Autowired BookingId bookingId,
+      @Autowired GuestId guestId,
+      @Autowired BookingDates bookingDates) {
     var updateBookingRequest =
         UpdateBookingRequest.newBuilder()
             .setBookingId(bookingId.value().toString())
+            .setGuestId(guestId.value().toString())
             .setNewStartDate(bookingDates.startDate().toString())
             .setNewEndDate(bookingDates.endDate().toString())
             .setUpdateReason("Change of plans")

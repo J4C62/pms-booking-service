@@ -98,7 +98,8 @@ public record BookingAggregate(
    */
   public BookingAggregate cancel() {
     if (status.isCancelled()) {
-      throw new IllegalStateException("Booking already cancelled");
+      throw new IllegalStateException(
+          "Booking with booking_id:%s is already cancelled".formatted(bookingId.value()));
     }
     return withEvent(createCancelledBookingEvent(bookingId), CANCELLED, bookingDates);
   }
@@ -113,7 +114,8 @@ public record BookingAggregate(
    */
   public BookingAggregate confirm() {
     if (status.isCancelled()) {
-      throw new IllegalStateException("Cannot confirm a cancelled booking");
+      throw new IllegalStateException(
+          "Booking with booking_id:%s is cancelled".formatted(bookingId.value()));
     }
     return withEvent(createConfirmedBookingEvent(bookingId), CONFIRMED, bookingDates);
   }
@@ -140,10 +142,13 @@ public record BookingAggregate(
 
   private void validateUpdatable(BookingDates newDates) {
     if (status.isCancelled()) {
-      throw new IllegalStateException("Cannot update a cancelled booking");
+      throw new IllegalStateException(
+          "Booking with booking_id:%s is cancelled".formatted(bookingId.value()));
     }
     if (bookingDates.isSameAs(newDates)) {
-      throw new IllegalStateException("No changes detected in booking dates");
+      throw new IllegalStateException(
+          "No changes detected in booking dates start_date:%s , end_date:%s"
+              .formatted(bookingDates.startDate(), bookingDates.endDate()));
     }
   }
 }

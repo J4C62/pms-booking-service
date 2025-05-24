@@ -29,7 +29,7 @@ public final class ValidatorHelper {
    */
   public static void requireStartBeforeEnd(LocalDate startDate, LocalDate endDate) {
     if (startDate.isAfter(endDate)) {
-      throw new IllegalArgumentException("Start date must be before end date");
+      throw new IllegalArgumentException("start_date must be before end_date");
     }
   }
 
@@ -43,7 +43,7 @@ public final class ValidatorHelper {
    */
   public static void requireStartNotInPast(LocalDate startDate) {
     if (startDate.isBefore(LocalDate.now())) {
-      throw new IllegalArgumentException("Start date must not be in the past");
+      throw new IllegalArgumentException("start_date must not be in the past");
     }
   }
 }

@@ -131,12 +131,12 @@ $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driven/Kafka
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driven/KafkaStreamsStoreBooking///PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driven/-kafka-streams-store-booking/index.md
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driven/KafkaStreamsStoreBooking/KafkaStreamsStoreBooking/#/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driven/-kafka-streams-store-booking/-kafka-streams-store-booking.md
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driven/KafkaStreamsStoreBooking/getEventsForBooking/#com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driven/-kafka-streams-store-booking/get-events-for-booking.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception////PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/index.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/GrpcExceptionAdvice///PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/-grpc-exception-advice/index.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/GrpcExceptionAdvice/GrpcExceptionAdvice/#/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/-grpc-exception-advice/-grpc-exception-advice.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/GrpcExceptionAdvice/handleInvalidArgument/#java.lang.IllegalArgumentException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/-grpc-exception-advice/handle-invalid-argument.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/GrpcExceptionAdvice/handleInvalidArgument/#java.lang.IllegalStateException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/-grpc-exception-advice/handle-invalid-argument.md
-$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/GrpcExceptionAdvice/handleNullPointerArgument/#java.lang.NullPointerException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/-grpc-exception-advice/handle-null-pointer-argument.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice////PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/index.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/GrpcExceptionAdvice///PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/-grpc-exception-advice/index.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/GrpcExceptionAdvice/GrpcExceptionAdvice/#/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/-grpc-exception-advice/-grpc-exception-advice.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/GrpcExceptionAdvice/handleInvalidArgument/#java.lang.IllegalArgumentException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/-grpc-exception-advice/handle-invalid-argument.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/GrpcExceptionAdvice/handleInvalidArgument/#java.lang.IllegalStateException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/-grpc-exception-advice/handle-invalid-argument.md
+$dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/GrpcExceptionAdvice/handleNullPointerArgument/#java.lang.NullPointerException/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice/-grpc-exception-advice/handle-null-pointer-argument.md
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper////PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/index.md
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/BookingRequestMapper///PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/-booking-request-mapper/index.md
 $dokka.location:com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/BookingRequestMapper/mapBookingDates/#java.lang.String#java.lang.String/PointingToDeclaration/src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/-booking-request-mapper/map-booking-dates.md
@@ -195,7 +195,7 @@ com.github.j4c62.pms.booking.domain.driver.output
 com.github.j4c62.pms.booking.domain.shared.validator
 com.github.j4c62.pms.booking.infrastructure.adapter.driven
 com.github.j4c62.pms.booking.infrastructure.adapter.driver
-com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception
+com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice
 com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper
 com.github.j4c62.pms.booking.infrastructure.provider.kafka
 com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde

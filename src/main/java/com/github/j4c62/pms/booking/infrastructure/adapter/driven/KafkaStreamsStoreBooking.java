@@ -3,8 +3,11 @@ package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class KafkaStreamsStoreBooking implements BookingEventStore {
 
   private final InteractiveQueryService queryService;
@@ -45,9 +49,14 @@ public class KafkaStreamsStoreBooking implements BookingEventStore {
    */
   @Override
   @NonNull
+  @WithSpan("[store] Retrieve Event - QueryService")
   public BookingEvents getEventsForBooking(@NonNull BookingId bookingId) {
+    var current = Span.current();
+    current.setAttribute("booking.id", String.valueOf(bookingId.value()));
+    current.addEvent("Getting event form store");
     ReadOnlyKeyValueStore<BookingId, BookingEvents> store =
         queryService.getQueryableStore(storeName, QueryableStoreTypes.keyValueStore());
+    log.info("[store] BookingEvent retrieved: booking_id:{}", bookingId.value());
     return store.get(bookingId);
   }
 }

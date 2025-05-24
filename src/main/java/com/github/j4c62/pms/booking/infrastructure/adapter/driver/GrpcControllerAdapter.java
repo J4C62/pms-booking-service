@@ -9,7 +9,10 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRe
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import io.grpc.stub.StreamObserver;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 /**
@@ -36,17 +39,39 @@ import net.devh.boot.grpc.server.service.GrpcService;
  */
 @GrpcService
 @RequiredArgsConstructor
+@Slf4j
 public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImplBase {
   private final BookingHandler bookingHandler;
   private final BookingRequestMapper bookingRequestMapper;
   private final BookingResponseMapper bookingResponseMapper;
 
   @Override
+  @WithSpan("[controller] Create Booking - GRPC request")
   public void createBooking(
       CreateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-    var createBookingInput = bookingRequestMapper.toCreateInput(request);
-    var createBookingOutput = bookingHandler.handle(createBookingInput);
+    var current = Span.current();
+    current.setAttribute("booking.guest", request.getGuestId());
+    current.setAttribute("booking.property", request.getPropertyId());
 
+    current.setAttribute("booking.source", "web");
+    log.info(
+        "[controller] guest_id:{} request to reserve a property_id:{} ",
+        request.getGuestId(),
+        request.getPropertyId());
+
+    log.debug(
+        "[controller] Create booking request -  guest_id:{} | property_id:{}"
+            + " | end_date:{} | start_date:{}",
+        request.getGuestId(),
+        request.getPropertyId(),
+        request.getEndDate(),
+        request.getStartDate());
+
+    current.addEvent("Starting map");
+    var createBookingInput = bookingRequestMapper.toCreateInput(request);
+    current.addEvent("Starting handle");
+    var createBookingOutput = bookingHandler.handle(createBookingInput);
+    current.addEvent("Sending response");
     var response = bookingResponseMapper.toResponse(createBookingOutput);
     responseObserver.onNext(response);
     responseObserver.onCompleted();

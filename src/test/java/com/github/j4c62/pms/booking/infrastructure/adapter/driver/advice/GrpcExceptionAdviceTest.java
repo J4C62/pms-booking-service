@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception;
+package com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,12 +35,12 @@ class GrpcExceptionAdviceTest {
   }
 
   @Test
-  void givenNullPointerExceptionWhenHandledThenReturnsInvalidArgumentStatus() {
-    var ex = new NullPointerException("Null found");
-    var status = advice.handleNullPointerArgument(ex);
+  void givenNullPointerExceptionWhenHandledThenReturnsInternalStatus() {
+    var ex = new Exception("Null found");
+    var status = advice.handleException(ex);
 
     assertThat(status.getCause())
-        .as("Expected cause of StatusRuntimeException to be the original NullPointerException")
+        .as("Expected cause of InternalRuntimeException to be the original NullPointerException")
         .isEqualTo(ex);
   }
 }

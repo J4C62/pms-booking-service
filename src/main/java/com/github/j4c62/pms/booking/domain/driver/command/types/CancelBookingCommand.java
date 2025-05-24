@@ -4,6 +4,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEven
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 
 /**
  * Command representing a request to cancel an existing booking.
@@ -14,13 +15,13 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
  * {@link BookingAggregate}.
  *
  * @param bookingId The identifier of the booking to cancel.
+ * @param guestId The identifier of the actor responsible for the cancellation.
  * @param reason The reason for the cancellation.
- * @param cancelledBy The actor (e.g., user or system) who initiated the cancellation.
  * @author Jose Antonio (J4c62)
  * @version 1.0.0
  * @since 2025-04-17
  */
-public record CancelBookingCommand(BookingId bookingId, String reason, String cancelledBy)
+public record CancelBookingCommand(BookingId bookingId, GuestId guestId, String reason)
     implements UpdateBookingCommand {
 
   /**

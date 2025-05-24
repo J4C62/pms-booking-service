@@ -22,7 +22,7 @@
 | [com.github.j4c62.pms.booking.domain.shared.validator](src-main/com.github.j4c62.pms.booking.domain.shared.validator/index.md)                                 |
 | [com.github.j4c62.pms.booking.infrastructure.adapter.driven](src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driven/index.md)                     |
 | [com.github.j4c62.pms.booking.infrastructure.adapter.driver](src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver/index.md)                     |
-| [com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception](src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/index.md) |
+| [com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice](src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception/index.md) |
 | [com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper](src-main/com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper/index.md)       |
 | [com.github.j4c62.pms.booking.infrastructure.provider.kafka](src-main/com.github.j4c62.pms.booking.infrastructure.provider.kafka/index.md)                     |
 | [com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde](src-main/com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde/index.md)         |

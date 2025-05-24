@@ -1,5 +1,7 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper;
 
+import static java.time.format.DateTimeFormatter.ofPattern;
+
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
@@ -11,6 +13,7 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRe
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -82,7 +85,11 @@ public interface BookingRequestMapper {
    * @since 2025-04-24
    */
   default BookingId mapBookingId(String id) {
-    return new BookingId(UUID.fromString(id));
+    if (id.isEmpty()) {
+      throw new IllegalArgumentException(
+          "booking_id:'%s' invalid, valid format UUID".formatted(id));
+    }
+    return BookingId.of(UUID.fromString(id));
   }
 
   /**
@@ -94,7 +101,11 @@ public interface BookingRequestMapper {
    * @since 2025-04-24
    */
   default PropertyId mapPropertyId(String id) {
-    return new PropertyId(UUID.fromString(id));
+    if (id.isEmpty()) {
+      throw new IllegalArgumentException(
+          "property_id:'%s' invalid, valid format UUID".formatted(id));
+    }
+    return PropertyId.of(UUID.fromString(id));
   }
 
   /**
@@ -106,7 +117,11 @@ public interface BookingRequestMapper {
    * @since 2025-04-24
    */
   default GuestId mapGuestId(String id) {
-    return new GuestId(UUID.fromString(id));
+    if (id.isEmpty()) {
+      throw new IllegalArgumentException("guest_id:'%s' invalid, valid format UUID".formatted(id));
+    }
+
+    return GuestId.of(UUID.fromString(id));
   }
 
   /**
@@ -118,7 +133,12 @@ public interface BookingRequestMapper {
    * @since 2025-04-24
    */
   default LocalDate toLocalDate(String date) {
-    return LocalDate.parse(date);
+    try {
+      return LocalDate.parse(date, ofPattern("yyyy-MM-dd"));
+    } catch (DateTimeParseException e) {
+      throw new IllegalArgumentException(
+          "Invalid date format: expected yyyy-MM-dd, got '%s'".formatted(date), e);
+    }
   }
 
   /**
@@ -131,6 +151,6 @@ public interface BookingRequestMapper {
    * @since 2025-04-24
    */
   default BookingDates mapBookingDates(String startDate, String endDate) {
-    return new BookingDates(toLocalDate(startDate), toLocalDate(endDate));
+    return BookingDates.of(toLocalDate(startDate), toLocalDate(endDate));
   }
 }
