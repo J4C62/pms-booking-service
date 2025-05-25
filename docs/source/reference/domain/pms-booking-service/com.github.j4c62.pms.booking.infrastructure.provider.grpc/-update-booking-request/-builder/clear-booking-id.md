@@ -9,7 +9,8 @@ open fun [clearBookingId](clear-booking-id.md)(): [UpdateBookingRequest.Builder]
 ID of the booking to update.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

@@ -9,7 +9,8 @@ open fun [setBookingIdBytes](set-booking-id-bytes.md)(value: ByteString): [Updat
 ID of the booking to update.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

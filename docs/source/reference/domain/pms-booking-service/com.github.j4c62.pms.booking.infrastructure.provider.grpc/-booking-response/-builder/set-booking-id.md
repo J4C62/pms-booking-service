@@ -9,7 +9,8 @@ open fun [setBookingId](set-booking-id.md)(value: [String](https://docs.oracle.c
 ID of the booking affected by the operation.
 
 ```
-`string booking_id = 1;`
+
+`string bookingId = 1;`
 
 #### Return
 

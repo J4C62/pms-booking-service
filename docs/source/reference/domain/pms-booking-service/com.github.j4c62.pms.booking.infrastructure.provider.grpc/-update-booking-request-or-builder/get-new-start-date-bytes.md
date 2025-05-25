@@ -9,7 +9,8 @@ abstract fun [getNewStartDateBytes](get-new-start-date-bytes.md)(): ByteString
 New start date for the booking (YYYY-MM-DD).
 
 ```
-`string new_start_date = 3 [(.validate.rules) = { ... }`
+
+`string newStartDate = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

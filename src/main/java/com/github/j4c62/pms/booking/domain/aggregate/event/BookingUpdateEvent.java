@@ -24,7 +24,7 @@ import java.time.Instant;
  * @since 2025-04-23
  */
 public record BookingUpdateEvent(
-    BookingId bookingId, BookingDates newDates, Instant occurredAt, BookingEventType eventType)
+    BookingId bookingId, BookingDates newDates, BookingEventType eventType, Instant occurredAt)
     implements BookingEvent {
   /**
    * Applies this update event to the given {@link BookingAggregate}, replacing the current booking

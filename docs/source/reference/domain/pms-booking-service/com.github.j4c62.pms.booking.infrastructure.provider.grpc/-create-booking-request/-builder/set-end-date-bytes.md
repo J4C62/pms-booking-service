@@ -9,7 +9,8 @@ open fun [setEndDateBytes](set-end-date-bytes.md)(value: ByteString): [CreateBoo
 End date of the booking in YYYY-MM-DD format.
 
 ```
-`string end_date = 4 [(.validate.rules) = { ... }`
+
+`string endDate = 4 [(.validate.rules) = { ... }`
 
 #### Return
 

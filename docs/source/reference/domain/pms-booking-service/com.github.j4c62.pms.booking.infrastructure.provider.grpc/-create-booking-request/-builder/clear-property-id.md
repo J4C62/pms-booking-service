@@ -9,7 +9,8 @@ open fun [clearPropertyId](clear-property-id.md)(): [CreateBookingRequest.Builde
 ID of the property being booked (e.g., hotel room).
 
 ```
-`string property_id = 1 [(.validate.rules) = { ... }`
+
+`string propertyId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

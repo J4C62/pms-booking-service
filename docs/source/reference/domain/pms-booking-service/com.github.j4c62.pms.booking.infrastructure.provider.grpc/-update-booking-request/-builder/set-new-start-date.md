@@ -9,7 +9,8 @@ open fun [setNewStartDate](set-new-start-date.md)(value: [String](https://docs.o
 New start date for the booking (YYYY-MM-DD).
 
 ```
-`string new_start_date = 3 [(.validate.rules) = { ... }`
+
+`string newStartDate = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

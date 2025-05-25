@@ -9,7 +9,8 @@ open fun [clearNewStartDate](clear-new-start-date.md)(): [UpdateBookingRequest.B
 New start date for the booking (YYYY-MM-DD).
 
 ```
-`string new_start_date = 3 [(.validate.rules) = { ... }`
+
+`string newStartDate = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

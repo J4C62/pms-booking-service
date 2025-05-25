@@ -9,7 +9,8 @@ abstract fun [getPropertyIdBytes](get-property-id-bytes.md)(): ByteString
 ID of the property being booked (e.g., hotel room).
 
 ```
-`string property_id = 1 [(.validate.rules) = { ... }`
+
+`string propertyId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

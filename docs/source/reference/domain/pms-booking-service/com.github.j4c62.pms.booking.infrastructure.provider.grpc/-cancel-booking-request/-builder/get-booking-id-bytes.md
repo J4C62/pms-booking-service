@@ -9,7 +9,8 @@ open fun [getBookingIdBytes](get-booking-id-bytes.md)(): ByteString
 ID of the booking to cancel.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

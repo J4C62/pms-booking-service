@@ -9,7 +9,8 @@ open fun [clearBookingId](clear-booking-id.md)(): [BookingResponse.Builder](inde
 ID of the booking affected by the operation.
 
 ```
-`string booking_id = 1;`
+
+`string bookingId = 1;`
 
 #### Return
 

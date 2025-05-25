@@ -9,7 +9,8 @@ open fun [setGuestIdBytes](set-guest-id-bytes.md)(value: ByteString): [CreateBoo
 ID of the guest making the booking.
 
 ```
-`string guest_id = 2 [(.validate.rules) = { ... }`
+
+`string guestId = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

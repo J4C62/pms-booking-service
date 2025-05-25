@@ -9,7 +9,8 @@ open fun [getGuestIdBytes](get-guest-id-bytes.md)(): ByteString
 ID of the guest making the booking.
 
 ```
-`string guest_id = 2 [(.validate.rules) = { ... }`
+
+`string guestId = 2 [(.validate.rules) = { ... }`
 
 #### Return
 
