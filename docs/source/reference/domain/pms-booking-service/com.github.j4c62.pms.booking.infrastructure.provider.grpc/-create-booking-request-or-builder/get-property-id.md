@@ -9,7 +9,8 @@ abstract fun [getPropertyId](get-property-id.md)(): [String](https://docs.oracle
 ID of the property being booked (e.g., hotel room).
 
 ```
-`string property_id = 1 [(.validate.rules) = { ... }`
+
+`string propertyId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

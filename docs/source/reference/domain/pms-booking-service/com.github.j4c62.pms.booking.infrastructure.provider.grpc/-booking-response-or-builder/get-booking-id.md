@@ -9,7 +9,8 @@ abstract fun [getBookingId](get-booking-id.md)(): [String](https://docs.oracle.c
 ID of the booking affected by the operation.
 
 ```
-`string booking_id = 1;`
+
+`string bookingId = 1;`
 
 #### Return
 

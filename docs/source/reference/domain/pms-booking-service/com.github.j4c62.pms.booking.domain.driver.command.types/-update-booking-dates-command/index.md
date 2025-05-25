@@ -23,7 +23,6 @@ java
 | | |
 |---|---|
 | bookingId | The identifier of the booking to be updated. |
-| guestId | The identifier of the actor responsible for the update. |
 | bookingDates | The new check-in and check-out dates for the booking. |
 | updateReason | A business-contextual reason for changing the booking dates. |
 

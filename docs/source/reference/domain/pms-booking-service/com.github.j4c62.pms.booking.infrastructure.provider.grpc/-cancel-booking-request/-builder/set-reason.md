@@ -9,7 +9,8 @@ open fun [setReason](set-reason.md)(value: [String](https://docs.oracle.com/en/j
 Reason for cancelling the booking.
 
 ```
-`string reason = 3 [(.validate.rules) = { ... }`
+
+`string reason = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

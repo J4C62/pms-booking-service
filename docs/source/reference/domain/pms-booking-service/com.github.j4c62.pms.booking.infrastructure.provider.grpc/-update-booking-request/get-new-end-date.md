@@ -9,7 +9,8 @@ open fun [getNewEndDate](get-new-end-date.md)(): [String](https://docs.oracle.co
 New end date for the booking (YYYY-MM-DD).
 
 ```
-`string new_end_date = 4 [(.validate.rules) = { ... }`
+
+`string newEndDate = 3 [(.validate.rules) = { ... }`
 
 #### Return
 

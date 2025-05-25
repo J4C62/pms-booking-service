@@ -9,7 +9,8 @@ open fun [getBookingId](get-booking-id.md)(): [String](https://docs.oracle.com/e
 ID of the booking to cancel.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

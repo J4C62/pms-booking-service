@@ -9,7 +9,8 @@ open fun [setEndDate](set-end-date.md)(value: [String](https://docs.oracle.com/e
 End date of the booking in YYYY-MM-DD format.
 
 ```
-`string end_date = 4 [(.validate.rules) = { ... }`
+
+`string endDate = 4 [(.validate.rules) = { ... }`
 
 #### Return
 

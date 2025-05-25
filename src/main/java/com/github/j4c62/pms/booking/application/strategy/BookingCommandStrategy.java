@@ -1,5 +1,8 @@
 package com.github.j4c62.pms.booking.application.strategy;
 
+import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
+import com.github.j4c62.pms.booking.application.dispatcher.BookingEventDispatcher;
+import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 
@@ -16,7 +19,8 @@ import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
  * @version 1.0.0
  * @since 2025-04-30
  */
-public interface BookingCommandStrategy<T extends Command> {
+public sealed interface BookingCommandStrategy<T extends Command>
+    permits UpdateBookingCommandStrategy, CreateBookingCommandStrategy {
   /**
    * Determines whether this strategy is capable of handling the given command.
    *
@@ -38,4 +42,26 @@ public interface BookingCommandStrategy<T extends Command> {
    * @since 2025-04-30
    */
   BookingOutput execute(T command);
+
+  /**
+   * Default helper method to apply a command to a {@link BookingAggregate}, dispatch the resulting
+   * domain events, and map the result to a {@link BookingOutput}.
+   *
+   * @param command The domain command to apply.
+   * @param aggregate The aggregate to which the command will be applied.
+   * @param dispatcher The event dispatcher responsible for publishing domain events.
+   * @param outputMapper The mapper to convert the updated aggregate into a {@link BookingOutput}.
+   * @return The final output DTO representing the command result.
+   * @author Jose Antonio (J4c62)
+   * @since 2025-05-25
+   */
+  default BookingOutput handle(
+      T command,
+      BookingAggregate aggregate,
+      BookingEventDispatcher dispatcher,
+      BookingOutputMapper outputMapper) {
+    var updatedAggregate = command.applyTo(aggregate);
+    dispatcher.dispatch(updatedAggregate);
+    return outputMapper.toBookingOutput(updatedAggregate);
+  }
 }

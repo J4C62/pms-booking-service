@@ -9,7 +9,8 @@ open fun [getUpdateReason](get-update-reason.md)(): [String](https://docs.oracle
 Reason for updating the booking dates.
 
 ```
-`string update_reason = 5 [(.validate.rules) = { ... }`
+
+`string updateReason = 4 [(.validate.rules) = { ... }`
 
 #### Return
 

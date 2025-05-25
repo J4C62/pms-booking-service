@@ -9,7 +9,8 @@ open fun [setBookingId](set-booking-id.md)(value: [String](https://docs.oracle.c
 ID of the booking to update.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

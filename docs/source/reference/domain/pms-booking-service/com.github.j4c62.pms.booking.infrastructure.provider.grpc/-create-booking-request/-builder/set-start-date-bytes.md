@@ -9,7 +9,8 @@ open fun [setStartDateBytes](set-start-date-bytes.md)(value: ByteString): [Creat
 Start date of the booking in YYYY-MM-DD format.
 
 ```
-`string start_date = 3 [(.validate.rules) = { ... }`
+
+`string startDate = 3 [(.validate.rules) = { ... }`
 
 #### Return
 
