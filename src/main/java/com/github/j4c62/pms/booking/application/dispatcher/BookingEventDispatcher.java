@@ -1,5 +1,7 @@
 package com.github.j4c62.pms.booking.application.dispatcher;
 
+import static java.util.concurrent.CompletableFuture.runAsync;
+
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,9 @@ public record BookingEventDispatcher(BookingEventPublisher bookingEventPublisher
    * @since 2025-05-25
    */
   public void dispatch(BookingAggregate aggregate) {
-    aggregate.bookingEvents().events().forEach(bookingEventPublisher::publish);
+    aggregate
+        .bookingEvents()
+        .events()
+        .forEach(event -> runAsync(() -> bookingEventPublisher.publish(event)));
   }
 }
