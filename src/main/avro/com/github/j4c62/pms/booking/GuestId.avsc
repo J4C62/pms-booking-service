@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "GuestIdDTO",
+  "namespace": "com.github.j4c62.pms.booking",
+  "fields": [
+    {
+      "name": "value",
+      "type": "string"
+    }
+  ]
+}

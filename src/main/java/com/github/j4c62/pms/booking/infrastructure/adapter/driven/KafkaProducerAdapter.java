@@ -42,8 +42,12 @@ public class KafkaProducerAdapter implements BookingEventPublisher {
     var current = Span.current();
     current.setAttribute("booking.id", String.valueOf(bookingEvent.bookingId().value()));
     current.setAttribute("booking.at", String.valueOf(bookingEvent.occurredAt()));
+    var isSend = streamBridge.send("bookingEventSupplier-out-0", bookingEvent);
+    log(bookingEvent, isSend);
+  }
 
-    if (!streamBridge.send("bookingEventSupplier-out-0", bookingEvent)) {
+  private static void log(BookingEvent bookingEvent, boolean isSend) {
+    if (!isSend) {
       if (log.isWarnEnabled()) {
         log.warn(
             "[publisher] Event with booking_id:{} not published", bookingEvent.bookingId().value());

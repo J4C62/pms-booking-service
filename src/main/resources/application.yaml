@@ -6,20 +6,31 @@ application:
 spring:
   application:
     name: booking-service
+
   cloud:
     stream:
       bindings:
         bookingEventSupplier-out-0:
           destination: booking-events
-          contentType: application/json
+          contentType: application/avro
           producer:
-            batch.size: 32_768
-            linger.ms: 1-5
+            batch:
+              size: 16384
+            linger:
+              ms: 90
             acks: 1
-            batch-mode: true
+
         processBookingEvents-in-0:
           destination: booking-events
-          contentType: application/json
+          contentType: application/avro
+
+      schemaRegistryClient:
+        endpoint: http://localhost:8990
+
+      schema:
+        avro:
+          dynamicSchemaGenerationEnabled: true
+
     kafka:
       streams:
         binder:
@@ -32,4 +43,3 @@ spring:
     server:
       address: 0.0.0.0
       port: 9090
-

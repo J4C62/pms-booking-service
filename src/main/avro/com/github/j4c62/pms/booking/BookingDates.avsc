@@ -1,0 +1,15 @@
+{
+  "type": "record",
+  "name": "BookingDatesDTO",
+  "namespace": "com.github.j4c62.pms.booking",
+  "fields": [
+    {
+      "name": "startDate",
+      "type": "string"
+    },
+    {
+      "name": "endDate",
+      "type": "string"
+    }
+  ]
+}

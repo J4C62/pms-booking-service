@@ -3,9 +3,11 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 import static org.springframework.messaging.support.MessageBuilder.withPayload;
 
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.infrastructure.provider.kafka.mapper.BookingEventAvroMapper;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.function.Function;
+import org.springframework.cloud.stream.schema.client.SchemaRegistryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
@@ -38,15 +40,18 @@ public class BookingEventStreamConfig {
    * @since 2025-05-14
    */
   @Bean
-  public Function<BookingEvent, Message<BookingEvent>> bookingEventSupplier() {
+  public Function<BookingEvent, Message<?>> bookingEventSupplier(
+      SchemaRegistryClient schemaRegistryClient, BookingEventAvroMapper mapper) {
+
     return bookingEvent ->
-        withPayload(bookingEvent)
+        withPayload(mapper.mapToAvro(bookingEvent))
             .setHeader("ce-id", UUID.randomUUID().toString())
             .setHeader("ce-type", bookingEvent.eventType().getEventType())
             .setHeader("ce-source", "booking-service")
             .setHeader("ce-specversion", "1.0")
             .setHeader("ce-time", OffsetDateTime.now().toString())
-            .setHeader(MessageHeaders.CONTENT_TYPE, "application/json")
+            .setHeader(MessageHeaders.CONTENT_TYPE, "application/avro")
             .build();
   }
+
 }

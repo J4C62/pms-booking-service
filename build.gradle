@@ -9,6 +9,7 @@ plugins {
     id 'com.tngtech.jgiven.gradle-plugin' version '2.0.2'
     id 'org.openrewrite.rewrite' version '7.6.1'
     id 'org.jetbrains.dokka' version "2.0.0"
+    id 'com.github.davidmc24.gradle.plugin.avro' version '1.8.0'
 }
 
 group = 'com.github.j4c62.pms'
@@ -40,9 +41,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
+
     // Kafka Streams
     implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.2.1'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.2.1'
+    implementation 'org.springframework.cloud:spring-cloud-stream-schema:2.2.1.RELEASE'
+    implementation 'org.apache.avro:avro:1.12.0'
 
     // OpenTelemetry
     otelAgent "io.opentelemetry.javaagent:opentelemetry-javaagent:2.16.0"
@@ -173,12 +177,19 @@ protobuf {
         }
     }
 }
-
+avro {
+    stringType = "String"
+    fieldVisibility = "PRIVATE"
+    enableDecimalLogicalType = true
+}
 sourceSets {
     main {
         java {
             srcDirs 'build/generated/source/proto/main/grpc',
                     'build/generated/source/proto/main/java'
+        }
+        resources {
+            srcDirs += ['src/main/avro']
         }
     }
 }
@@ -198,7 +209,7 @@ tasks.register("upKafka", Exec) {
     group = "Docker"
     workingDir = project.rootDir
     environment("KAFKA_ADVERTISED_LISTENERS", "PLAINTEXT://localhost:9092")
-    commandLine "docker", "compose", "-f", "${rootDir}/.docker/docker-compose.yml", "up", "-d", "kafka"
+    commandLine "docker", "compose", "-f", "${rootDir}/.docker/docker-compose.yml", "up", "-d", "kafka", "schema-registry"
 }
 
 tasks.register("downKafka", Exec) {

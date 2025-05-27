@@ -2,6 +2,7 @@ package com.github.j4c62.pms.booking;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.schema.client.EnableSchemaRegistryClient;
 
 /**
  * Main entry point for the Booking microservice application.
@@ -16,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2025-04-15
  */
 @SpringBootApplication
+@EnableSchemaRegistryClient
 public class BookingApplicationService {
   /**
    * Starts the Booking application.
