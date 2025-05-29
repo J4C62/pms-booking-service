@@ -111,7 +111,8 @@ jacocoTestReport {
                     '**/grpc/**',
                     '**/*MapperImpl.class',
                     '**/io/envoyproxy/pgv/validate/**',
-                    '**/BookingApplicationService.class'
+                    '**/BookingApplicationService.class',
+                    '**/build/generated-main-avro-java/**'
             ])
         }))
     }
@@ -132,6 +133,7 @@ checkstyleMain {
     exclude '**/grpc/**'
     exclude '**/*MapperImpl.class'
     exclude '**/io/envoyproxy/pgv/validate/**'
+    exclude '**/build/generated-main-avro-java/**'
 }
 
 pmd {
@@ -142,6 +144,7 @@ pmd {
 tasks.withType(Pmd).configureEach {
     exclude '**/grpc/**'
     exclude '**/io/envoyproxy/pgv/validate/**'
+    exclude '**/build/generated-main-avro-java/**'
 }
 tasks.check {
     dependsOn "pmdMain"
