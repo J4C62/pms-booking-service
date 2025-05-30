@@ -7,6 +7,8 @@ spring:
   application:
     name: booking-service
 
+  kafka:
+    bootstrap-servers: localhost:9094
   cloud:
     stream:
       bindings:
@@ -19,17 +21,19 @@ spring:
             linger:
               ms: 90
             acks: 1
+            configuration:
+              schema.registry.url: http://localhost:8990
+              value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
         processBookingEvents-in-0:
           destination: booking-events
           contentType: application/avro
+          consumer:
+            configuration:
+              schema.registry.url: http://localhost:8990
+              value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
 
-      schemaRegistryClient:
-        endpoint: http://localhost:8990
 
-      schema:
-        avro:
-          dynamicSchemaGenerationEnabled: true
 
     kafka:
       streams:
@@ -37,8 +41,8 @@ spring:
           stateStoreRetry:
             maxAttempts: 5
           configuration:
+            schema.registry.url: http://localhost:8990
             default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-
   grpc:
     server:
       address: 0.0.0.0
