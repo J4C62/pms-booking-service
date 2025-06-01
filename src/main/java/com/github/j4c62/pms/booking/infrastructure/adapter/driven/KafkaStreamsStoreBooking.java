@@ -59,11 +59,6 @@ public class KafkaStreamsStoreBooking implements BookingEventStore {
     if (log.isInfoEnabled()) {
       log.info("[store] BookingEvent retrieved: booking_id:{}", bookingId.value());
     }
-    try {
-      BookingEvents bookingEvents = store.get(bookingId);
-    } catch (Exception ex) {
-      log.error(ex.getLocalizedMessage());
-    }
-    return null;
+    return store.get(bookingId);
   }
 }
