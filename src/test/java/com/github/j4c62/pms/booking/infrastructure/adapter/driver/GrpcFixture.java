@@ -29,7 +29,8 @@ import org.springframework.context.annotation.Import;
   GrpcClientAutoConfiguration.class,
   GrpcAdviceAutoConfiguration.class,
   GrpcExceptionAdvice.class,
-  DriverFixture.class
+  DriverFixture.class,
+  GrpcCallExecutor.class,
 })
 @ComponentScan("com.github.j4c62.pms.booking.infrastructure.adapter.driver.mapper")
 public class GrpcFixture {}

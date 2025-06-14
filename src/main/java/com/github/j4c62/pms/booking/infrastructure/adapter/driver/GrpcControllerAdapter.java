@@ -9,7 +9,6 @@ import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRe
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.UpdateBookingRequest;
 import io.grpc.stub.StreamObserver;
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,64 +43,103 @@ public class GrpcControllerAdapter extends BookingServiceGrpc.BookingServiceImpl
   private final BookingHandler bookingHandler;
   private final BookingRequestMapper bookingRequestMapper;
   private final BookingResponseMapper bookingResponseMapper;
+  private final GrpcCallExecutor grpcCallExecutor;
 
   @Override
   @WithSpan("[controller] Create Booking - GRPC request")
   public void createBooking(
       CreateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-    var current = Span.current();
-    current.setAttribute("booking.guest", request.getGuestId());
-    current.setAttribute("booking.property", request.getPropertyId());
+    grpcCallExecutor.execute(
+        "createBooking",
+        request,
+        responseObserver,
+        req -> {
+          var input = bookingRequestMapper.toCreateInput(req);
+          var output = bookingHandler.handle(input);
+          return bookingResponseMapper.toResponse(output);
+        },
+        span -> {
+          span.setAttribute("booking.guest", request.getGuestId());
+          span.setAttribute("booking.property", request.getPropertyId());
+          span.setAttribute("booking.source", "web");
+        },
+        req -> {
+          log.info(
+              "[controller] guest_id:{} requested to reserve property_id:{}",
+              req.getGuestId(),
+              req.getPropertyId());
 
-    current.setAttribute("booking.source", "web");
-    if (log.isInfoEnabled()) {
-      log.info(
-          "[controller] guest_id:{} request to reserve a property_id:{} ",
-          request.getGuestId(),
-          request.getPropertyId());
-    }
-
-    if (log.isDebugEnabled()) {
-      log.debug(
-          "[controller] Create booking request -  guest_id:{} | property_id:{}"
-              + " | end_date:{} | start_date:{}",
-          request.getGuestId(),
-          request.getPropertyId(),
-          request.getEndDate(),
-          request.getStartDate());
-    }
-
-    current.addEvent("Starting map");
-    var createBookingInput = bookingRequestMapper.toCreateInput(request);
-    current.addEvent("Starting handle");
-    var createBookingOutput = bookingHandler.handle(createBookingInput);
-    current.addEvent("Sending response");
-    var response = bookingResponseMapper.toResponse(createBookingOutput);
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+          log.debug(
+              "[controller] Create booking request -  guest_id:{} | property_id:{}"
+                  + " | end_date:{} | start_date:{}",
+              req.getGuestId(),
+              req.getPropertyId(),
+              req.getEndDate(),
+              req.getStartDate());
+        });
   }
 
   @Override
+  @WithSpan("[controller] Cancel Booking - GRPC request")
   public void cancelBooking(
       CancelBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-
-    var cancelBookingInput = bookingRequestMapper.toCancelInput(request);
-    var cancelBookingOutput = bookingHandler.handle(cancelBookingInput);
-
-    var response = bookingResponseMapper.toResponse(cancelBookingOutput);
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+    grpcCallExecutor.execute(
+        "cancelBooking",
+        request,
+        responseObserver,
+        req -> {
+          var input = bookingRequestMapper.toCancelInput(req);
+          var output = bookingHandler.handle(input);
+          return bookingResponseMapper.toResponse(output);
+        },
+        span -> {
+          span.setAttribute("booking.guest", request.getGuestId());
+          span.setAttribute("booking.id", request.getBookingId());
+          span.setAttribute("booking.source", "web");
+        },
+        req -> {
+          log.info(
+              "[controller] guest_id:{} cancel booking_id:{}",
+              req.getGuestId(),
+              req.getBookingId());
+          log.debug(
+              "[controller] Cancel booking request -  " + "guest_id:{} | booking_id:{} | reason:{}",
+              req.getGuestId(),
+              req.getBookingId(),
+              req.getReason());
+        });
   }
 
   @Override
+  @WithSpan("[controller] Update Booking - GRPC request")
   public void updateBooking(
       UpdateBookingRequest request, StreamObserver<BookingResponse> responseObserver) {
-
-    var updateBookingInput = bookingRequestMapper.toUpdateInput(request);
-    var updateBookingOutput = bookingHandler.handle(updateBookingInput);
-
-    var response = bookingResponseMapper.toResponse(updateBookingOutput);
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+    grpcCallExecutor.execute(
+        "updateBooking",
+        request,
+        responseObserver,
+        req -> {
+          var input = bookingRequestMapper.toUpdateInput(req);
+          var output = bookingHandler.handle(input);
+          return bookingResponseMapper.toResponse(output);
+        },
+        span -> {
+          span.setAttribute("booking.guest", request.getGuestId());
+          span.setAttribute("booking.id", request.getBookingId());
+          span.setAttribute("booking.source", "web");
+        },
+        req -> {
+          log.info(
+              "[controller] guest_id:{} request to reserve a booking_id:{} ",
+              req.getGuestId(),
+              req.getBookingId());
+          log.debug(
+              "[controller] Update booking request -  "
+                  + "guest_id:{} | booking_id:{} | new_start_date:{} | new_end_date:{}",
+              req.getGuestId(),
+              req.getBookingId(),
+              req.getNewStartDate(),
+              req.getNewEndDate());
+        });
   }
 }

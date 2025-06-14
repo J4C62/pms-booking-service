@@ -16,6 +16,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.driven.KafkaProducerAdapter;
+import com.github.j4c62.pms.booking.infrastructure.adapter.driver.GrpcCallExecutor;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.BookingServiceGrpc;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CancelBookingRequest;
 import com.github.j4c62.pms.booking.infrastructure.provider.grpc.CreateBookingRequest;
@@ -55,7 +56,11 @@ import org.testcontainers.utility.DockerImageName;
       "grpc.server.port=-1",
       "grpc.client.inProcess.address=in-process:flowTest"
     })
-@Import({AggregateFixture.class, KafkaProducerAdapter.class})
+@Import({
+  AggregateFixture.class,
+  KafkaProducerAdapter.class,
+  GrpcCallExecutor.class,
+})
 class BookingApplicationServiceTest {
 
   private static final KafkaContainer kafka =
