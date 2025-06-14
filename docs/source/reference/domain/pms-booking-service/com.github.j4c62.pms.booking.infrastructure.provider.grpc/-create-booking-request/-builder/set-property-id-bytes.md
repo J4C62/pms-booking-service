@@ -9,7 +9,8 @@ open fun [setPropertyIdBytes](set-property-id-bytes.md)(value: ByteString): [Cre
 ID of the property being booked (e.g., hotel room).
 
 ```
-`string property_id = 1 [(.validate.rules) = { ... }`
+
+`string propertyId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

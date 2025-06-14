@@ -9,7 +9,8 @@ open fun [setGuestId](set-guest-id.md)(value: [String](https://docs.oracle.com/e
 ID of the guest making the booking.
 
 ```
-`string guest_id = 2 [(.validate.rules) = { ... }`
+
+`string guestId = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

@@ -9,7 +9,8 @@ open fun [clearBookingId](clear-booking-id.md)(): [CancelBookingRequest.Builder]
 ID of the booking to cancel.
 
 ```
-`string booking_id = 1 [(.validate.rules) = { ... }`
+
+`string bookingId = 1 [(.validate.rules) = { ... }`
 
 #### Return
 

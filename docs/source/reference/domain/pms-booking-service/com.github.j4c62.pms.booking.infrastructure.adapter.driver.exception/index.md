@@ -1,4 +1,4 @@
-//[pms-booking-service](../../index.md)/[com.github.j4c62.pms.booking.infrastructure.adapter.driver.advice](index.md)
+//[pms-booking-service](../../index.md)/[com.github.j4c62.pms.booking.infrastructure.adapter.driver.exception](index.md)
 
 # Package-level declarations
 

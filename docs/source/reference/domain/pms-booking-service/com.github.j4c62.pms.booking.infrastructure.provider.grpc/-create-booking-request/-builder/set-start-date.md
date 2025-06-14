@@ -9,7 +9,8 @@ open fun [setStartDate](set-start-date.md)(value: [String](https://docs.oracle.c
 Start date of the booking in YYYY-MM-DD format.
 
 ```
-`string start_date = 3 [(.validate.rules) = { ... }`
+
+`string startDate = 3 [(.validate.rules) = { ... }`
 
 #### Return
 

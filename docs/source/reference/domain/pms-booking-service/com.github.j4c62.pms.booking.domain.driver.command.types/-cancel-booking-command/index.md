@@ -20,11 +20,11 @@ Jose Antonio (J4c62)
 
 java
 
-| | |
-|---|---|
-| bookingId | The identifier of the booking to cancel. |
-| guestId | The identifier of the actor responsible for the cancellation. |
-| reason | The reason for the cancellation. |
+|             |                                                                  |
+|-------------|------------------------------------------------------------------|
+| bookingId   | The identifier of the booking to cancel.                         |
+| reason      | The reason for the cancellation.                                 |
+| cancelledBy | The actor (e.g., user or system) who initiated the cancellation. |
 
 ## Constructors
 

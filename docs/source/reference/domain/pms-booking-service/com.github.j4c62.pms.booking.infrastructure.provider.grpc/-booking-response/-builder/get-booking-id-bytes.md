@@ -9,7 +9,8 @@ open fun [getBookingIdBytes](get-booking-id-bytes.md)(): ByteString
 ID of the booking affected by the operation.
 
 ```
-`string booking_id = 1;`
+
+`string bookingId = 1;`
 
 #### Return
 

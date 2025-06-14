@@ -13,6 +13,8 @@ import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 import java.time.Instant;
 
 /**
@@ -43,7 +45,7 @@ public final class BookingEventFactory {
    * @since 2025-05-11
    */
   public static BookingEvent createUpdateBookingEvent(BookingId bookingId, BookingDates newDates) {
-    return new BookingUpdateEvent(bookingId, newDates, Instant.now(), BOOKING_UPDATED);
+    return new BookingUpdateEvent(bookingId, newDates, BOOKING_UPDATED, Instant.now());
   }
 
   /**
@@ -56,7 +58,7 @@ public final class BookingEventFactory {
    * @since 2025-05-11
    */
   public static BookingEvent createCancelledBookingEvent(BookingId bookingId) {
-    return new BookingCancelledEvent(bookingId, Instant.now(), BOOKING_CANCELLED);
+    return new BookingCancelledEvent(bookingId, BOOKING_CANCELLED, Instant.now());
   }
 
   /**
@@ -87,7 +89,29 @@ public final class BookingEventFactory {
         aggregate.propertyId(),
         aggregate.guestId(),
         aggregate.bookingDates(),
-        Instant.now(),
-        BOOKING_CREATED);
+        BOOKING_CREATED,
+        Instant.now());
+  }
+
+  /**
+   * Creates a {@link BookingCreatedEvent} with explicit values for all required properties.
+   *
+   * <p>This method is useful when constructing a creation event outside an aggregate context, such
+   * as in DTO-to-domain mappings, test setups, or event replay scenarios. It ensures that the
+   * created event has a valid structure and consistent metadata.
+   *
+   * @param bookingId The unique identifier of the booking.
+   * @param propertyId The identifier of the property associated with the booking.
+   * @param guestId The identifier of the guest who made the booking.
+   * @param bookingDates The booking date range (start and end).
+   * @return A {@code BookingCreatedEvent} instance with {@code BOOKING_CREATED} type and the
+   *     current timestamp.
+   * @author Jose Antonio (J4c62)
+   * @since 2025-05-25
+   */
+  public static BookingEvent createBookingEvent(
+      BookingId bookingId, PropertyId propertyId, GuestId guestId, BookingDates bookingDates) {
+    return new BookingCreatedEvent(
+        bookingId, propertyId, guestId, bookingDates, BOOKING_CREATED, Instant.now());
   }
 }

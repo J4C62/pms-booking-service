@@ -9,7 +9,8 @@ open fun [getReasonBytes](get-reason-bytes.md)(): ByteString
 Reason for cancelling the booking.
 
 ```
-`string reason = 3 [(.validate.rules) = { ... }`
+
+`string reason = 2 [(.validate.rules) = { ... }`
 
 #### Return
 

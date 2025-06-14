@@ -1,10 +1,10 @@
 package com.github.j4c62.pms.booking.shared;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createConfirmedBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createUpdateBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CREATED;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 
 import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
@@ -15,7 +15,6 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -168,11 +167,5 @@ public class AggregateFixture {
       BookingEvents bookingEvents) {
     return createBookingAggregate(
         bookingId, propertyId, guestId, bookingDates, PENDING, bookingEvents);
-  }
-
-  private BookingEvent createBookingEvent(
-      BookingId bookingId, PropertyId propertyId, GuestId guestId, BookingDates bookingDates) {
-    return new BookingCreatedEvent(
-        bookingId, propertyId, guestId, bookingDates, Instant.now(), BOOKING_CREATED);
   }
 }

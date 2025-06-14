@@ -9,7 +9,8 @@ abstract fun [getUpdateReasonBytes](get-update-reason-bytes.md)(): ByteString
 Reason for updating the booking dates.
 
 ```
-`string update_reason = 5 [(.validate.rules) = { ... }`
+
+`string updateReason = 4 [(.validate.rules) = { ... }`
 
 #### Return
 

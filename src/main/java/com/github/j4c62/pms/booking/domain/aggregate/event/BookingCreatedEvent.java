@@ -34,8 +34,8 @@ public record BookingCreatedEvent(
     PropertyId propertyId,
     GuestId guestId,
     BookingDates bookingDates,
-    Instant occurredAt,
-    BookingEventType eventType)
+    BookingEventType eventType,
+    Instant occurredAt)
     implements BookingEvent {
   /**
    * Applies this event to create a new {@link BookingAggregate}.

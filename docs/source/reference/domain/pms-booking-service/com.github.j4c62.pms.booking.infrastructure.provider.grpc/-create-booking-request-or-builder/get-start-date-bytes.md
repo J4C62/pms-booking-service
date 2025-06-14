@@ -9,7 +9,8 @@ abstract fun [getStartDateBytes](get-start-date-bytes.md)(): ByteString
 Start date of the booking in YYYY-MM-DD format.
 
 ```
-`string start_date = 3 [(.validate.rules) = { ... }`
+
+`string startDate = 3 [(.validate.rules) = { ... }`
 
 #### Return
 

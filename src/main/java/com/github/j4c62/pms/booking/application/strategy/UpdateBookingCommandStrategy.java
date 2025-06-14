@@ -1,17 +1,14 @@
-package com.github.j4c62.pms.booking.application.strategy.types;
+package com.github.j4c62.pms.booking.application.strategy;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate.restoreFrom;
 import static java.util.Objects.requireNonNull;
 
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
-import com.github.j4c62.pms.booking.application.strategy.BookingCommandStrategy;
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
-import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
+import com.github.j4c62.pms.booking.application.dispatcher.BookingEventDispatcher;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.command.types.UpdateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,12 +27,11 @@ import org.springframework.stereotype.Component;
  * @since 2025-04-30
  */
 @Component
-@RequiredArgsConstructor
-public class UpdateBookingCommandStrategy implements BookingCommandStrategy<UpdateBookingCommand> {
-  private final BookingEventStore bookingEventStore;
-
-  private final BookingEventPublisher bookingEventPublisher;
-  private final BookingOutputMapper bookingOutputMapper;
+public record UpdateBookingCommandStrategy(
+    BookingEventStore bookingEventStore,
+    BookingEventDispatcher bookingEventDispatcher,
+    BookingOutputMapper bookingOutputMapper)
+    implements BookingCommandStrategy<UpdateBookingCommand> {
 
   /**
    * Indicates whether this strategy supports the given command.
@@ -71,12 +67,6 @@ public class UpdateBookingCommandStrategy implements BookingCommandStrategy<Upda
   public BookingOutput execute(UpdateBookingCommand command) {
     var events = bookingEventStore.getEventsForBooking(command.bookingId());
     var aggregate = restoreFrom(requireNonNull(events));
-    var updatedAggregate = command.applyTo(aggregate);
-    publishEvent(updatedAggregate);
-    return bookingOutputMapper.toBookingOutput(updatedAggregate);
-  }
-
-  private void publishEvent(BookingAggregate aggregate) {
-    aggregate.bookingEvents().events().forEach(bookingEventPublisher::publish);
+    return handle(command, aggregate, bookingEventDispatcher, bookingOutputMapper);
   }
 }

@@ -22,7 +22,7 @@ import java.time.Instant;
  * @since 2025-04-23
  */
 public record BookingCancelledEvent(
-    BookingId bookingId, Instant occurredAt, BookingEventType eventType) implements BookingEvent {
+    BookingId bookingId, BookingEventType eventType, Instant occurredAt) implements BookingEvent {
 
   /**
    * Applies this event to the given {@link BookingAggregate}, marking it as cancelled.
