@@ -72,17 +72,7 @@ services:
       - kafka_data:/bitnami/kafka
     networks:
       - pms-network
-  schema-registry:
-    image: confluentinc/cp-schema-registry:7.6.0
-    ports:
-      - "8990:8081"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
-    depends_on:
-      - kafka
-    networks:
-      - pms-network
+
 
 #  app:
 #    build:

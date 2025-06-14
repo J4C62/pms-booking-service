@@ -11,37 +11,27 @@ spring:
     bootstrap-servers: localhost:9094
   cloud:
     stream:
-      function:
-        definition: bookingEventSupplier;processBookingEvents
       bindings:
         bookingEventSupplier-out-0:
           destination: booking-events
+          contentType: application/json
           producer:
-            use-native-encoding: true
+            batch:
+              size: 16384
+            linger:
+              ms: 90
+            acks: 1
+
         processBookingEvents-in-0:
           destination: booking-events
+          contentType: application/json
 
     kafka:
-      bindings:
-        bookingEventSupplier-out-0:
-          producer:
-            configuration:
-              schema.registry.url: http://localhost:8990
-              value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
-        processBookingEvents-in-0:
-          consumer:
-            configuration:
-              schema.registry.url: http://localhost:8990
-              specific.avro.reader: true
-              value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-              key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-
       streams:
         binder:
-          configuration:
-            schema.registry.url: http://localhost:8990
-            specific.avro.reader: true
-            default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          stateStoreRetry:
+            maxAttempts: 5
+
   grpc:
     server:
       address: 0.0.0.0
