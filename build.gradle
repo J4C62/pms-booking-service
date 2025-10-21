@@ -59,8 +59,8 @@ dependencies {
     // gRPC
     implementation 'net.devh:grpc-server-spring-boot-starter:3.1.0.RELEASE'
     implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
-    runtimeOnly 'io.grpc:grpc-netty-shaded:1.72.0'
-    implementation 'io.grpc:grpc-protobuf:1.72.0'
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.75.0'
+    implementation 'io.grpc:grpc-protobuf:1.75.0'
     implementation 'io.grpc:grpc-stub:1.71.0'
     implementation 'build.buf:protovalidate:0.8.0'
 
@@ -79,7 +79,7 @@ dependencies {
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers:3.3.8'
     testImplementation "org.testcontainers:kafka:1.19.3"
-    testImplementation 'io.grpc:grpc-testing:1.72.0'
+    testImplementation 'io.grpc:grpc-testing:1.75.0'
     testImplementation 'com.tngtech.jgiven:jgiven-junit5:2.0.2'
     testImplementation 'com.tngtech.jgiven:jgiven-spring-junit5:2.0.2'
     testImplementation 'com.tngtech.jgiven:jgiven-html5-report:2.0.2'
@@ -169,7 +169,7 @@ protobuf {
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.72.0'
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.75.0'
         }
         javapgv {
             artifact = "build.buf.protoc-gen-validate:protoc-gen-validate:1.2.1"
