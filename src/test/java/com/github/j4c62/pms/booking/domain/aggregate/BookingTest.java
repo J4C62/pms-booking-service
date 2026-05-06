@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.Booking.restoreFrom;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createConfirmedBookingEvent;

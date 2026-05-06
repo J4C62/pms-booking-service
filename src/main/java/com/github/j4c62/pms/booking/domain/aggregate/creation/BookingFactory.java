@@ -20,8 +20,8 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
  * @version 1.0.0
  * @since 2025-05-01
  */
-public final class BookingAggregateFactory {
-  private BookingAggregateFactory() {}
+public final class BookingFactory {
+  private BookingFactory() {}
 
   /**
    * Creates a new {@link Booking} with the provided parameters.

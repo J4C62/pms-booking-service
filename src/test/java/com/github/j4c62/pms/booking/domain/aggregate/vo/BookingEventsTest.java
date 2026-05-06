@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.vo;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 import static org.assertj.core.api.Assertions.assertThat;
 
