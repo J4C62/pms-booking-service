@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import org.mapstruct.ReportingPolicy;
 /**
  * MapStruct mapper interface for converting input commands into domain aggregates.
  *
- * <p>This mapper transforms a {@link CreateBookingCommand} into a {@link BookingAggregate},
+ * <p>This mapper transforms a {@link CreateBookingCommand} into a {@link Booking},
  * initializing only the essential fields for the creation of a new booking. Non-mapped fields such
  * as status and bookingEvents are handled elsewhere in the domain logic.
  *
@@ -31,7 +31,7 @@ import org.mapstruct.ReportingPolicy;
 @SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface BookingAggregateMapper {
   /**
-   * Maps a {@link CreateBookingCommand} to a {@link BookingAggregate}.
+   * Maps a {@link CreateBookingCommand} to a {@link Booking}.
    *
    * <ul>
    *   <li>Generates a new {@code BookingId} using a random UUID.
@@ -48,5 +48,5 @@ public interface BookingAggregateMapper {
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "bookingEvents", ignore = true)
   @Mapping(target = "updateDates", ignore = true)
-  BookingAggregate toAggregate(CreateBookingCommand input);
+  Booking toAggregate(CreateBookingCommand input);
 }

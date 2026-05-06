@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.domain.driver.command.types;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 
@@ -12,7 +12,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
  * <p>This command is part of the booking modification command set and carries metadata about the
  * reason and the actor responsible for the cancellation. It produces a {@link
  * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent} that is applied to the
- * {@link BookingAggregate}.
+ * {@link Booking}.
  *
  * @param bookingId The identifier of the booking to cancel.
  * @param guestId The identifier of the actor responsible for the cancellation.
@@ -25,7 +25,7 @@ public record CancelBookingCommand(BookingId bookingId, GuestId guestId, String 
     implements UpdateBookingCommand {
 
   /**
-   * Applies this command to a {@link BookingAggregate} by generating and applying a {@link
+   * Applies this command to a {@link Booking} by generating and applying a {@link
    * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent}.
    *
    * @param aggregate The current state of the booking aggregate.
@@ -34,7 +34,7 @@ public record CancelBookingCommand(BookingId bookingId, GuestId guestId, String 
    * @since 2025-05-02
    */
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     var event = createCancelledBookingEvent(bookingId);
     return event.applyTo(aggregate);
   }

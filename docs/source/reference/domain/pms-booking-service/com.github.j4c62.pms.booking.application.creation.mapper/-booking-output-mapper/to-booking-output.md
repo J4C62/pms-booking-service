@@ -3,7 +3,7 @@
 # toBookingOutput
 
 [java]\
-abstract fun [toBookingOutput](to-booking-output.md)(bookingAggregate: [BookingAggregate](../../com.github.j4c62.pms.booking.domain.aggregate/-booking-aggregate/index.md)): [BookingOutput](../../com.github.j4c62.pms.booking.domain.driver.output/-booking-output/index.md)
+abstract fun [toBookingOutput](to-booking-output.md)(booking: [BookingAggregate](../../com.github.j4c62.pms.booking.domain.aggregate/-booking-aggregate/index.md)): [BookingOutput](../../com.github.j4c62.pms.booking.domain.driver.output/-booking-output/index.md)
 
 Maps a [BookingAggregate](../../com.github.j4c62.pms.booking.domain.aggregate/-booking-aggregate/index.md) to a [BookingOutput](../../com.github.j4c62.pms.booking.domain.driver.output/-booking-output/index.md) DTO.
 
@@ -25,4 +25,4 @@ java
 
 | | |
 |---|---|
-| bookingAggregate | The domain aggregate representing the booking state. |
+| booking | The domain aggregate representing the booking state. |

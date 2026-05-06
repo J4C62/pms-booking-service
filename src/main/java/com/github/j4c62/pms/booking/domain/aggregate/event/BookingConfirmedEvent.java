@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.event;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import java.time.Instant;
@@ -8,7 +8,7 @@ import java.time.Instant;
 /**
  * Event representing that a booking has been confirmed.
  *
- * <p>This event is applied to a {@link BookingAggregate} to transition its status to confirmed.
+ * <p>This event is applied to a {@link Booking} to transition its status to confirmed.
  *
  * @param bookingId the unique identifier of the booking
  * @param eventType the type of booking event, expected to be {@link
@@ -22,7 +22,7 @@ public record BookingConfirmedEvent(
     BookingId bookingId, BookingEventType eventType, Instant occurredAt) implements BookingEvent {
 
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     return aggregate.confirm();
   }
 }

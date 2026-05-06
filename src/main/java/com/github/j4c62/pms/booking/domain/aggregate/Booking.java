@@ -35,7 +35,7 @@ import java.util.List;
  * @version 1.0.0
  * @since 2025-04-23
  */
-public record BookingAggregate(
+public record Booking(
     BookingId bookingId,
     PropertyId propertyId,
     GuestId guestId,
@@ -51,7 +51,7 @@ public record BookingAggregate(
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
-  public BookingAggregate {
+  public Booking {
     bookingEvents = bookingEvents == null ? BookingEvents.empty() : bookingEvents;
   }
 
@@ -65,7 +65,7 @@ public record BookingAggregate(
    * @author Jose Antonio (J4c62)
    * @since 2025-05-03
    */
-  public static BookingAggregate restoreFrom(BookingEvents events) {
+  public static Booking restoreFrom(BookingEvents events) {
     if (events.events().isEmpty()) {
       throw new IllegalArgumentException("Cannot restore aggregate from empty event list");
     }
@@ -96,7 +96,7 @@ public record BookingAggregate(
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
-  public BookingAggregate cancel() {
+  public Booking cancel() {
     if (status.isCancelled()) {
       throw new IllegalStateException(
           "Booking with booking_id:%s is already cancelled".formatted(bookingId.value()));
@@ -112,7 +112,7 @@ public record BookingAggregate(
    * @author Jose Antonio (J4c62)
    * @since 2025-05-10
    */
-  public BookingAggregate confirm() {
+  public Booking confirm() {
     if (status.isCancelled()) {
       throw new IllegalStateException(
           "Booking with booking_id:%s is cancelled".formatted(bookingId.value()));
@@ -129,12 +129,12 @@ public record BookingAggregate(
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
-  public BookingAggregate updateDates(BookingDates newDates) {
+  public Booking updateDates(BookingDates newDates) {
     validateUpdatable(newDates);
     return withEvent(createUpdateBookingEvent(bookingId, newDates), status, newDates);
   }
 
-  private BookingAggregate withEvent(
+  private Booking withEvent(
       BookingEvent event, BookingStatus newStatus, BookingDates newDates) {
     return createBookingAggregate(
         bookingId, propertyId, guestId, newDates, newStatus, BookingEvents.of(List.of(event)));

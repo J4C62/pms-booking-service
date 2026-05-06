@@ -1,11 +1,12 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 
 /**
  * Represents a command that modifies an existing {@link
- * com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate}.
+ * Booking}.
  *
  * <p>All update commands must provide the {@link BookingId} of the booking they intend to modify.
  * These commands are typically translated into domain events that reflect updates to booking data,

@@ -1,9 +1,9 @@
 package com.github.j4c62.pms.booking.domain.driver.command;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 
 /**
- * Represents a command that can be applied to a {@link BookingAggregate} to produce a new state.
+ * Represents a command that can be applied to a {@link Booking} to produce a new state.
  *
  * <p>A command encapsulates an intention to perform an action or state change in the system, but
  * does not directly execute that change. Instead, it is translated into one or more {@link
@@ -19,15 +19,15 @@ import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
 @FunctionalInterface
 public interface Command {
   /**
-   * Applies this command to the given {@link BookingAggregate}, producing an updated aggregate. The
+   * Applies this command to the given {@link Booking}, producing an updated aggregate. The
    * result reflects the state after the corresponding {@link
    * com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent} has been applied.
    *
    * @param aggregate the current aggregate to apply the command to; may be {@code null} for
    *     creation commands
-   * @return the new {@link BookingAggregate} representing the updated state
+   * @return the new {@link Booking} representing the updated state
    * @author Jose Antonio (J4c62)
    * @since 2025-04-27
    */
-  BookingAggregate applyTo(BookingAggregate aggregate);
+  Booking applyTo(Booking aggregate);
 }

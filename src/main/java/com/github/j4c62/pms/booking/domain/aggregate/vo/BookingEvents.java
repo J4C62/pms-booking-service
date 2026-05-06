@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.vo;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import java.util.List;
 import java.util.stream.Stream;
@@ -9,7 +9,7 @@ import java.util.stream.Stream;
  * Value object that encapsulates a sequence of domain events related to a booking.
  *
  * <p>This class provides operations for appending new events, creating empty or immutable event
- * lists, and replaying events on a {@link BookingAggregate} to reconstruct its state.
+ * lists, and replaying events on a {@link Booking} to reconstruct its state.
  *
  * <p>The event list is treated as immutable and is defensively copied on creation to ensure
  * integrity.
@@ -68,7 +68,7 @@ public record BookingEvents(List<BookingEvent> events) {
   }
 
   /**
-   * Applies each event in the current list to the given {@link BookingAggregate}, replaying them
+   * Applies each event in the current list to the given {@link Booking}, replaying them
    * sequentially to produce a new aggregate state.
    *
    * @param base The initial aggregate to which the events will be applied.
@@ -76,7 +76,7 @@ public record BookingEvents(List<BookingEvent> events) {
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
-  public BookingAggregate replayOn(BookingAggregate base) {
+  public Booking replayOn(Booking base) {
     var result = base;
     for (var event : events) {
       result = event.applyTo(result);

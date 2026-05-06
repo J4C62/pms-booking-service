@@ -7,7 +7,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEven
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createUpdateBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
@@ -152,14 +152,14 @@ public class AggregateFixture {
   }
 
   /**
-   * Provides a fully constructed {@link BookingAggregate} with initial state {@code PENDING}.
+   * Provides a fully constructed {@link Booking} with initial state {@code PENDING}.
    *
-   * @return a {@link BookingAggregate} instance
+   * @return a {@link Booking} instance
    * @author Jose Antonio (J4c62)
    * @since 2025-05-10
    */
   @Bean
-  public BookingAggregate bookingAggregate(
+  public Booking bookingAggregate(
       BookingId bookingId,
       PropertyId propertyId,
       GuestId guestId,

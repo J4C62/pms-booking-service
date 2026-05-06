@@ -3,7 +3,7 @@ package com.github.j4c62.pms.booking.domain.driver.command.types;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static java.util.Objects.requireNonNull;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
@@ -15,7 +15,7 @@ import com.github.j4c62.pms.booking.domain.driver.command.Command;
  * <p>This command carries the initial data needed to create a booking, including the property,
  * guest, and booking dates. When applied, it produces a {@link
  * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent} and uses it to
- * initialize a new {@link BookingAggregate}.
+ * initialize a new {@link Booking}.
  *
  * @param propertyId The identifier of the property to be booked.
  * @param guestId The identifier of the guest making the booking.
@@ -29,14 +29,14 @@ public record CreateBookingCommand(
   /**
    * Applies this command by creating and applying a {@link
    * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent} to initialize a new
-   * {@link BookingAggregate}.
+   * {@link Booking}.
    *
    * @param aggregate This parameter is ignored, as the booking does not yet exist.
    * @return A new {@code BookingAggregate} representing the newly created booking.
    * @since 2025-05-01
    */
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     return createBookingEvent(requireNonNull(aggregate)).applyTo(null);
   }
 }

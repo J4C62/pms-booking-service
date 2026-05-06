@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.application.strategy;
 
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
 import com.github.j4c62.pms.booking.application.dispatcher.BookingEventDispatcher;
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 
@@ -44,7 +44,7 @@ public sealed interface BookingCommandStrategy<T extends Command>
   BookingOutput execute(T command);
 
   /**
-   * Default helper method to apply a command to a {@link BookingAggregate}, dispatch the resulting
+   * Default helper method to apply a command to a {@link Booking}, dispatch the resulting
    * domain events, and map the result to a {@link BookingOutput}.
    *
    * @param command The domain command to apply.
@@ -57,7 +57,7 @@ public sealed interface BookingCommandStrategy<T extends Command>
    */
   default BookingOutput handle(
       T command,
-      BookingAggregate aggregate,
+      Booking aggregate,
       BookingEventDispatcher dispatcher,
       BookingOutputMapper outputMapper) {
     var updatedAggregate = command.applyTo(aggregate);

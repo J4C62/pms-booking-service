@@ -2,12 +2,12 @@ package com.github.j4c62.pms.booking.application.dispatcher;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import org.springframework.stereotype.Component;
 
 /**
- * Component responsible for dispatching domain events produced by a {@link BookingAggregate}.
+ * Component responsible for dispatching domain events produced by a {@link Booking}.
  *
  * <p>This class acts as a coordination point between the domain and infrastructure layers,
  * extracting domain events from the aggregate and forwarding them to the {@link
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 public record BookingEventDispatcher(BookingEventPublisher bookingEventPublisher) {
 
   /**
-   * Dispatches all domain events emitted by the given {@link BookingAggregate}.
+   * Dispatches all domain events emitted by the given {@link Booking}.
    *
    * <p>This method extracts the events collected by the aggregate during a command execution and
    * publishes each of them via the injected {@link BookingEventPublisher}.
@@ -34,7 +34,7 @@ public record BookingEventDispatcher(BookingEventPublisher bookingEventPublisher
    * @author Jose Antonio (J4c62)
    * @since 2025-05-25
    */
-  public void dispatch(BookingAggregate aggregate) {
+  public void dispatch(Booking aggregate) {
     aggregate
         .bookingEvents()
         .events()

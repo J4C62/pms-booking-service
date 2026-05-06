@@ -1,12 +1,12 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /**
- * MapStruct mapper interface for converting a {@link BookingAggregate} to a {@link BookingOutput}
+ * MapStruct mapper interface for converting a {@link Booking} to a {@link BookingOutput}
  * DTO.
  *
  * <p>This mapper is used to transform the internal domain representation of a booking into a format
@@ -22,12 +22,12 @@ import org.mapstruct.ReportingPolicy;
 @SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface BookingOutputMapper {
   /**
-   * Maps a {@link BookingAggregate} to a {@link BookingOutput} DTO.
+   * Maps a {@link Booking} to a {@link BookingOutput} DTO.
    *
-   * @param bookingAggregate The domain aggregate representing the booking state.
+   * @param booking The domain aggregate representing the booking state.
    * @return A data transfer object suitable for presentation or external interfaces.
    * @author Jose Antonio (J4c62)
    * @since 2025-04-30
    */
-  BookingOutput toBookingOutput(BookingAggregate bookingAggregate);
+  BookingOutput toBookingOutput(Booking booking);
 }

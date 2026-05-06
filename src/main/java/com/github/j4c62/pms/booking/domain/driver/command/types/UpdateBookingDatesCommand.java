@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.domain.driver.command.types;
 
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createUpdateBookingEvent;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
@@ -13,7 +13,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
  * <p>This command is part of the {@link UpdateBookingCommand} hierarchy and carries the new dates
  * to apply along with a reason for the update. When executed, it generates a {@link
  * com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent} and applies it to the
- * {@link BookingAggregate}.
+ * {@link Booking}.
  *
  * @param bookingId The identifier of the booking to be updated.
  * @param guestId The identifier of the actor responsible for the update.
@@ -28,7 +28,7 @@ public record UpdateBookingDatesCommand(
     implements UpdateBookingCommand {
 
   /**
-   * Applies this command to a given {@link BookingAggregate} by generating a {@link
+   * Applies this command to a given {@link Booking} by generating a {@link
    * com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent} and applying it to
    * mutate the aggregate state.
    *
@@ -38,7 +38,7 @@ public record UpdateBookingDatesCommand(
    * @since 2025-05-01
    */
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     var event = createUpdateBookingEvent(bookingId, bookingDates);
     return event.applyTo(aggregate);
   }

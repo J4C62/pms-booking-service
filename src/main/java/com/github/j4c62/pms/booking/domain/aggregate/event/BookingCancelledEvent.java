@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.event;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import java.time.Instant;
@@ -11,7 +11,7 @@ import java.time.Instant;
  * <p>This event captures the intent and metadata of a booking being cancelled, including the
  * booking ID, the time the event occurred, and the event type.
  *
- * <p>Applying this event to a {@link BookingAggregate} transitions its state to "cancelled",
+ * <p>Applying this event to a {@link Booking} transitions its state to "cancelled",
  * triggering any relevant side effects (e.g., publishing to other bounded contexts).
  *
  * @param bookingId The unique identifier of the cancelled booking.
@@ -25,16 +25,16 @@ public record BookingCancelledEvent(
     BookingId bookingId, BookingEventType eventType, Instant occurredAt) implements BookingEvent {
 
   /**
-   * Applies this event to the given {@link BookingAggregate}, marking it as cancelled.
+   * Applies this event to the given {@link Booking}, marking it as cancelled.
    *
    * @param aggregate The current booking aggregate state.
-   * @return A new {@link BookingAggregate} with updated status.
+   * @return A new {@link Booking} with updated status.
    * @throws IllegalStateException if the booking is already cancelled.
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     return aggregate.cancel();
   }
 }

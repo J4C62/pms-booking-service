@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate.restoreFrom;
+import static com.github.j4c62.pms.booking.domain.aggregate.Booking.restoreFrom;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
@@ -25,7 +25,7 @@ import java.util.UUID;
 import org.assertj.core.api.ThrowableAssert;
 import org.junit.jupiter.api.Test;
 
-class BookingAggregateTest {
+class BookingTest {
 
   private static BookingEvents getBookingEvents(BookingEvent... bookingEvent) {
     return BookingEvents.of(List.of(bookingEvent));
@@ -157,11 +157,11 @@ class BookingAggregateTest {
         .contains("Cannot restore aggregate from empty event list");
   }
 
-  private BookingAggregate getDefaultBookingAggregate(BookingStatus bookingStatus) {
+  private Booking getDefaultBookingAggregate(BookingStatus bookingStatus) {
     return getBookingAggregate(bookingStatus, BookingEvents.empty());
   }
 
-  private BookingAggregate getBookingAggregate(BookingStatus status, BookingEvents bookingEvents) {
+  private Booking getBookingAggregate(BookingStatus status, BookingEvents bookingEvents) {
     var bookingId = BookingId.of(UUID.randomUUID());
     var propertyId = PropertyId.of(UUID.randomUUID());
     var guestId = GuestId.of(UUID.randomUUID());

@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.event;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 import java.time.Instant;
@@ -9,7 +9,7 @@ import java.time.Instant;
  * Sealed interface representing a domain event in the Booking context.
  *
  * <p>A {@code BookingEvent} captures a state change or domain action applied to a {@link
- * BookingAggregate}, such as creation, cancellation, update, or confirmation of a booking.
+ * Booking}, such as creation, cancellation, update, or confirmation of a booking.
  *
  * <p>Each implementation must provide the logic to apply the event to an aggregate and expose
  * relevant metadata such as the booking ID, event type, and occurrence timestamp.
@@ -37,14 +37,14 @@ public sealed interface BookingEvent
   BookingId bookingId();
 
   /**
-   * Applies this event to the given {@link BookingAggregate}, producing an updated state.
+   * Applies this event to the given {@link Booking}, producing an updated state.
    *
    * @param aggregate The current booking aggregate state.
    * @return A new aggregate reflecting this event.
    * @author Jose Antonio (J4c62)
    * @since 2025-04-23
    */
-  BookingAggregate applyTo(BookingAggregate aggregate);
+  Booking applyTo(Booking aggregate);
 
   /**
    * Returns the type of this booking event.

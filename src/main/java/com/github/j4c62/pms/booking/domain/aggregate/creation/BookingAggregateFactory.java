@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.domain.aggregate.creation;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
@@ -9,7 +9,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
 
 /**
- * Factory class for creating instances of {@link BookingAggregate}.
+ * Factory class for creating instances of {@link Booking}.
  *
  * <p>This class provides a centralized place for constructing {@code BookingAggregate} instances,
  * encapsulating the instantiation logic and ensuring consistency.
@@ -24,7 +24,7 @@ public final class BookingAggregateFactory {
   private BookingAggregateFactory() {}
 
   /**
-   * Creates a new {@link BookingAggregate} with the provided parameters.
+   * Creates a new {@link Booking} with the provided parameters.
    *
    * @param bookingId The unique identifier of the booking.
    * @param propertyId The identifier of the property being booked.
@@ -36,14 +36,14 @@ public final class BookingAggregateFactory {
    * @author Jose Antonio (J4c62)
    * @since 2025-05-01
    */
-  public static BookingAggregate createBookingAggregate(
+  public static Booking createBookingAggregate(
       BookingId bookingId,
       PropertyId propertyId,
       GuestId guestId,
       BookingDates bookingDates,
       BookingStatus status,
       BookingEvents bookingEvents) {
-    return new BookingAggregate(
+    return new Booking(
         bookingId, propertyId, guestId, bookingDates, status, bookingEvents);
   }
 }

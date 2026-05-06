@@ -5,7 +5,7 @@ import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CREATED;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_UPDATED;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent;
 import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
@@ -75,7 +75,7 @@ public final class BookingEventFactory {
   }
 
   /**
-   * Creates a {@link BookingCreatedEvent} based on the current state of a {@link BookingAggregate}.
+   * Creates a {@link BookingCreatedEvent} based on the current state of a {@link Booking}.
    *
    * @param aggregate The aggregate to extract data from for the event.
    * @return A {@code BookingCreatedEvent} with the current timestamp and {@code BOOKING_CREATED}
@@ -83,7 +83,7 @@ public final class BookingEventFactory {
    * @author Jose Antonio (J4c62)
    * @since 2025-05-10
    */
-  public static BookingEvent createBookingEvent(BookingAggregate aggregate) {
+  public static BookingEvent createBookingEvent(Booking aggregate) {
     return new BookingCreatedEvent(
         aggregate.bookingId(),
         aggregate.propertyId(),

@@ -3,7 +3,7 @@ package com.github.j4c62.pms.booking.domain.aggregate.event;
 import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingAggregateFactory.createBookingAggregate;
 import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
 
-import com.github.j4c62.pms.booking.domain.aggregate.BookingAggregate;
+import com.github.j4c62.pms.booking.domain.aggregate.Booking;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
 import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Domain event representing the creation of a booking.
  *
- * <p>This event is used to initialize a {@link BookingAggregate} when a new booking is created. It
+ * <p>This event is used to initialize a {@link Booking} when a new booking is created. It
  * contains all necessary data to represent the initial state of the booking.
  *
  * @param bookingId The unique identifier of the booking.
@@ -38,7 +38,7 @@ public record BookingCreatedEvent(
     Instant occurredAt)
     implements BookingEvent {
   /**
-   * Applies this event to create a new {@link BookingAggregate}.
+   * Applies this event to create a new {@link Booking}.
    *
    * <p>This is the only event that can initialize a new aggregate instance. It sets the booking
    * status to {@code PENDING} and wraps this event in the event list.
@@ -49,7 +49,7 @@ public record BookingCreatedEvent(
    * @since 2025-04-23
    */
   @Override
-  public BookingAggregate applyTo(BookingAggregate aggregate) {
+  public Booking applyTo(Booking aggregate) {
     return createBookingAggregate(
         bookingId, propertyId, guestId, bookingDates, PENDING, BookingEvents.of(List.of(this)));
   }
