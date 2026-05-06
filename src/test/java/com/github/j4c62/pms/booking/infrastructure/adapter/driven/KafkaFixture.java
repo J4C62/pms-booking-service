@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;

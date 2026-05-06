@@ -1,8 +1,8 @@
 package com.github.j4c62.pms.booking.domain.driver.output;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus;
 
 /**
  * Represents the result of executing a {@link

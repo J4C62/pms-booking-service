@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 
 /**

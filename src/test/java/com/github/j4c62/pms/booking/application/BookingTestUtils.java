@@ -5,9 +5,9 @@ import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.handler.BookingHandler;

@@ -4,9 +4,9 @@ import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.aggregate.vo](../index.md)/[BookingEventType](index.md)/[values](values.md)
+//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.entity.vo](../index.md)/[BookingEventType](index.md)/[values](values.md)
 
 # values
 

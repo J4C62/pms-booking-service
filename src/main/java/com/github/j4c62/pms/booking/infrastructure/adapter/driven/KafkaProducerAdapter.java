@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;

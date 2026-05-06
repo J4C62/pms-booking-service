@@ -1,18 +1,18 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createUpdateBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createUpdateBookingEvent;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
 
 /**
  * Command representing an update to the booking dates of an existing booking.
  *
  * <p>This command is part of the {@link UpdateBookingCommand} hierarchy and carries the new dates
  * to apply along with a reason for the update. When executed, it generates a {@link
- * com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent} and applies it to the
+ * com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent} and applies it to the
  * {@link Booking}.
  *
  * @param bookingId The identifier of the booking to be updated.
@@ -29,7 +29,7 @@ public record UpdateBookingDatesCommand(
 
   /**
    * Applies this command to a given {@link Booking} by generating a {@link
-   * com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent} and applying it to
+   * com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent} and applying it to
    * mutate the aggregate state.
    *
    * @param aggregate The current state of the booking aggregate.

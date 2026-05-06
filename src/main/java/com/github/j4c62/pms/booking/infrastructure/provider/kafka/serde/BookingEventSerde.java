@@ -1,11 +1,11 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingConfirmedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -51,7 +51,7 @@ public class BookingEventSerde implements Serde<BookingEvent> {
    */
   @Override
   public Serializer<BookingEvent> serializer() {
-    return (topic, data) -> {
+    return (ignore, data) -> {
       try {
         return mapper.writeValueAsBytes(data);
       } catch (Exception e) {
@@ -73,7 +73,7 @@ public class BookingEventSerde implements Serde<BookingEvent> {
    */
   @Override
   public Deserializer<BookingEvent> deserializer() {
-    return (topic, bytes) -> {
+    return (ignore, bytes) -> {
       try {
         var node = mapper.readTree(bytes);
         var type = node.get("eventType").asText();

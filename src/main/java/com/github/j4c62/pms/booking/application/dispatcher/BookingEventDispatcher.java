@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.application.dispatcher;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import org.springframework.stereotype.Component;
 

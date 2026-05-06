@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.aggregate.vo;
+package com.github.j4c62.pms.booking.domain.entity.vo;
 
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.requireStartBeforeEnd;
 import static com.github.j4c62.pms.booking.domain.shared.validator.ValidatorHelper.requireStartNotInPast;

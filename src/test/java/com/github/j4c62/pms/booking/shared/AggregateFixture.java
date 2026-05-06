@@ -1,20 +1,20 @@
 package com.github.j4c62.pms.booking.shared;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createConfirmedBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createUpdateBookingEvent;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createCancelledBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createConfirmedBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createUpdateBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus.PENDING;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -97,7 +97,7 @@ public class AggregateFixture {
   }
 
   /**
-   * Provides a {@link com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent} to
+   * Provides a {@link com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent} to
    * simulate a cancellation.
    *
    * @return a {@link BookingEvent} instance with type {@code BOOKING_CANCELLED}
@@ -111,7 +111,7 @@ public class AggregateFixture {
   }
 
   /**
-   * Provides a {@link com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent} to
+   * Provides a {@link com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent} to
    * simulate a booking update.
    *
    * @return a {@link BookingEvent} instance with type {@code BOOKING_UPDATED}
@@ -125,7 +125,7 @@ public class AggregateFixture {
   }
 
   /**
-   * Provides a {@link com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent} to
+   * Provides a {@link com.github.j4c62.pms.booking.domain.entity.event.BookingConfirmedEvent} to
    * simulate a booking confirmation.
    *
    * @return a {@link BookingEvent} instance with type {@code BOOKING_CONFIRMED}

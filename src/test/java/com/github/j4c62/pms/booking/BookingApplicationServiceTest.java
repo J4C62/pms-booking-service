@@ -1,18 +1,18 @@
 package com.github.j4c62.pms.booking;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createConfirmedBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createConfirmedBookingEvent;
 import static java.util.Objects.requireNonNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingConfirmedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import com.github.j4c62.pms.booking.infrastructure.adapter.driven.KafkaProducerAdapter;

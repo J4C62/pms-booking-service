@@ -3,7 +3,7 @@ package com.github.j4c62.pms.booking.application.strategy;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingAggregateMapper;
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;
 import com.github.j4c62.pms.booking.application.dispatcher.BookingEventDispatcher;
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;

@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,6 @@ class KafkaStreamsStoreTest {
   @MockitoBean KafkaStreams kafkaStreams;
   @MockitoBean ReadOnlyKeyValueStore<BookingId, BookingEvents> keyValueStore;
   @MockitoBean InteractiveQueryService queryService;
-  @Autowired private KafkaFixture.SetUpFixtureIntegration setUpFixtureIntegration;
 
   @SuppressWarnings("DataFlowIssue")
   @Test

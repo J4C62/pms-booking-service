@@ -1,13 +1,13 @@
 package com.github.j4c62.pms.booking.domain.driven;
 
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 
 /**
  * Functional interface representing a read-only event store for booking-related events.
  *
  * <p>Provides access to the historical list of {@link
- * com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent} instances associated with a
+ * com.github.j4c62.pms.booking.domain.entity.event.BookingEvent} instances associated with a
  * specific {@link BookingId}. This is typically used to reconstruct the current state of a {@code
  * BookingAggregate} by replaying its event history.
  *
@@ -22,7 +22,7 @@ import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
 public interface BookingEventStore {
 
   /**
-   * Retrieves all {@link com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent}
+   * Retrieves all {@link com.github.j4c62.pms.booking.domain.entity.event.BookingEvent}
    * instances associated with the given {@link BookingId}.
    *
    * @param bookingId the unique identifier of the booking

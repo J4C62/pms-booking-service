@@ -7,7 +7,7 @@ import com.github.j4c62.pms.booking.application.ApplicationFixture;
 import com.github.j4c62.pms.booking.application.acceptance.update.stage.GivenUserWantsToModifyBookingDates;
 import com.github.j4c62.pms.booking.application.acceptance.update.stage.ThenTheSystemStoresTheUpdatedDatesAndNotifiesTheUser;
 import com.github.j4c62.pms.booking.application.acceptance.update.stage.WhenTheUserUpdatesTheBooking;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

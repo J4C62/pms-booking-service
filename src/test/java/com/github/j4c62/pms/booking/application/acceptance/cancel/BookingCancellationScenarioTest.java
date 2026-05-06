@@ -7,7 +7,7 @@ import com.github.j4c62.pms.booking.application.ApplicationFixture;
 import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.GivenUserWantsToCancelBooking;
 import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.ThenTheBookingIsMarkedAsCancelledAndTheUserIsNotified;
 import com.github.j4c62.pms.booking.application.acceptance.cancel.stage.WhenTheUserCancelsTheBooking;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.integration.spring.junit5.SpringScenarioTest;
 import org.junit.jupiter.api.BeforeEach;

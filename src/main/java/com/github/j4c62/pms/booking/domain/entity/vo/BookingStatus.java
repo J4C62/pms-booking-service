@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.aggregate.vo;
+package com.github.j4c62.pms.booking.domain.entity.vo;
 
 /**
  * Enumeration representing the status of a booking within the system.

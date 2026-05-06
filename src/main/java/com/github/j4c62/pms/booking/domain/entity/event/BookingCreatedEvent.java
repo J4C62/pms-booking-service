@@ -1,15 +1,15 @@
-package com.github.j4c62.pms.booking.domain.aggregate.event;
+package com.github.j4c62.pms.booking.domain.entity.event;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingFactory.createBookingAggregate;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingFactory.createBookingAggregate;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus.PENDING;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import java.time.Instant;
 import java.util.List;
 

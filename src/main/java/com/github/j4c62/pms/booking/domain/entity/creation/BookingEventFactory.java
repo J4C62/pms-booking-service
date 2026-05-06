@@ -1,20 +1,20 @@
-package com.github.j4c62.pms.booking.domain.aggregate.creation;
+package com.github.j4c62.pms.booking.domain.entity.creation;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CANCELLED;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CONFIRMED;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CREATED;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_UPDATED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType.BOOKING_CANCELLED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType.BOOKING_CONFIRMED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType.BOOKING_CREATED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType.BOOKING_UPDATED;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingConfirmedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingUpdateEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingConfirmedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingUpdateEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import java.time.Instant;
 
 /**

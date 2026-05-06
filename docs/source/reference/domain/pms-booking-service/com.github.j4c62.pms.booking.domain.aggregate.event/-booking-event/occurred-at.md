@@ -1,4 +1,4 @@
-//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.aggregate.event](../index.md)/[BookingEvent](index.md)/[occurredAt](occurred-at.md)
+//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.entity.event](../index.md)/[BookingEvent](index.md)/[occurredAt](occurred-at.md)
 
 # occurredAt
 

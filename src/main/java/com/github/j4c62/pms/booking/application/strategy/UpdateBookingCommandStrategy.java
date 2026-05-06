@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.strategy;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.Booking.restoreFrom;
+import static com.github.j4c62.pms.booking.domain.entity.Booking.restoreFrom;
 import static java.util.Objects.requireNonNull;
 
 import com.github.j4c62.pms.booking.application.creation.mapper.BookingOutputMapper;

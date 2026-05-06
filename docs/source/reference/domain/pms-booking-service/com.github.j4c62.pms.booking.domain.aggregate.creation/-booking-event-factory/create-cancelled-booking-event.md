@@ -1,4 +1,4 @@
-//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.aggregate.creation](../index.md)/[BookingEventFactory](index.md)/[createCancelledBookingEvent](create-cancelled-booking-event.md)
+//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.entity.creation](../index.md)/[BookingEventFactory](index.md)/[createCancelledBookingEvent](create-cancelled-booking-event.md)
 
 # createCancelledBookingEvent
 

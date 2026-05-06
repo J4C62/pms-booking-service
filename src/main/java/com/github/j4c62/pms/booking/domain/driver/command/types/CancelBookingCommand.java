@@ -1,17 +1,17 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createCancelledBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createCancelledBookingEvent;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
 
 /**
  * Command representing a request to cancel an existing booking.
  *
  * <p>This command is part of the booking modification command set and carries metadata about the
  * reason and the actor responsible for the cancellation. It produces a {@link
- * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent} that is applied to the
+ * com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent} that is applied to the
  * {@link Booking}.
  *
  * @param bookingId The identifier of the booking to cancel.
@@ -26,7 +26,7 @@ public record CancelBookingCommand(BookingId bookingId, GuestId guestId, String 
 
   /**
    * Applies this command to a {@link Booking} by generating and applying a {@link
-   * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCancelledEvent}.
+   * com.github.j4c62.pms.booking.domain.entity.event.BookingCancelledEvent}.
    *
    * @param aggregate The current state of the booking aggregate.
    * @return A new {@code BookingAggregate} with the cancellation applied.

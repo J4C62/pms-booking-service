@@ -8,7 +8,7 @@
 
 open fun [getEventsForBooking](get-events-for-booking.md)(@NonNullbookingId: @NonNull[BookingId](../../com.github.j4c62.pms.booking.domain.aggregate.vo/-booking-id/index.md)): @NonNull[BookingEvents](../../com.github.j4c62.pms.booking.domain.aggregate.vo/-booking-events/index.md)
 
-Retrieves the list of [com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent](../../com.github.j4c62.pms.booking.domain.aggregate.event/-booking-event/index.md)s associated with the given [BookingId](../../com.github.j4c62.pms.booking.domain.aggregate.vo/-booking-id/index.md) from the Kafka Streams state store.
+Retrieves the list of [com.github.j4c62.pms.booking.domain.entity.event.BookingEvent](../../com.github.j4c62.pms.booking.domain.aggregate.event/-booking-event/index.md)s associated with the given [BookingId](../../com.github.j4c62.pms.booking.domain.aggregate.vo/-booking-id/index.md) from the Kafka Streams state store.
 
 #### Return
 

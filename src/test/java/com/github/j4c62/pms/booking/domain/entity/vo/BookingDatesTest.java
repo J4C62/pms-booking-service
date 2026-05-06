@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.aggregate.vo;
+package com.github.j4c62.pms.booking.domain.entity.vo;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;

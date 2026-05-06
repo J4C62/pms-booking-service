@@ -2,11 +2,11 @@ package com.github.j4c62.pms.booking.application.acceptance.cancel.stage;
 
 import static com.github.j4c62.pms.booking.application.BookingTestUtils.thenBookingOutputValid;
 import static com.github.j4c62.pms.booking.application.BookingTestUtils.thenTheEventIsPublished;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEventType.BOOKING_CANCELLED;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.CANCELLED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingEventType.BOOKING_CANCELLED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus.CANCELLED;
 
 import com.github.j4c62.pms.booking.application.ApplicationFixture;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.github.j4c62.pms.booking.domain.driver.output.BookingOutput;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.integration.spring.JGivenStage;

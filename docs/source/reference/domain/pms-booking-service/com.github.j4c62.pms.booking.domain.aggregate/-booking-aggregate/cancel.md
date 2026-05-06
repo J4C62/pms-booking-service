@@ -1,4 +1,4 @@
-//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.aggregate](../index.md)/[BookingAggregate](index.md)/[cancel](cancel.md)
+//[pms-booking-service](../../../index.md)/[com.github.j4c62.pms.booking.domain.entity](../index.md)/[BookingAggregate](index.md)/[cancel](cancel.md)
 
 # cancel
 

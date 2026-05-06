@@ -2,8 +2,8 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
 import java.util.ArrayList;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -49,7 +49,7 @@ public class BookingEventsSerde implements Serde<BookingEvents> {
    */
   @Override
   public Serializer<BookingEvents> serializer() {
-    return (topic, data) -> {
+    return (ignore, data) -> {
       try {
         return objectMapper.writeValueAsBytes(data.events());
       } catch (Exception e) {

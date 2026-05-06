@@ -1,12 +1,12 @@
 package com.github.j4c62.pms.booking.domain.driver.command.types;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.creation.BookingEventFactory.createBookingEvent;
+import static com.github.j4c62.pms.booking.domain.entity.creation.BookingEventFactory.createBookingEvent;
 import static java.util.Objects.requireNonNull;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 
 /**
@@ -14,7 +14,7 @@ import com.github.j4c62.pms.booking.domain.driver.command.Command;
  *
  * <p>This command carries the initial data needed to create a booking, including the property,
  * guest, and booking dates. When applied, it produces a {@link
- * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent} and uses it to
+ * com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent} and uses it to
  * initialize a new {@link Booking}.
  *
  * @param propertyId The identifier of the property to be booked.
@@ -28,7 +28,7 @@ public record CreateBookingCommand(
     PropertyId propertyId, GuestId guestId, BookingDates bookingDates) implements Command {
   /**
    * Applies this command by creating and applying a {@link
-   * com.github.j4c62.pms.booking.domain.aggregate.event.BookingCreatedEvent} to initialize a new
+   * com.github.j4c62.pms.booking.domain.entity.event.BookingCreatedEvent} to initialize a new
    * {@link Booking}.
    *
    * @param aggregate This parameter is ignored, as the booking does not yet exist.

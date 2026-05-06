@@ -1,4 +1,4 @@
-//[pms-booking-service](../../index.md)/[com.github.j4c62.pms.booking.domain.aggregate.creation](index.md)
+//[pms-booking-service](../../index.md)/[com.github.j4c62.pms.booking.domain.entity.creation](index.md)
 
 # Package-level declarations
 

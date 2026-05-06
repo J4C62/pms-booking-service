@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import static org.springframework.messaging.support.MessageBuilder.withPayload;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.function.Function;

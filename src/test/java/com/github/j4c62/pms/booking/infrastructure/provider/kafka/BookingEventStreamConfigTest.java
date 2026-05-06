@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
 import com.github.j4c62.pms.booking.shared.AggregateFixture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

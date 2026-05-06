@@ -1,12 +1,12 @@
 package com.github.j4c62.pms.booking.shared;
 
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.CANCELLED;
-import static com.github.j4c62.pms.booking.domain.aggregate.vo.BookingStatus.PENDING;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus.CANCELLED;
+import static com.github.j4c62.pms.booking.domain.entity.vo.BookingStatus.PENDING;
 
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingDates;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.GuestId;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.PropertyId;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingDates;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.GuestId;
+import com.github.j4c62.pms.booking.domain.entity.vo.PropertyId;
 import com.github.j4c62.pms.booking.domain.driver.command.Command;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CancelBookingCommand;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;

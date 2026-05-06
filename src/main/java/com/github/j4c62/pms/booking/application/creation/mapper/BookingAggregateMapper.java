@@ -1,6 +1,6 @@
 package com.github.j4c62.pms.booking.application.creation.mapper;
 
-import com.github.j4c62.pms.booking.domain.aggregate.Booking;
+import com.github.j4c62.pms.booking.domain.entity.Booking;
 import com.github.j4c62.pms.booking.domain.driver.command.types.CreateBookingCommand;
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +16,7 @@ import org.mapstruct.ReportingPolicy;
  * as status and bookingEvents are handled elsewhere in the domain logic.
  *
  * <p>The {@code bookingId} is generated automatically as a new {@link
- * com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId} wrapping a random UUID.
+ * com.github.j4c62.pms.booking.domain.entity.vo.BookingId} wrapping a random UUID.
  *
  * <p>This mapper uses Spring's dependency injection framework.
  *

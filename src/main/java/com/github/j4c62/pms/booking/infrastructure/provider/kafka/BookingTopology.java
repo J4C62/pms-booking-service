@@ -1,9 +1,9 @@
 package com.github.j4c62.pms.booking.infrastructure.provider.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.event.BookingEvent;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde.BookingEventSerde;
 import com.github.j4c62.pms.booking.infrastructure.provider.kafka.serde.BookingEventsSerde;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
@@ -69,7 +69,7 @@ public class BookingTopology {
 
     return input ->
         input
-            .map((key, cloudEvent) -> KeyValue.pair(cloudEvent.bookingId(), cloudEvent))
+            .map((ignore, cloudEvent) -> KeyValue.pair(cloudEvent.bookingId(), cloudEvent))
             .groupByKey(Grouped.with(new JsonSerde<>(BookingId.class), bookingEventSerde))
             .aggregate(
                 BookingEvents::empty,

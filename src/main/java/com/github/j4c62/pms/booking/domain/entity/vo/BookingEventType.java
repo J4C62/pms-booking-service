@@ -1,4 +1,4 @@
-package com.github.j4c62.pms.booking.domain.aggregate.vo;
+package com.github.j4c62.pms.booking.domain.entity.vo;
 
 /**
  * Enumeration representing the types of domain events that can occur for a booking.

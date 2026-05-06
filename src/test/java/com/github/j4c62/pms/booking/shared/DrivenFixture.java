@@ -2,7 +2,7 @@ package com.github.j4c62.pms.booking.shared;
 
 import static org.mockito.Mockito.mock;
 
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventPublisher;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -40,7 +40,7 @@ public class DrivenFixture {
   /**
    * Provides a simple in-memory implementation of {@link BookingEventStore} based on the provided
    * {@link BookingEvents}. Filters and returns events that match the requested {@link
-   * com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId}.
+   * com.github.j4c62.pms.booking.domain.entity.vo.BookingId}.
    *
    * @param bookingEvents a collection of all available booking events
    * @return a filtered {@link BookingEventStore} implementation

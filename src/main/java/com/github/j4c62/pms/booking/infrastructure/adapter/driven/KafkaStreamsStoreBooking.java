@@ -1,7 +1,7 @@
 package com.github.j4c62.pms.booking.infrastructure.adapter.driven;
 
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingEvents;
-import com.github.j4c62.pms.booking.domain.aggregate.vo.BookingId;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingEvents;
+import com.github.j4c62.pms.booking.domain.entity.vo.BookingId;
 import com.github.j4c62.pms.booking.domain.driven.BookingEventStore;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
@@ -38,7 +38,7 @@ public class KafkaStreamsStoreBooking implements BookingEventStore {
   private String storeName;
 
   /**
-   * Retrieves the list of {@link com.github.j4c62.pms.booking.domain.aggregate.event.BookingEvent}s
+   * Retrieves the list of {@link com.github.j4c62.pms.booking.domain.entity.event.BookingEvent}s
    * associated with the given {@link BookingId} from the Kafka Streams state store.
    *
    * @param bookingId the identifier of the booking whose events are to be retrieved; must not be

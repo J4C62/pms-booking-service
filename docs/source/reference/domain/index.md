@@ -10,10 +10,10 @@
 | [com.github.j4c62.pms.booking.application.handler](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.application.handler/index.md)                                         |
 | [com.github.j4c62.pms.booking.application.strategy](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.application.strategy/index.md)                                       |
 | [com.github.j4c62.pms.booking.application.strategy.executor](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.application.strategy.executor/index.md)                     |
-| [com.github.j4c62.pms.booking.domain.aggregate](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate/index.md)                                               |
-| [com.github.j4c62.pms.booking.domain.aggregate.creation](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.creation/index.md)                             |
-| [com.github.j4c62.pms.booking.domain.aggregate.event](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.event/index.md)                                   |
-| [com.github.j4c62.pms.booking.domain.aggregate.vo](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.vo/index.md)                                         |
+| [com.github.j4c62.pms.booking.domain.entity](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate/index.md)                                               |
+| [com.github.j4c62.pms.booking.domain.entity.creation](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.creation/index.md)                             |
+| [com.github.j4c62.pms.booking.domain.entity.event](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.event/index.md)                                   |
+| [com.github.j4c62.pms.booking.domain.entity.vo](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.aggregate.vo/index.md)                                         |
 | [com.github.j4c62.pms.booking.domain.driven](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.driven/index.md)                                                     |
 | [com.github.j4c62.pms.booking.domain.driver.command](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.driver.command/index.md)                                     |
 | [com.github.j4c62.pms.booking.domain.driver.command.types](../../../../build/dokka/html/pms-booking-service/com.github.j4c62.pms.booking.domain.driver.command.types/index.md)                         |
